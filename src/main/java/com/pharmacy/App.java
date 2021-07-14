@@ -1,26 +1,16 @@
 package com.pharmacy;
 
+import com.pharmacy.controllers.MainController;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Statement;
-
+import java.io.IOException;
 /**
  * JavaFX App
  */
@@ -28,17 +18,13 @@ public class App extends Application {
 
 
 	@Override
-	public void start(Stage stage) throws SQLException {
-
-		Connection con= DatabaseConnection.getInstance().getConnection();
-		String query= "select * from customer";
-		Statement stmt= con.createStatement();
-		ResultSet rs= stmt.executeQuery(query);
-		while(rs.next()) {
-			System.out.println(rs.getString("name"));
-		}
-		System.out.println("up and running النيبت");
-		stage.close();
+	public void start(Stage primaryStage) throws IOException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Main.fxml"));
+		Parent root= loader.<VBox>load();
+		primaryStage.setTitle("صيدلية");
+		primaryStage.setScene(new Scene(root, 800, 800));
+		primaryStage.show();
 	}
 	
 	public static void main(String[] args) {

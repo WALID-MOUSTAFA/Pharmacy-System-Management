@@ -13,30 +13,45 @@
   <dependencies>
     
 
+<!--    <dependency>-->
+<!--      <artifactId>javafx</artifactId>-->
+<!--      <groupId>javafx.controls</groupId>-->
+<!--      <scope>system</scope>-->
+<!--      <version>15</version>-->
+<!--      <systemPath>${project.basedir}/lib/javafx.controls.jar</systemPath>-->
+<!--    </dependency>-->
+
+<!--    -->
+<!--    <dependency>-->
+<!--      <artifactId>javafx</artifactId>-->
+<!--      <groupId>javafx.graphics</groupId>-->
+<!--      <scope>system</scope>-->
+<!--      <version>15</version>-->
+<!--      <systemPath>${project.basedir}/lib/javafx.graphics.jar</systemPath>-->
+<!--    </dependency>-->
+
+<!--    <dependency>-->
+<!--      <artifactId>javafx</artifactId>-->
+<!--      <groupId>javafx.base</groupId>-->
+<!--      <scope>system</scope>-->
+<!--      <version>15</version>-->
+<!--      <systemPath>${project.basedir}/lib/javafx.base.jar</systemPath>-->
+<!--    </dependency>-->
+
+
+
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>15.0.1</version>
+      </dependency>
+
     <dependency>
-      <artifactId>javafx</artifactId>
-      <groupId>javafx.controls</groupId>
-      <scope>system</scope>
-      <version>15</version>
-      <systemPath>${project.basedir}/lib/javafx.controls.jar</systemPath>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>15.0.1</version>
     </dependency>
 
-    
-    <dependency>
-      <artifactId>javafx</artifactId>
-      <groupId>javafx.graphics</groupId>
-      <scope>system</scope>
-      <version>15</version>
-      <systemPath>${project.basedir}/lib/javafx.graphics.jar</systemPath>
-    </dependency>
-
-    <dependency>
-      <artifactId>javafx</artifactId>
-      <groupId>javafx.base</groupId>
-      <scope>system</scope>
-      <version>15</version>
-      <systemPath>${project.basedir}/lib/javafx.base.jar</systemPath>
-    </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
     <dependency>
@@ -47,5 +62,19 @@
 
 
   </dependencies>
+<build>
+
+  <plugins>
+    <plugin>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-maven-plugin</artifactId>
+      <version>0.0.6</version>
+      <configuration>
+        <mainClass>com.pharmacy.App</mainClass>
+      </configuration>
+    </plugin>
+  </plugins>
+
+</build>
 
 </project>

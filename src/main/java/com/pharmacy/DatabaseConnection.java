@@ -12,7 +12,7 @@ public class DatabaseConnection {
 
 	private static DatabaseConnection instance;
 	private Connection connection;
-	private String url = "jdbc:sqlite:/home/walid/workspace/java/pharmacy/pharmacy/target/classes/pharmacy.db";
+	private String url = "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
 	
 	private DatabaseConnection() throws SQLException {
 		SQLiteConfig config = new SQLiteConfig();
