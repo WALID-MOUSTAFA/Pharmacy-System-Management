@@ -21,9 +21,12 @@ public class App extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/Main.fxml"));
+		MainController mainController= new MainController();
+		mainController.setStage(primaryStage);
+		loader.setController(mainController);
 		Parent root= loader.<VBox>load();
 		primaryStage.setTitle("صيدلية");
-		primaryStage.setScene(new Scene(root, 800, 800));
+		primaryStage.setScene(new Scene(root, 900, 500));
 		primaryStage.show();
 	}
 	
