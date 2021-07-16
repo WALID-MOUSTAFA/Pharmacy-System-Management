@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -38,7 +39,7 @@ public class MainController extends MyController {
         TreatmentController treatmentController = new TreatmentController();
         treatmentController.setStage(this.stage);
         loader.setController(treatmentController);
-        Parent root= loader.load();
+        Parent root= loader.<VBox>load();
         this.stage.setScene(new Scene(root));
     }
 
