@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainController extends MyController {
 
@@ -42,5 +43,28 @@ public class MainController extends MyController {
         Parent root= loader.<VBox>load();
         this.stage.setScene(new Scene(root));
     }
+
+
+	@FXML
+	public void showPurchasesScene() throws IOException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Purchases.fxml"));
+		PurchasesController purchasesController= new PurchasesController();
+		purchasesController.setStage(this.stage);
+		loader.setController(purchasesController);
+		Parent root= loader.<VBox>load();
+		this.stage.setScene(new Scene(root));
+	}
+
+	@FXML
+	public void showSuppliersScene() throws IOException, SQLException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Suppliers.fxml"));
+		SuppliersController suppliersController= new SuppliersController();
+		suppliersController.setStage(this.stage);
+		loader.setController(suppliersController);
+		Parent root= loader.<VBox>load();
+		this.stage.setScene(new Scene(root));
+	}
 
 }

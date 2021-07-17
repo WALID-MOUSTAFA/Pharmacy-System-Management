@@ -32,15 +32,11 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
@@ -85,23 +81,5 @@
       </menus>
     </MenuBar>
       <Button fx:id="backToControlPanelButton" mnemonicParsing="false" onMouseClicked="#backToControlPanel" text="back" />
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <TableView fx:id="treatmentsTableView" onMouseClicked="#viewDetailedTreatment" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Button mnemonicParsing="false" onMouseClicked="#showAsddNewTreatment" text="إضافة دواء جديد" textAlignment="CENTER">
-               <HBox.margin>
-                  <Insets right="15.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
   </children>
 </VBox>

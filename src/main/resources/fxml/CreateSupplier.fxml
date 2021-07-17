@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
+               <children>
+                  <TextField fx:id="supplierName" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" right="49.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="الاسم" />
+               </children>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
+               <children>
+                  <TextField fx:id="supplierPhone" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" right="24.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="رقم الهاتف" />
+               </children>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
+               <children>
+                  <TextField fx:id="supplierAddress" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" right="24.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="العنوان" />
+               </children>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
+               <children>
+                  <TextField fx:id="supplierCash" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="10.0" right="24.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label text="الكاش" />
+               </children>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" onMouseClicked="#addNewSupplier" prefWidth="100.0" text="إضافة">
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

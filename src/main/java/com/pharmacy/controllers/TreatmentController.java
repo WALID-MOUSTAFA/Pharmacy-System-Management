@@ -28,8 +28,8 @@ public class TreatmentController extends MyController{
     @FXML
     private TableView treatmentsTableView;
 
-    @FXML
-    private Text detailedTreatment;
+   // @FXML
+   // private Text detailedTreatment;
 
     private TreatmentService treatmentService;
 
@@ -83,28 +83,28 @@ public class TreatmentController extends MyController{
 
     @FXML
     private void viewDetailedTreatment() throws  SQLException{
-        this.detailedTreatment.setText("");
-        Treatment treatment= (Treatment) this.treatmentsTableView.getSelectionModel().getSelectedItem();
-        long id= treatment.getId();
-        DetailedTreatment detailedTreatment= treatmentService.getDetailedTreatment(id);
-        StringBuilder detailsBuilder= new StringBuilder();
-        detailsBuilder.append("اسم الدواء: " + detailedTreatment.getName());
-        detailsBuilder.append("\n");
-        detailsBuilder.append("التركيبة:"  + detailedTreatment.getFormTreatName());
-        detailsBuilder.append("\n");
-        detailsBuilder.append("اسم الشركة: " + detailedTreatment.getCompany());
-        detailsBuilder.append("\n");
-        detailsBuilder.append(": تاريخ الإضافة: " + detailedTreatment.getDateAt());
-        detailsBuilder.append("\n");
-        detailsBuilder.append("النوع: " + detailedTreatment.getTypeTreatName());
-        detailsBuilder.append("\n");
-        detailsBuilder.append("الحالة: " + detailedTreatment.getStringStatus());
-        detailsBuilder.append("\n");
-        detailsBuilder.append("العدد الحرج: " + detailedTreatment.getLowcount());
-        detailsBuilder.append("\n");
-        this.detailedTreatment.setText(detailsBuilder.toString());
-        detailsBuilder.delete(0, detailsBuilder.length()-1);
-        System.out.println(this.detailedTreatment.getText());
+//        this.detailedTreatment.setText("");
+//        Treatment treatment= (Treatment) this.treatmentsTableView.getSelectionModel().getSelectedItem();
+//        long id= treatment.getId();
+//        DetailedTreatment detailedTreatment= treatmentService.getDetailedTreatment(id);
+//        StringBuilder detailsBuilder= new StringBuilder();
+//        detailsBuilder.append("اسم الدواء: " + detailedTreatment.getName());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append("التركيبة:"  + detailedTreatment.getFormTreatName());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append("اسم الشركة: " + detailedTreatment.getCompany());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append(": تاريخ الإضافة: " + detailedTreatment.getDateAt());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append("النوع: " + detailedTreatment.getTypeTreatName());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append("الحالة: " + detailedTreatment.getStringStatus());
+//        detailsBuilder.append("\n");
+//        detailsBuilder.append("العدد الحرج: " + detailedTreatment.getLowcount());
+//        detailsBuilder.append("\n");
+//        this.detailedTreatment.setText(detailsBuilder.toString());
+//        detailsBuilder.delete(0, detailsBuilder.length()-1);
+//        System.out.println(this.detailedTreatment.getText());
     }
 
 
