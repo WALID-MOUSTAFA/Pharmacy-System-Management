@@ -50,6 +50,19 @@ public class SuppliersService {
         return false;
     }
 
+	
+	public Supplier getSupplierByName(String supplierName) throws SQLException{
+		String query= "SELECT * FROM supliers where name=\"" + supplierName + "\";";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		Supplier supplier= new Supplier();
+		while(rs.next()) {
+			supplier.setName(rs.getString("name"));
+			supplier.setId(rs.getLong("id"));
+		}
+		return supplier;
+	}
+
 
 
 }

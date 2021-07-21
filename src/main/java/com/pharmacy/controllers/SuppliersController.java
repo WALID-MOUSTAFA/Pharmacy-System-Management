@@ -18,7 +18,6 @@ import java.sql.SQLException;
 
 public class SuppliersController extends MyController{
 
-    @FXML
     private SuppliersService suppliersService;
 
     @FXML

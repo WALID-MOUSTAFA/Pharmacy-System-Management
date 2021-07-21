@@ -46,7 +46,7 @@ public class MainController extends MyController {
 
 
 	@FXML
-	public void showPurchasesScene() throws IOException {
+	public void showPurchasesScene() throws IOException, SQLException {
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/Purchases.fxml"));
 		PurchasesController purchasesController= new PurchasesController();
