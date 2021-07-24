@@ -29,7 +29,7 @@ public class SuppliersController extends MyController{
     }
 
     @FXML
-    private void backToControlPanel() throws IOException {
+    protected  void backToControlPanel() throws IOException {
         this.swapWithControlPanelScene();
     }
 

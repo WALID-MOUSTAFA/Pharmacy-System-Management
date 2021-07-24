@@ -41,7 +41,7 @@ public class MainController extends MyController {
         treatmentController.setStage(this.stage);
         loader.setController(treatmentController);
         Parent root= loader.<VBox>load();
-        this.stage.setScene(new Scene(root));
+		this.stage.getScene().setRoot(root);
     }
 
 
@@ -53,7 +53,8 @@ public class MainController extends MyController {
 		purchasesController.setStage(this.stage);
 		loader.setController(purchasesController);
 		Parent root= loader.<VBox>load();
-		this.stage.setScene(new Scene(root));
+		this.stage.getScene().setRoot(root);
+
 	}
 
 	@FXML
@@ -64,7 +65,7 @@ public class MainController extends MyController {
 		suppliersController.setStage(this.stage);
 		loader.setController(suppliersController);
 		Parent root= loader.<VBox>load();
-		this.stage.setScene(new Scene(root));
+		this.stage.getScene().setRoot(root);
 	}
 
 }

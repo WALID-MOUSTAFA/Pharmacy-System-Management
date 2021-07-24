@@ -2,6 +2,16 @@ package com.pharmacy.POGO;
 
 public class Purchase {
 
+	private Long id;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	private String datePur;
 
 	private String pillNum;

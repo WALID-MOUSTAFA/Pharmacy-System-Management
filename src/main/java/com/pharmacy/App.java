@@ -30,6 +30,8 @@ public class App extends Application {
 		primaryStage.setTitle("صيدلية");
 		primaryStage.setScene(new Scene(root, 900, 500));
 		primaryStage.show();
+		primaryStage.setMaximized(true);
+
 	}
 	
 	public static void main(String[] args) {

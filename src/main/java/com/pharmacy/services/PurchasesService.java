@@ -35,6 +35,7 @@ public class PurchasesService {
 		while (rs.next()) {
 			purchase= new Purchase();
 			supplier= new Supplier();
+			purchase.setId(rs.getLong("id"));
 			purchase.setDatePur(rs.getString("date_pur"));
 			purchase.setPillNum(rs.getString("pill_num"));
 			purchase.setTotalPeople(rs.getDouble("total_people"));

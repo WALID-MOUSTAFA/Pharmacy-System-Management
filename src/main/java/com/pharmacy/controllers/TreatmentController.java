@@ -76,7 +76,7 @@ public class TreatmentController extends MyController{
     }
 
     @FXML
-    private void backToControlPanel() throws IOException {
+    protected  void backToControlPanel() throws IOException {
         this.swapWithControlPanelScene();
     }
 

@@ -1,5 +1,6 @@
 package com.pharmacy.controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +24,16 @@ public class MyController {
         loader.setController(mainController);
         Parent root= loader.load();
         this.stage.setTitle("صيدلية");
-        this.stage.setScene(new Scene(root, 900, 500));
+        this.stage.getScene().setRoot(root);
 
     }
+
+
+
+    @FXML
+    protected  void backToControlPanel() throws IOException {
+        this.swapWithControlPanelScene();
+    }
+
+
 }

@@ -38,6 +38,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -85,25 +86,29 @@
       </menus>
     </MenuBar>
       <Button fx:id="backToControlPanelButton" mnemonicParsing="false" onMouseClicked="#backToControlPanel" text="back" />
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="purchasesTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <TableView fx:id="purchasesTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-         </children>
-      </AnchorPane>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <fx:include source="CreatePurchase.fxml" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button mnemonicParsing="false" onMouseClicked="#showPurchaseDetails" text="عرض الفاتورة المحددة">
                <HBox.margin>
                   <Insets right="18.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" onMouseClicked="#showAsddNewPurchase" text="إضافة فاتورة جديدة " textAlignment="CENTER">
-               <HBox.margin>
-                  <Insets right="15.0" />
                </HBox.margin>
             </Button>
          </children>

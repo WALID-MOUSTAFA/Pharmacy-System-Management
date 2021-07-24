@@ -1,5 +1,7 @@
 package com.pharmacy.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,8 +23,10 @@ import javafx.stage.Stage;
 public class PurchasesController extends MyController{
 
 
-	private PurchasesService purchasesService;	
-	
+	private PurchasesService purchasesService;
+
+	private long currentSelectedItemId;
+
 	@FXML
 	private TableView purchasesTableView;
 	
@@ -73,7 +77,13 @@ public class PurchasesController extends MyController{
 							     dateAt,
 							     supplierName);
 		this.purchasesTableView.setItems(purchases);
-		
+
+		purchasesTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				PurchasesController.this.setPurchaseId(((Purchase)newValue).getId());
+			}
+		});
 	}
 
 	
@@ -86,10 +96,17 @@ public class PurchasesController extends MyController{
 
 	
 	@FXML
-	private void backToControlPanel() throws IOException {
+	@Override
+	protected  void backToControlPanel() throws IOException {
 		this.swapWithControlPanelScene();
 	}
 
+	private void setPurchaseId(long id) {
+		this.currentSelectedItemId= id;
+	}
+	private long getPurchaseId() {
+		return this.currentSelectedItemId;
+	}
 
 	@FXML
 	public void showAsddNewPurchase() throws IOException, SQLException {
@@ -108,7 +125,7 @@ public class PurchasesController extends MyController{
 
 
 	@FXML
-	public void showPurchaseDetails() throws IOException {
+	public void showPurchaseDetails() throws IOException, SQLException {
 		Stage stage= new Stage();
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation(getClass()
@@ -116,6 +133,7 @@ public class PurchasesController extends MyController{
 		PurchaseDetailsController purchaseDetailsController=
 				new PurchaseDetailsController();
 		purchaseDetailsController.setStage(stage);
+		purchaseDetailsController.setSelectedPurchaseId(this.currentSelectedItemId);
 		loader.setController(purchaseDetailsController);
 		Parent root= loader.load();
 		stage.setScene(new Scene(root));
