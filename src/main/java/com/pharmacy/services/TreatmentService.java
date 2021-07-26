@@ -131,13 +131,15 @@ public class TreatmentService {
 
 	//TODO(walid): handle null values;
 	public Treatment getTreatmentByName(String treatName) throws SQLException{
-		Treatment treatment= new Treatment();
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        Treatment treatment= new Treatment();
 		String query= "SELECT * FROM treat WHERE name="+"\"" + treatName + "\";" ;
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		while(rs.next()) {
-			treatName.setName= rs.getString("name");
-			treatName.setId(rs.getLong("id"));
+			treatment.setName(rs.getString("name"));
+			treatment.setId(rs.getLong("id"));
+
 		}
 		return treatment;
 	}

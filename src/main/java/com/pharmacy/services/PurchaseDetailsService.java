@@ -5,10 +5,7 @@ import com.pharmacy.POGO.Purchase;
 import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Treatment;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,24 +53,24 @@ public class PurchaseDetailsService {
 		return pDS;
 	}
 
-	public boolean isnertPurchaseDetails(PurchaseDetails purchaseDetails)
+	public boolean insertPurchaseDetails(PurchaseDetails purchaseDetails)
 		throws SQLException
 	{
-		String query= "INSERT INTO purchases_details (purchaes_id, treat_id, expire_date, production_date, date_at, quantity, price_pl, total_pl, total_pharmcy, price_p)  VALUES (?,?,?,?,?,?,?,?,?,?);";
+		String query= "INSERT INTO purchases_details (purchases_id, treat_id, expire_date, production_date, date_at, quantity, price_pl, total_people, total_pharmcy, price_p)  VALUES (?,?,?,?,?,?,?,?,?,?);";
 		
 		PreparedStatement preparedStatement= this.dbConnection.
 			prepareStatement(query);
 		
 		preparedStatement.setLong(1, purchaseDetails.getPurchase_id());
-		preparedStatement.setLong(2, purchaseDetails.getTreat_id);
+		preparedStatement.setLong(2, purchaseDetails.getTreat_id());
 		preparedStatement.setString(3, purchaseDetails.getExpireDate());
 		preparedStatement.setString(4,purchaseDetails.getProductionDate());
-		preparedStatement.setString(5,new Timestamp(System.currentTimeMillis().toString()) );
-		preparedStatement.setString(6, purchaseDetails.getQuantity());
-		preparedStatement.setString(7, purchaseDetails.getPricePeople());
-		preparedStatement.setString(8,purchaseDetails.getTotalPeople() );
-		preparedStatement.setString(9,purchaseDetails.getTotalPharmacy());
-		preparedStatement.setString(10,purchaseDetails.getPricePharmacy());
+		preparedStatement.setString(5,new Timestamp(System.currentTimeMillis()).toString() );
+		preparedStatement.setDouble(6, purchaseDetails.getQuantity());
+		preparedStatement.setDouble(7, purchaseDetails.getPricePeople());
+		preparedStatement.setDouble(8,purchaseDetails.getTotalPeople() );
+		preparedStatement.setDouble(9,purchaseDetails.getTotalPharmacy());
+		preparedStatement.setDouble(10,purchaseDetails.getPricePharmacy());
 
 		if(preparedStatement.executeUpdate() > 0) {
 			return true;

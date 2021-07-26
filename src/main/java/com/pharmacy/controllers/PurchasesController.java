@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -90,8 +91,19 @@ public class PurchasesController extends MyController{
 	
 	@FXML
 	private void initialize() throws SQLException {
+		this.purchasesTableView.setRowFactory( tv->  {
+				TableRow<Purchase> row= new TableRow<>();
+				row.setOnMouseClicked(event -> {
+						if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+							try {
+								this.showPurchaseDetails();
+							} catch (SQLException|IOException e){}
+						}
+					});
+				return row ;
+			});
 		this.initializeTableView();
-
+		
 	}
 
 	
