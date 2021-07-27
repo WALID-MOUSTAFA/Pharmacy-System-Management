@@ -15,7 +15,6 @@ import java.io.IOException;
 //TODO(walid): get the create treatment acutall values from ui;
 //TODO(walid): create a window to create new typetreat
 //TODO(walid): create a window to create form treat;
-//TODO(walid): start playing with purchasing, goto bsd to find the big picture;
 public class App extends Application {
 
 

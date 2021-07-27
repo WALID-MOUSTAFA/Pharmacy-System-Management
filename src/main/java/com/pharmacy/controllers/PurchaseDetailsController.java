@@ -1,5 +1,6 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.BalanceTreat;
 import com.pharmacy.POGO.Purchase;
 import com.pharmacy.POGO.PurchaseDetails;
@@ -11,18 +12,27 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class PurchaseDetailsController extends MyController {
 
 	private PurchaseDetailsService purchaseDetailsService;
 	private BalanceService balanceService;
-	
+
+	//Note(walid): this is the purchase id, not the purchase details.
 	private long currentPurchaseId;
 	
 
@@ -53,7 +63,12 @@ public class PurchaseDetailsController extends MyController {
 	@FXML
 	private TableView purchasesDetailsTableView;
 	
+	@FXML
+	public Button editPurchaseDetailsButton;
 
+	@FXML
+	public Button deletePurchaseDetailsButton;
+	
 	public PurchaseDetailsController() throws SQLException {
 		this.purchaseDetailsService= new PurchaseDetailsService();
 		this.balanceService= new BalanceService();
@@ -130,6 +145,20 @@ public class PurchaseDetailsController extends MyController {
 	}
 
 
+	public void addTableViewFocusListeners() {
+		
+		this.purchasesDetailsTableView.focusedProperty().addListener((observableVal,oldval,newval)-> {
+			if(newval) {
+				this.editPurchaseDetailsButton.setDisable(false);
+				this.deletePurchaseDetailsButton.setDisable(false);
+			} else {
+				this.editPurchaseDetailsButton.setDisable(true);
+				this.deletePurchaseDetailsButton.setDisable(true);
+			}
+		});
+	}
+	
+
 	public void initializeTreatmentCombo() throws SQLException {
 		TreatmentService ts= new TreatmentService();
 		List<Treatment> treatments= ts.getAllTreatments();
@@ -162,9 +191,11 @@ public class PurchaseDetailsController extends MyController {
 	private void initialize()  throws SQLException{
 		this.initalizeTableview();
 		this.initializeTreatmentCombo();
-
+		this.addTableViewFocusListeners();
+		MyUtils.setDatePickerFormat(this.expireDate);
+		MyUtils.setDatePickerFormat(this.productionDate);
 	}
-	
+
 
 	@FXML
 	public void insertPurchaseDetails() throws SQLException {
@@ -229,7 +260,48 @@ public class PurchaseDetailsController extends MyController {
 	}
 
 
-	public void setSelectedPurchaseId(long currentSelectedItemId) {
+	@FXML
+	public void editPurchaseDetails() throws IOException, SQLException {
+		Stage stage= new Stage();
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass()
+				.getResource("/fxml/editPurchaseDetails.fxml"));
+		EditPurchaseDetailsController editPurchaseDetails=
+				new EditPurchaseDetailsController
+			(this.getCurrentSelectedPurchaseDetailsId());
+		editPurchaseDetails.setStage(stage);
+		loader.setController(editPurchaseDetails);
+		Parent root= loader.load();
+		stage.setScene(new Scene(root,400, 680 ));
+		stage.showAndWait();
+		//NOTE(walid): a work around to update the table after edit;
+		this.initalizeTableview();
+	}
+
+	private long getCurrentSelectedPurchaseDetailsId() {
+		return ((PurchaseDetails)
+			this.purchasesDetailsTableView.getSelectionModel()
+			.getSelectedItem()
+			).getId();
+	}
+	
+	@FXML
+	public void closeWindow(){
+
+	}
+
+	@FXML
+	public void deletePurchaseDetails() throws SQLException{
+		long id= getCurrentSelectedPurchaseDetailsId();
+		if(this.purchaseDetailsService.deletePurchaseDetailsById(id)) {
+			this.purchasesDetailsTableView.getItems()
+				.remove(this.purchasesDetailsTableView
+					.getSelectionModel().getSelectedItem());
+		}
+	}
+
+	public void setSelectedPurchaseId(long currentSelectedItemId)
+	{
 		this.currentPurchaseId= currentSelectedItemId;
 	}
 

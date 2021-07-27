@@ -78,4 +78,88 @@ public class PurchaseDetailsService {
 		
 		return false;
 	}
+
+
+	public PurchaseDetails getPurchaseDetailsById(long id) throws SQLException{
+
+		PurchaseDetails pd= new PurchaseDetails();
+		Treatment treatment= new Treatment();		
+		String query= "SELECT purchases_details.*, treat.id as treat_id, treat.name as treat_name FROM purchases_details INNER JOIN treat ON purchases_details.treat_id=treat.id where purchases_details.id="+ "\"" + id + "\";";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		
+		if(!rs.isBeforeFirst()) {
+			return null;
+		}
+
+		while(rs.next()){
+			pd.setId(rs.getLong("id"));
+			pd.setPurchase_id(rs.getLong("purchases_id"));
+			pd.setTotalPeople(rs.getDouble("total_people"));
+			pd.setPricePeople(rs.getDouble("price_pl"));
+			pd.setTotalPharmacy(rs.getDouble("total_pharmcy"));
+			pd.setPricePharmacy(rs.getDouble("price_p"));
+			pd.setExpireDate(rs.getString("expire_date"));
+			pd.setProductionDate(rs.getString("production_date"));
+			pd.setQuantity(rs.getDouble("quantity"));
+			pd.setDateAt(rs.getString("date_at"));
+			treatment.setName(rs.getString("treat_name"));
+			treatment.setId(rs.getLong("treat_id"));
+			pd.setTreat(treatment);
+		}
+		
+		return pd;
+	}
+
+
+	public boolean deletePurchaseDetailsById(long id) throws SQLException {
+		String query= "DELETE FROM purchases_details WHERE id=" + id + ";";
+		Statement stmt= this.dbConnection.createStatement();
+		int result= stmt.executeUpdate(query);
+		if(result > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	
+	//TODO(walid): change insert to update;
+	public boolean updatePurchaseDetails(PurchaseDetails purchaseDetails)
+		throws SQLException
+	{
+
+		String query= "UPDATE purchases_details "
+			+"set purchases_id=?,"
+			+"treat_id=?,"
+			+"expire_date=?,"
+			+"production_date=?,"
+			+"date_at=?,"
+			+"quantity=?,"
+			+"price_pl=?,"
+			+"total_people=?,"
+			+"total_pharmcy=?,"
+			+"price_p=?;";
+
+		PreparedStatement preparedStatement=
+			this.dbConnection.prepareStatement(query);
+				
+		preparedStatement.setLong(1, purchaseDetails.getPurchase_id());
+		preparedStatement.setLong(2, purchaseDetails.getTreat_id());
+		preparedStatement.setString(3, purchaseDetails.getExpireDate());
+		preparedStatement.setString(4,purchaseDetails.getProductionDate());
+		preparedStatement.setString(5,purchaseDetails.getDateAt());
+		preparedStatement.setDouble(6, purchaseDetails.getQuantity());
+		preparedStatement.setDouble(7, purchaseDetails.getPricePeople());
+		preparedStatement.setDouble(8,purchaseDetails.getTotalPeople() );
+		preparedStatement.setDouble(9,purchaseDetails.getTotalPharmacy());
+		preparedStatement.setDouble(10,purchaseDetails.getPricePharmacy());
+
+		if(preparedStatement.executeUpdate() > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+
 }

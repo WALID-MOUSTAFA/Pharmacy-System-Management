@@ -2,7 +2,9 @@ package com.pharmacy;
 
 
 import com.pharmacy.POGO.Purchase;
+import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Supplier;
+import com.pharmacy.services.PurchaseDetailsService;
 import com.pharmacy.services.PurchasesService;
 import com.pharmacy.services.SuppliersService;
 import org.junit.Test;
@@ -37,5 +39,12 @@ public class PurchaseTest {
 		Assert.assertTrue(ps.insertPurchase(pur));
 	     
 	}
-		
+
+	@Test
+	public void getPurchaseDetailsById() throws SQLException {
+		PurchaseDetailsService pds= new PurchaseDetailsService();
+		long id = 12;
+		PurchaseDetails ps= pds.getPurchaseDetailsById(id);
+		Assert.assertEquals( id, ps.getId());
+	}
 }
