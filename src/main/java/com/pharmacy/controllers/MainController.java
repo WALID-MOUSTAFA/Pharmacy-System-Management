@@ -14,10 +14,17 @@ import java.sql.SQLException;
 
 public class MainController extends MyController {
 
+	@FXML
+	private VBox mainCanvas;
 
 	@FXML
 	private Button treatments;
 
+
+	public void swapMainCanvasContent(Parent root) {
+		mainCanvas.getChildren().clear();
+		mainCanvas.getChildren().addAll(root);
+	}
 
 	public void setMedicineGraphic() {
 		Image image= new Image(getClass()
@@ -41,7 +48,7 @@ public class MainController extends MyController {
         treatmentController.setStage(this.stage);
         loader.setController(treatmentController);
         Parent root= loader.<VBox>load();
-		this.stage.getScene().setRoot(root);
+		swapMainCanvasContent(root);
     }
 
 
@@ -53,7 +60,7 @@ public class MainController extends MyController {
 		purchasesController.setStage(this.stage);
 		loader.setController(purchasesController);
 		Parent root= loader.<VBox>load();
-		this.stage.getScene().setRoot(root);
+		swapMainCanvasContent(root);
 
 	}
 
@@ -65,7 +72,7 @@ public class MainController extends MyController {
 		suppliersController.setStage(this.stage);
 		loader.setController(suppliersController);
 		Parent root= loader.<VBox>load();
-		this.stage.getScene().setRoot(root);
+		swapMainCanvasContent(root);
 	}
 
 }

@@ -136,7 +136,7 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" onMouseClicked="#addNewPurchase" prefWidth="100.0" text="إضافة">
+            <Button mnemonicParsing="false" onMouseClicked="#editPurchase" prefWidth="100.0" text="تعديل">
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>

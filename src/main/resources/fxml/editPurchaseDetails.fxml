@@ -167,7 +167,7 @@
                      <children>
                         <VBox>
                            <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#editPurchaseDetails" text="تعديل" />
+                              <Button mnemonicParsing="false" onMouseClicked="#editPurchase" text="تعديل" />
                            </children>
                         </VBox>
                      </children>

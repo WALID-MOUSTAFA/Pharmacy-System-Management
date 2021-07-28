@@ -138,7 +138,7 @@ public class PurchaseDetailsService {
 			+"price_pl=?,"
 			+"total_people=?,"
 			+"total_pharmcy=?,"
-			+"price_p=?;";
+			+"price_p=? WHERE id=" + purchaseDetails.getId()+ ";";
 
 		PreparedStatement preparedStatement=
 			this.dbConnection.prepareStatement(query);

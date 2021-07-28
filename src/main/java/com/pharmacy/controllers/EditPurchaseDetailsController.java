@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class EditPurchaseDetailsController extends MyController{
 		
@@ -58,7 +59,16 @@ public class EditPurchaseDetailsController extends MyController{
 			.getPurchaseDetailsById(this.id);
 		return purchaseDetails;
 	}
+
 	
+	public void initializeTreatmentCombo() throws SQLException {
+		TreatmentService ts= new TreatmentService();
+		List<Treatment> treatments= ts.getAllTreatments();
+		for (Treatment t: treatments) {
+			this.treatName.getItems().add(t.getName());
+		}
+	}
+
 	
 	public void initializeForm() throws SQLException{
 		PurchaseDetails pd= this.getSpecificPurchaseDetails();
@@ -73,7 +83,10 @@ public class EditPurchaseDetailsController extends MyController{
 		this.productionDate
 			.setValue(LocalDate
 				  .parse(pd.getProductionDate().split(" ")[0]));
+
+		this.initializeTreatmentCombo();
 		this.treatName.setValue(pd.getTreat().getName());
+		
 	}
 
 

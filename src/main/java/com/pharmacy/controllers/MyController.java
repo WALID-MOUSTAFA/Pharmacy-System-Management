@@ -36,4 +36,9 @@ public class MyController {
     }
 
 
+    @FXML
+    public void closeWindow() {
+
+
+    }
 }
