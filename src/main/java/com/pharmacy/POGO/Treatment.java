@@ -49,11 +49,11 @@ public class Treatment {
         this.dateAt = dateAt;
     }
 
-    public int getLowcount() {
+    public double getLowcount() {
         return lowcount;
     }
 
-    public void setLowcount(int lowcount) {
+    public void setLowcount(double lowcount) {
         this.lowcount = lowcount;
     }
 
@@ -84,7 +84,16 @@ public class Treatment {
     public String getStringStatus() {
         return this.getStatus() == 0 ? "غير متاح" : "متاح" ;
     }
-    //Note(walid): overloaded to avoid shit
+
+	public void setQuantity(double quantity){
+		this.quantity= quantity;
+	}
+
+	public double getQuantity() {
+		return this.quantity;
+	}
+
+	//Note(walid): overloaded to avoid shit
     public Treatment() {
 
     }
@@ -117,9 +126,9 @@ public class Treatment {
     protected int status;
     protected String parcode;
     protected String dateAt;
-    protected int lowcount;
+    protected double lowcount;
     protected String company;
     protected long formtreat;
-
+	protected double quantity;
     String place;
 }

@@ -1,3 +1,4 @@
+//TODO(walid): there is a bug in editing a newely added purchaseDetails;
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
@@ -147,7 +148,8 @@ public class PurchaseDetailsController extends MyController {
 
 	public void addTableViewFocusListeners() {
 		
-		this.purchasesDetailsTableView.focusedProperty().addListener((observableVal,oldval,newval)-> {
+		this.purchasesDetailsTableView.focusedProperty()
+			.addListener((observableVal,oldval,newval)-> {
 			if(newval) {
 				this.editPurchaseDetailsButton.setDisable(false);
 				this.deletePurchaseDetailsButton.setDisable(false);
@@ -287,7 +289,7 @@ public class PurchaseDetailsController extends MyController {
 	
 	@FXML
 	public void closeWindow(){
-
+		this.stage.close();
 	}
 
 	@FXML

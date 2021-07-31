@@ -1,0 +1,21 @@
+package com.pharmacy.controllers;
+
+
+public class StoreController extends MyController {
+
+	//this is passed from the MainController to swap the treatment
+	//scene on 
+	public Vbox mainCanvas;
+	
+	@FXML
+	public void showTreatmentsScene() throws IOException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Medicine.fxml"));
+		TreatmentController treatmentController = new TreatmentController();
+		treatmentController.setStage(this.stage);
+		loader.setController(treatmentController);
+		Parent root= loader.<VBox>load();
+		swapMainCanvasContent(root);
+	}
+
+}

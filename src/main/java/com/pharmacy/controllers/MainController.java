@@ -27,8 +27,8 @@ public class MainController extends MyController {
 	}
 
 	public void setMedicineGraphic() {
-		Image image= new Image(getClass()
-				       .getResourceAsStream("/assets/treatments.png"));
+		Image image= new Image(getClass().getResourceAsStream
+				       ("/assets/treatments.png"));
 		ImageView imageView= new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setFitWidth(100);
@@ -74,5 +74,20 @@ public class MainController extends MyController {
 		Parent root= loader.<VBox>load();
 		swapMainCanvasContent(root);
 	}
+
+	
+	@FXML
+	public void showStoreScene() throws IOException, SQLException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Store.fxml"));
+		StoreController storeController= new StoreController();
+		storeController.setMainCanvas(this.mainCanvas);
+		storeController.setStage(this.stage);
+		stage.setTitle("المخزن");
+		loader.setController(storeController);
+		Parent root= loader.<VBox>load();
+		swapMainCanvasContent(root);
+	}
+
 
 }

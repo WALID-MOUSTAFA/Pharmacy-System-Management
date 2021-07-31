@@ -5,14 +5,13 @@ import com.pharmacy.POGO.TreatForm;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.TreatmentService;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class CreateTreatmentController extends MyController{
+public class EditTreatmentController extends MyController{
 
 	private TreatmentService treatmentService;
 
@@ -32,15 +31,19 @@ public class CreateTreatmentController extends MyController{
 	private TextField treatPlace;
 
 	@FXML
-	private TextField lowCount;
+	private TextField lowcount;
 
 	@FXML
 	private ComboBox treatFormCombo;
-	
-	public CreateTreatmentController() {
+
+	private long id;
+
+	public EditTreatmentController() {
 		this.treatmentService= new TreatmentService();
+				
 	}
 
+	
 	private void initializeTreatTypeCombo() throws SQLException {
 		List<TypeTreat> types= this.treatmentService.getAllTreatTypes();
 		for (TypeTreat t : types) {
@@ -57,37 +60,65 @@ public class CreateTreatmentController extends MyController{
 	}
 	
 
+	private DetailedTreatment getTheSpecificTreatment() throws SQLException{
+		return this.treatmentService.getDetailedTreatmentById(this.id);
+	}
+	
+	private void initializeForm() throws SQLException{
+		DetailedTreatment dt= this.getTheSpecificTreatment();
+		this.treatTypeCombo.setValue(dt.getTypeTreatName());
+		this.treatFormCombo.setValue(dt.getFormTreatName());
+		this.treatName.setText(dt.getName());
+		this.treatBarCode.setText(dt.getParcode());
+		this.companyName.setText(dt.getCompany());
+		this.treatPlace.setText(dt.getPlace());
+		this.lowcount.setText(String.valueOf(dt.getLowcount()));
+	}
 
+
+	
 	@FXML
-	private void initialize() throws SQLException {
+	private void initialize() throws SQLException{
 		this.initializeTreatTypeCombo();
 		this.initializeTreatFormCombo();
+		this.initializeForm();
 	}
 
 	@FXML
-	private void addNewTreatment() throws SQLException {
+	private void updateTreatment() throws SQLException{
 		String typename= this.treatTypeCombo
 			.getSelectionModel().getSelectedItem().toString();
 		String name= this.treatName.getText();
 		String parcode= this.treatBarCode.getText();
 		String companyName= this.companyName.getText();
 		String treatPlace= this.treatPlace.getText();
-		double lowCount= Double.valueOf(this.lowCount.getText());
+		double lowcount= Double.valueOf(this.lowcount.getText());
 		String treatFormName= this.treatFormCombo.getSelectionModel()
 			.getSelectedItem().toString();
 			
-		DetailedTreatment dt= new DetailedTreatment();
+		DetailedTreatment dt= this.getTheSpecificTreatment();
 		dt.setName(name);
 		dt.setTypeTreatName(typename);
 		dt.setParcode(parcode);
 		dt.setCompany(companyName);
 		dt.setPlace(treatPlace);
-		dt.setLowcount(lowCount);
+		dt.setLowcount(lowcount);
 		dt.setFormTreatName(treatFormName);
-		//TODO(walid): handle the success message;
-		System.out.println(this.treatmentService.insertTreatment(dt));
-
+		boolean result= this.treatmentService.updateTreatmentById(dt);
+		System.out.println(result);
+		if(result){
+			this.stage.close();
+		} else {
+			//TODO(walid): handle error messages;
+		}
 	}
 
 
+	public void setId(long id){
+		this.id= id;
+	}
+	
+	public long getId(){
+		return this.id;
+	}
 }

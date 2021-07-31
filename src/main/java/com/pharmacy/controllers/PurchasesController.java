@@ -89,10 +89,13 @@ public class PurchasesController extends MyController{
 						     supplierName);
 	this.purchasesTableView.setItems(purchases);
 
-	purchasesTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+	purchasesTableView.getSelectionModel()
+		.selectedItemProperty().addListener(new ChangeListener() {
 		@Override
-		public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-		    PurchasesController.this.setPurchaseId(((Purchase)newValue).getId());
+		public void changed(ObservableValue observable,
+				    Object oldValue, Object newValue) {
+			PurchasesController.this.setPurchaseId
+				(((Purchase)newValue).getId());
 		}
 	    });
     }
@@ -101,7 +104,8 @@ public class PurchasesController extends MyController{
 
     public void addTableViewFocusListeners() {
 
-	this.purchasesTableView.focusedProperty().addListener((observableVal,oldval,newval)-> {
+	    this.purchasesTableView.focusedProperty()
+		    .addListener((observableVal,oldval,newval)-> {
 		if(newval) {
 		    this.editPurchaseButton.setDisable(false);
 		    this.deletePurchaseButton.setDisable(false);

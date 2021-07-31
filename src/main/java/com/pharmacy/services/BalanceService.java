@@ -48,4 +48,9 @@ public class BalanceService {
 	public void getAllBalanceTreat() throws SQLException{}
 
 
+	public void getBalanceTreatByTreatId() throws SQLException {
+		
+	}
+	      
+
 }
