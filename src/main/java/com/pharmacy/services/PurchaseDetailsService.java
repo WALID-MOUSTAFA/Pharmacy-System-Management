@@ -53,7 +53,7 @@ public class PurchaseDetailsService {
 		return pDS;
 	}
 
-	public boolean insertPurchaseDetails(PurchaseDetails purchaseDetails)
+	public long insertPurchaseDetails(PurchaseDetails purchaseDetails)
 		throws SQLException
 	{
 		String query= "INSERT INTO purchases_details (purchases_id, treat_id, expire_date, production_date, date_at, quantity, price_pl, total_people, total_pharmcy, price_p)  VALUES (?,?,?,?,?,?,?,?,?,?);";
@@ -73,10 +73,13 @@ public class PurchaseDetailsService {
 		preparedStatement.setDouble(10,purchaseDetails.getPricePharmacy());
 
 		if(preparedStatement.executeUpdate() > 0) {
-			return true;
+			ResultSet generatedKeys= preparedStatement.getGeneratedKeys();
+			if(generatedKeys.next()) {
+				return generatedKeys.getLong(1);
+			}
 		}
 		
-		return false;
+		return 0;
 	}
 
 

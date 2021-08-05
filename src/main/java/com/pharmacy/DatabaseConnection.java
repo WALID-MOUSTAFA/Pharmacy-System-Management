@@ -16,6 +16,7 @@ public class DatabaseConnection {
 	
 	private DatabaseConnection() throws SQLException {
 		SQLiteConfig config = new SQLiteConfig();
+		config.enforceForeignKeys(true);
 		config.resetOpenMode(SQLiteOpenMode.CREATE); // this disable creation
 		config.setEncoding(SQLiteConfig.Encoding.UTF8);
 		try {

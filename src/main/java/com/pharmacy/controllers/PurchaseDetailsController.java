@@ -175,7 +175,7 @@ public class PurchaseDetailsController extends MyController {
 		BalanceTreat balanceTreat= new BalanceTreat();
 		balanceTreat.setTreatId(pd.getTreat_id());
 		balanceTreat.setPurchaseId(pd.getPurchase_id());
-		balanceTreat.setPurchaseDetailsId(pd.getPurchase_id());
+		balanceTreat.setPurchaseDetailsId(pd.getId());
 		balanceTreat.setExpireDate(pd.getExpireDate());
 		balanceTreat.setPrice(pd.getPricePeople());
 		balanceTreat.setTotal(pd.getTotalPeople());
@@ -239,11 +239,11 @@ public class PurchaseDetailsController extends MyController {
 		purchaseDetails.setTotalPharmacy(Double.valueOf(totalPharmacy));
 		
 		//do the insertion
-
-		boolean inserted= this.purchaseDetailsService
+		//Note(walid): the insertion method returns the generated index if sucesss and 0 if falied;
+		long insertedId= this.purchaseDetailsService
 			.insertPurchaseDetails(purchaseDetails);
-		if (inserted) {
-
+		if (insertedId != 0) {
+			purchaseDetails.setId(insertedId);
 			this.purchasesDetailsTableView
 				.getItems().add(purchaseDetails);
 

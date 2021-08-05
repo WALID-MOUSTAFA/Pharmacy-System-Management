@@ -94,8 +94,6 @@ public class TreatmentController extends MyController{
 			.addListener((obsvaal, oldval, newval)-> {
 					this.setCurrentTreatmentId
 						(((Treatment)newval).getId());
-					System.out.println(((Treatment)newval).getId());
-				
 				});
 
 	}
@@ -114,22 +112,37 @@ public class TreatmentController extends MyController{
 	    });
 	}
 
-	
-    // private void addTableviewRowDoubleClickListener() {
-    // 	this.purchasesTableView.setRowFactory( tv->  {
-    // 		TableRow<Purchase> row= new TableRow<>();
-    // 		row.setOnMouseClicked(event -> {
-    // 			if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-    // 			    try {
-    // 				this.showPurchaseDetails();
-    // 			    } catch (SQLException|IOException e){}
-    // 			}
-    // 		    });
-    // 		return row ;
-    // 	    });
-    // }
+
+       private void addTableviewRowDoubleClickListener() {
+	   this.treatmentsTableView.setRowFactory
+		   ( tv->  {
+		   TableRow<Treatment> row= new TableRow<>();
+		   row.setOnMouseClicked(event -> {
+			   if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+			       try {
+				       this.showSpecificTreatment();
+			       } catch (IOException|SQLException e){}
+			   }
+		       });
+		   return row ;
+	       });
+       }
 
 
+	public void showSpecificTreatment() throws IOException, SQLException{
+		Stage stage= new Stage();
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation
+			(getClass().getResource("/fxml/SpecificTreatment.fxml"));
+		SpecificTreatmentController specificTreatmentController=
+			new SpecificTreatmentController();
+		specificTreatmentController.setStage(stage);
+		specificTreatmentController.setId(this.currentTreatmentId);
+		loader.setController(specificTreatmentController);
+		Parent root= loader.load();
+		stage.setScene(new Scene(root));
+		stage.showAndWait();
+	}
 
 	private void setCurrentTreatmentId(long id){
 		this.currentTreatmentId= id;
@@ -139,6 +152,7 @@ public class TreatmentController extends MyController{
 	private void initialize() throws SQLException {
 		this.initializeTableView();
 		this.addTableViewFocusListeners();
+		this.addTableviewRowDoubleClickListener();
 	}
 
 	@FXML
@@ -166,7 +180,7 @@ public class TreatmentController extends MyController{
 
 	}
 
-	
+	//TODO(walid): remember to delete treatment;
 	@FXML
 	private void deleteTreatment(){
 	}

@@ -9,11 +9,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pharmacy.controllers.CreateSupplierController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="إضافة مورد جديد">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="تعديل المورد">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -78,7 +78,7 @@
       </VBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" onMouseClicked="#addNewSupplier" prefWidth="100.0" text="إضافة">
+            <Button mnemonicParsing="false" onMouseClicked="#updateSupplier" prefWidth="100.0" text="تعديل">
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>

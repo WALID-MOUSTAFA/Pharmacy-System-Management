@@ -21,6 +21,7 @@ public class PurchaseDetails {
 		this.purchase_id = purchase_id;
 	}
 
+
 	private String expireDate;
 	private String productionDate;
 	private String dateAt;

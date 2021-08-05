@@ -3,10 +3,9 @@ package com.pharmacy.services;
 import com.pharmacy.DatabaseConnection;
 import com.pharmacy.POGO.BalanceTreat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BalanceService {
 
@@ -31,7 +30,8 @@ public class BalanceService {
 		//TODO(walid): fix the zero;
 		preparedStatement.setLong(5, 0);
 		preparedStatement.setDouble(6, balanceTreat.getPrice());
-		preparedStatement.setString(7, new Timestamp(System.currentTimeMillis()).toString());
+		preparedStatement.setString
+			(7, new Timestamp(System.currentTimeMillis()).toString());
 
 		preparedStatement.setDouble(8, balanceTreat.getTotal());
 		preparedStatement.setLong(9, balanceTreat.getPurchaseDetailsId());
@@ -43,10 +43,40 @@ public class BalanceService {
 		return false;
 	}
 
+	
 
+	public List<BalanceTreat> getAllBalanceTreat(long treatId)
+		throws SQLException
+	{
+		List<BalanceTreat> balances= new ArrayList<>();
+		String query= "SELECT  * FROM blance_treat WHERE treat_id="
+			+treatId+" AND quantity not null;";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		
+		if(!rs.isBeforeFirst()){
+			return balances;
+		}
+		
+		BalanceTreat balanceTreat;
+		while(rs.next()){
+			balanceTreat= new BalanceTreat();
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
 
-	public void getAllBalanceTreat() throws SQLException{}
-
+			balances.add(balanceTreat);
+			balanceTreat= null;
+		}
+		
+		return balances;
+	}
+	
+	
 
 	public void getBalanceTreatByTreatId() throws SQLException {
 		

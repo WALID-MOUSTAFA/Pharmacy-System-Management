@@ -48,7 +48,7 @@
             <Button fx:id="editTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#editTreatment" text="تعديل" />
          </items>
       </ToolBar>
-      <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.7" prefHeight="200.0" prefWidth="200.0">
          <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>

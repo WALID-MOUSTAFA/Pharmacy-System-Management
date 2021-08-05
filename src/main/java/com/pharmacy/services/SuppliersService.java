@@ -37,7 +37,8 @@ public class SuppliersService {
 
     public boolean insertTreatment(Supplier supplier) throws SQLException{
         String query= "INSERT INTO supliers (name, phone, address, cash, date_at) VALUES (?,?,?,?,?)";
-        PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
+        PreparedStatement preparedStatement=
+		this.dbConnection.prepareStatement(query);
         preparedStatement.setString(1, supplier.getName());
         preparedStatement.setString(2, supplier.getPhone());
         preparedStatement.setString(3, supplier.getAddress());
@@ -52,7 +53,8 @@ public class SuppliersService {
 
 	
 	public Supplier getSupplierByName(String supplierName) throws SQLException{
-		String query= "SELECT * FROM supliers where name=\"" + supplierName + "\";";
+		String query= "SELECT * FROM supliers where name=\""
+			+ supplierName + "\";";
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		Supplier supplier= new Supplier();
@@ -63,6 +65,60 @@ public class SuppliersService {
 		return supplier;
 	}
 
+
+	public Supplier getSupplierById(long id) throws SQLException{
+		String query= "SELECT * FROM supliers where id="
+			+ id + ";";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		Supplier supplier= new Supplier();
+		while(rs.next()) {
+			supplier.setName(rs.getString("name"));
+			supplier.setId(rs.getLong("id"));
+			supplier.setAddress(rs.getString("address"));
+			supplier.setPhone(rs.getString("phone"));
+			supplier.setCash(rs.getDouble("cash"));
+			supplier.setDateAt(rs.getString("date_at"));
+		}
+		return supplier;
+	}
+
+	public boolean updateSupplier(Supplier supplier) throws SQLException{
+
+		
+		long id= supplier.getId();
+
+		String query= "UPDATE supliers set "
+			+"name=?,"
+			+"phone=?,"
+			+"address=?,"
+			+"cash=? "
+			+"WHERE id=" + id + ";";
+
+		PreparedStatement preparedStatement= this.dbConnection
+			.prepareStatement(query);
+		
+		preparedStatement.setString(1, supplier.getName());
+		preparedStatement.setString(2, supplier.getPhone());
+		preparedStatement.setString(3, supplier.getAddress());
+		preparedStatement.setDouble(4, supplier.getCash());
+
+		if(preparedStatement.executeUpdate() > 0){
+			return true;
+		}
+		
+		return false;
+	}
+
+
+	public boolean deleteSupplier(long id) throws SQLException {
+		String query="DELETE FROM supliers WHERE id="+id+";";
+		Statement stmt= this.dbConnection.createStatement();
+		if(stmt.executeUpdate(query) > 0){
+			return true;
+		}
+		return false;
+	}
 
 
 }
