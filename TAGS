@@ -17,6 +17,49 @@ c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/MyUtils.java,79
 public class MyUtils 9,180
     public static void setDatePickerFormat(11,206
 
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/#SalesController.java#,2017
+package com.pharmacy.controllers;controllers1,0
+import com.pharmacy.POGO.BalanceTreat;BalanceTreat3,35
+import com.pharmacy.POGO.DetailedTreatment;DetailedTreatment4,74
+import com.pharmacy.POGO.Treatment;Treatment5,118
+import com.pharmacy.POGO.TypeTreat;TypeTreat6,154
+import com.pharmacy.services.BalanceService;BalanceService7,190
+import com.sun.glass.ui.Cursor;Cursor8,235
+import javafx.collections.FXCollections;FXCollections9,267
+import javafx.collections.ObservableList;ObservableList10,308
+import javafx.event.ActionEvent;ActionEvent11,350
+import javafx.fxml.FXML;FXML12,383
+import com.pharmacy.services.TreatmentService;TreatmentService15,440
+import javafx.scene.control.cell.PropertyValueFactory;PropertyValueFactory16,487
+import javafx.scene.layout.HBox;HBox17,542
+import javafx.scene.text.Text;Text18,575
+import java.sql.SQLException;SQLException20,607
+import java.util.ArrayList;ArrayList21,637
+import java.util.List;List22,665
+public class SalesController 24,689
+	BalanceService balanceService;26,721
+	TreatmentService treatmentService;27,753
+	@FXML private TextField treatName;29,790
+	@FXML private ComboBox treatType;30,826
+	@FXML private ListView searchResult;31,861
+	@FXML private TableView	relatedBalancesTableView;32,899
+	@FXML private Text treatNameDetails;35,989
+	@FXML private Text treatTypeDetails;36,1027
+	@FXML private Text treatPriceDetails;37,1065
+	@FXML private Text treatQuantityDetials;38,1104
+	public void initializeTreatTypeCombo(42,1151
+	private void treatTypeOnActionHandler(51,1427
+	private void searchForTreat(56,1634
+	private void renderResults(72,2109
+	private void initializeRelatedBalanceTableView(86,2602
+	public void clearSearchResult(114,3724
+	public void addResultToResultList(118,3803
+	public SalesController(124,3976
+	private void addTableviewRowDoubleClickListener(133,4129
+	private void showBalanceTreatDetails(148,4518
+	private void addSearchResultDoubleClickListener(154,4570
+	public void initialize(171,4914
+
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/#StoreController.java#,50
 package com.pharmacy.controllers;controllers1,0
 
@@ -78,8 +121,8 @@ public class EditPurchaseController 22,687
 	public Purchase getSpecificPurchase(51,1351
 	public void initializeSuppliersCombo(60,1523
 	public void initializeForm(68,1755
-	public void initialize(86,2318
-	public void editPurchase(93,2461
+	public void initialize(88,2371
+	public void editPurchase(95,2514
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/EditPurchaseDetailsController.java,719
 public class EditPurchaseDetailsController 17,489
@@ -99,6 +142,22 @@ public class EditPurchaseDetailsController 17,489
 	public void initializeForm(73,1635
 	public void initialize(94,2380
 	public void editPurchaseDetails(100,2472
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/EditSupplierController.java,565
+public class EditSupplierController 13,274
+	@FXML private TextField supplierName;16,339
+	@FXML private TextField supplierPhone;17,379
+	@FXML private TextField supplierAddress;18,420
+	@FXML private TextField supplierCash;19,463
+	private Supplier supplier;21,505
+	private SuppliersService suppliersService;22,534
+	private long id;23,579
+	public EditSupplierController(25,601
+	private Supplier getSpecificSupplier(30,714
+	private void initializeForm(35,872
+	private void initialize(43,1185
+	private void updateSupplier(49,1320
+	public void setId(65,1865
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/EditTreatmentController.java,757
 public class EditTreatmentController 14,368
@@ -191,6 +250,31 @@ public class PurchasesController 28,992
     public void editPurchase(201,6585
     private long getCurrentSelectedPurchaseId(222,7488
 
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/SalesController.java,1043
+public class SalesController 24,712
+	BalanceService balanceService;26,746
+	TreatmentService treatmentService;27,779
+	@FXML private TextField treatName;29,818
+	@FXML private ComboBox treatType;30,855
+	@FXML private ListView searchResult;31,891
+	@FXML private TableView	relatedBalancesTableView;32,930
+	@FXML private Text treatNameDetails;35,1023
+	@FXML private Text treatTypeDetails;36,1062
+	@FXML private Text treatPriceDetails;37,1101
+	@FXML private Text treatQuantityDetials;38,1141
+	public void initializeTreatTypeCombo(42,1192
+	private void treatTypeOnActionHandler(51,1477
+	private void searchForTreat(56,1689
+	private void renderResults(72,2180
+	private void initializeRelatedBalanceTableView(86,2687
+	public void clearSearchResult(114,3837
+	public void addResultToResultList(118,3920
+	public SalesController(124,4099
+	private void addTableviewRowDoubleClickListener(133,4261
+	private void showBalanceTreatDetails(149,4727
+	private void addSearchResultDoubleClickListener(155,4875
+	public void initialize(172,5236
+
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/SpecificTreatmentController.java,784
 public class SpecificTreatmentController 18,534
 	private long id;20,601
@@ -220,15 +304,22 @@ public class StoreController 11,193
 	public void swapMainCanvasContent(27,521
 	public void showTreatmentsScene(33,666
 
-c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/SuppliersController.java,357
-public class SuppliersController 19,551
-    private SuppliersService suppliersService;21,609
-    private TableView suppliersTableView;24,670
-    public SuppliersController(27,717
-    protected  void backToControlPanel(32,848
-    private void initializeTableView(36,963
-    public void initialize 67,2311
-    private void showAsddNewSupplier(72,2420
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/SuppliersController.java,678
+public class SuppliersController 20,588
+    private SuppliersService suppliersService;22,646
+    @FXML private TableView suppliersTableView;24,696
+	@FXML private Button editSupplierButton;25,745
+	@FXML private Button deleteSupplierButton;26,788
+	private long currentSupplierId;28,835
+	public SuppliersController(31,875
+    protected  void backToControlPanel(36,1003
+    private void initializeTableView(40,1118
+		public void addTableViewFocusListeners(81,2718
+    public void initialize 96,3124
+    private void showAsddNewSupplier(102,3268
+	private void showEditSupplier(117,3830
+	private void deleteSupplier(136,4422
+	private void setCurrentSuppleirId(146,4683
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/controllers/TreatDetailsController.java,42
 public class TreatDetailsController 3,37
@@ -250,48 +341,66 @@ public class TreatmentController 23,651
 	private void initialize(152,4511
 	protected  void backToControlPanel(159,4690
 	private void editTreatment(165,4803
-	private void deleteTreatment(185,5400
-	private void viewDetailedTreatment(191,5454
-	private void showAsddNewTreatment(195,5529
+	private void deleteTreatment(185,5444
+	private void viewDetailedTreatment(191,5498
+	private void showAsddNewTreatment(195,5573
 
-c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/BalanceTreat.java,1273
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/BalanceTreat.java,1386
 public class  BalanceTreat 3,30
 	private long Id;5,62
 	private long treatId;6,81
-	private long purchaseId;7,105
-	private long purchaseDetailsId;8,132
-	private long typeId;9,166
-	private String expireDate;10,189
-	private double quantity;11,218
-	private double price;12,245
-	private double total;13,269
-	private String dateIn;14,293
-	public PurchaseDetails getPurchaseDetails(16,320
-	public void setPurchaseDetails(20,401
-	private PurchaseDetails purchaseDetails;24,518
-	public Treatment getTreatment(26,563
-	public void setTreatment(30,626
-	private Treatment treatment;34,713
-	public String getExpireDate(36,747
-	public void setExpireDate(40,809
-	public long getId(45,900
-	public void setId(49,944
-	public long getTreatId(53,993
-	public void setTreatId(57,1047
-	public long getPurchaseId(61,1121
-	public void setPurchaseId(65,1181
-	public long getPurchaseDetailsId(69,1267
-	public void setPurchaseDetailsId(73,1341
-	public long getTypeId(77,1455
-	public void setTypeId(81,1507
-	public double getQuantity(85,1577
-	public void setQuantity(89,1635
-	public double getPrice(93,1715
-	public void setPrice(97,1767
-	public double getTotal(101,1835
-	public void setTotal(105,1887
-	public String getDateIn(109,1955
-	public void setDateIn(113,2009
+	public Treatment getTreat(8,107
+	public void setTreat(12,162
+	private DetailedTreatment treat;16,241
+	private long purchaseId;17,276
+	private long purchaseDetailsId;18,303
+	private long typeId;19,337
+	private String expireDate;20,360
+	private double quantity;21,389
+	private double price;22,416
+	private double total;23,440
+	private String dateIn;24,464
+	public PurchaseDetails getPurchaseDetails(26,491
+	public void setPurchaseDetails(30,572
+	private PurchaseDetails purchaseDetails;34,689
+	public Treatment getTreatment(36,734
+	public void setTreatment(40,797
+	private Treatment treatment;44,884
+	public String getExpireDate(46,918
+	public void setExpireDate(50,980
+	public long getId(55,1071
+	public void setId(59,1115
+	public long getTreatId(63,1164
+	public void setTreatId(67,1218
+	public long getPurchaseId(71,1292
+	public void setPurchaseId(75,1352
+	public long getPurchaseDetailsId(79,1438
+	public void setPurchaseDetailsId(83,1512
+	public long getTypeId(87,1626
+	public void setTypeId(91,1678
+	public double getQuantity(95,1748
+	public void setQuantity(99,1806
+	public double getPrice(103,1886
+	public void setPrice(107,1938
+	public double getTotal(111,2006
+	public void setTotal(115,2058
+	public String getDateIn(119,2126
+	public void setDateIn(123,2180
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/Customer.java,393
+public class Customer 3,30
+	private String name;6,60
+	private String address;7,83
+	private Double cash;8,109
+	private String dateAt;9,132
+	public String getName(11,159
+	public void setName(15,209
+	public String getAddress(19,273
+	public void setAddress(23,329
+	public Double getCash(27,405
+	public void setCash(31,455
+	public String getDateAt(35,519
+	public void setDateAt(39,573
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/DetailedTreatment.java,267
 public class DetailedTreatment 3,30
@@ -301,6 +410,21 @@ public class DetailedTreatment 3,30
     public void setTypeTreatName(11,218
     public String getFormTreatName(15,330
     public void setFormTreatName(19,410
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/Expense.java,396
+public class Expense 4,102
+	private long id;5,126
+	private long expenseMain;6,145
+	private String value;7,173
+	private String dateAt;8,197
+	public long getId(11,227
+	public void setId(15,271
+	public long getExpenseMain(19,325
+	public void setExpenseMain(23,387
+	public String getValue(27,477
+	public void setValue(31,529
+	public String getDateAt(35,597
+	public void setDateAt(39,651
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/Purchase.java,1258
 public class Purchase 3,30
@@ -382,6 +506,74 @@ public class PurchaseDetails 3,30
 	public void setTreat(112,2109
 	public Purchase getPurchase(116,2180
 	public void setPurchase(120,2240
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/Sale.java,813
+public class Sale 5,60
+	private long id;7,83
+	private long customerId;8,102
+	private Customer customer;9,129
+	private String name;10,158
+	private double total;11,181
+	private double discount;12,205
+	private double netTotal;13,232
+	private String dateIn;14,259
+	public Sale(16,312
+	public long getId(22,475
+	public void setId(26,519
+	public long getCustomerId(30,573
+	public void setCustomerId(34,633
+	public Customer getCustomer(38,719
+	public void setCustomer(42,779
+	public String getName(46,861
+	public void setName(50,911
+	public double getTotal(54,975
+	public void setTotal(58,1027
+	public double getDiscount(62,1095
+	public void setDiscount(66,1153
+	public double getNetTotal(70,1233
+	public void setNetTotal(74,1291
+	public String getDateIn(78,1371
+	public void setDateIn(82,1425
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/SaleDetails.java,1247
+public class SaleDetails 6,99
+	private long id;8,129
+	private long saleId;9,148
+	private Sale sale;10,171
+	private long treatId;11,192
+	private Treatment treat;12,216
+	private double quantity;13,243
+	private long balanceId;14,270
+	private BalanceTreat balanceTreat;15,296
+	private String expireDate;16,333
+	private String DateIn;17,362
+	private double priceOne;18,412
+	private double total;19,439
+	public SaleDetails(21,465
+	public long getId(27,665
+	public void setId(31,709
+	public long getSaleId(35,763
+	public void setSaleId(39,815
+	public Sale getSale(43,885
+	public void setSale(47,933
+	public long getTreatId(51,995
+	public void setTreatId(55,1049
+	public Treatment getTreat(59,1123
+	public void setTreat(63,1178
+	public double getQuantity(67,1249
+	public void setQuantity(71,1307
+	public long getBalanceId(75,1387
+	public void setBalanceId(79,1445
+	public BalanceTreat getBalanceTreat(83,1527
+	public void setBalanceTreat(87,1599
+	public String getExpireDate(91,1701
+	public void setExpireDate(95,1763
+	public double getTotal(99,1851
+	public void setTotal(103,1903
+	public String getDateIn(107,1971
+	public void setDateIn(111,2025
+	public double getPriceOne(117,2101
+	public void setPriceOne(121,2159
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/POGO/Supplier.java,617
 public class Supplier 3,30
@@ -466,13 +658,31 @@ public class TypeTreat 5,55
     public long getId(33,600
     public void setId(37,656
 
-c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/BalanceService.java,253
-public class BalanceService 10,192
-	private Connection dbConnection;12,225
-	public BalanceService(14,263
-	public boolean insertBalanceTreat(19,394
-	public List<BalanceTreat> getAllBalanceTreat(48,1438
-	public void getBalanceTreatByTreatId(81,2395
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/BalanceService.java,374
+public class BalanceService 12,274
+	private Connection dbConnection;14,307
+	public BalanceService(16,345
+	public boolean insertBalanceTreat(21,476
+	public List<BalanceTreat> getAllBalanceTreat(50,1520
+	public List<BalanceTreat> getBalanceTreatbyId(90,2759
+	public List<BalanceTreat> searchBalanceForTreatments(122,3699
+	public void getBalanceTreatByTreatId(162,5214
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/CustomerService.java,203
+public class CustomerService{CustomerService9,137
+	private Connection dbConnection;11,170
+	public CustomerService(13,208
+	public boolean insertCustomer(20,343
+	public boolean deleteCustomer(40,935
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/ExpenseService.java,286
+public class ExpenseService{ExpenseService10,198
+	private Connection dbConnection;12,230
+	public ExpenseService(14,267
+	public List<Expense> getAllExpenses(18,394
+	public Expense getExpenseById(22,458
+	public boolean insertNewExpense(24,515
+	public boolean deleteExpense(26,579
 
 c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/PurchaseDetailsService.java,391
 public class PurchaseDetailsService 12,268
@@ -489,20 +699,37 @@ public class PurchasesService 18,423
 	private Connection dbConnection;20,458
 	public PurchasesService(22,495
 	public List<Purchase>getAllPurchases(getAllPurchases26,623
-	public Purchase getPurchaseById(58,1851
-	public boolean insertPurchase(87,3003
-	public boolean deletePurchase(115,4301
-	public boolean updatePurchase(125,4590
+	public Purchase getPurchaseById(58,1880
+	public boolean insertPurchase(87,3060
+	public boolean deletePurchase(115,4358
+	public boolean updatePurchase(125,4647
 
-c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/SuppliersService.java,256
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/SalesDetailsService.java,220
+public class SalesDetailsService{SalesDetailsService9,177
+	private Connection dbConnection;11,214
+	public SalesDetailsService(13,252
+	public boolean insertSaleDetail(20,391
+	public boolean DeleteSaleDetail(43,1288
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/SalesService.java,187
+public class SalesService{SalesService9,133
+	private Connection dbConnection;11,163
+	public SalesService(13,201
+	public boolean insertSale(19,331
+	public boolean DeleteSale(41,1034
+
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/SuppliersService.java,379
 public class SuppliersService 10,188
     private Connection dbConnection;12,223
     public SuppliersService(14,263
     public List<Supplier> getAllSuppliers(18,403
     public boolean insertTreatment(38,1165
-	public Supplier getSupplierByName(54,1873
+	public Supplier getSupplierByName(55,1876
+	public Supplier getSupplierById(69,2312
+	public boolean updateSupplier(86,2905
+	public boolean deleteSupplier(114,3565
 
-c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/TreatmentService.java,542
+c:/Users/walid/workspace/pharmacygui/src/main/java/com/pharmacy/services/TreatmentService.java,617
 public class TreatmentService 13,308
     private Connection dbConnection;15,343
     public List<Treatment> getAllTreatments(17,383
@@ -514,3 +741,105 @@ public class TreatmentService 13,308
 	public boolean updateTreatmentById(160,6819
 	public Treatment getTreatmentByName(194,7780
 	public List<TreatForm> getAllTreatForms(209,8301
+    public List<DetailedTreatment> getAllTreatmentsByNameAndType(230,8880
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/pharmacy.db,45
+SQLite format 1,0
+	"name" VARCHAR(13,74359
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/assets/tt.png,59
+…¢ÂZ;HDf~Ú4’P~Ã ü†cÝ9*¿aP~Ã±î•ß0(¿ÕaÝ¹*¿aP~ÃZ;Z24,484
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/CreatePurchase.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/CreateSupplier.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/CreateTreatment.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/editPurchase.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/editPurchaseDetails.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/EditSupplier.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/editTreatment.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/Main.fxml,278
+<?xml version=1,0
+  DATA, OR PROFITS;29,1416
+  THEORY OF LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT30,1488
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/Medicine.fxml,278
+<?xml version=1,0
+  DATA, OR PROFITS;29,1416
+  THEORY OF LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT30,1488
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/PurchaseDetails.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/Purchases.fxml,278
+<?xml version=1,0
+  DATA, OR PROFITS;29,1416
+  THEORY OF LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT30,1488
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/sales.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/SpecificTreatment.fxml,278
+<?xml version=1,0
+  DATA, OR PROFITS;29,1416
+  THEORY OF LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT30,1488
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/Store.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/Suppliers.fxml,278
+<?xml version=1,0
+  DATA, OR PROFITS;29,1416
+  THEORY OF LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,30,1488
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT30,1488
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/fxml/TreatDetails.fxml,19
+<?xml version=1,0
+
+c:/Users/walid/workspace/pharmacygui/src/test/java/com/pharmacy/MiscTest.java,170
+public class MiscTest 14,297
+    public void TestSelectTreatments(15,322
+    public void testInsertTreatment(21,558
+    public void testGetTypeTreatByTypename(31,887
+
+c:/Users/walid/workspace/pharmacygui/src/test/java/com/pharmacy/PurchaseTest.java,152
+public class PurchaseTest 16,406
+	public void testGetAllPurchases(18,437
+	public void insertTest(24,608
+	public void getPurchaseDetailsById(42,1177
+
+c:/Users/walid/workspace/pharmacygui/src/test/java/com/pharmacy/SalesTest.java,183
+public class SalesTest 12,203
+	public void testInsertCustomer(15,239
+	public void testInsertSale(26,639
+	public void testInsertSaleDetails(37,958
+	public void testSearch(45,1146
+
+c:/Users/walid/workspace/pharmacygui/src/main/resources/assets/treatments.png,0

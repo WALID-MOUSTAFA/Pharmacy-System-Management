@@ -15,13 +15,12 @@ import java.sql.Timestamp;
 
 public class PurchaseTest {
 
-	@Test
 	public void testGetAllPurchases() throws SQLException {
 		PurchasesService ps= new PurchasesService();
 		Assert.assertEquals(ps.getAllPurchases().size(), 1);
 	}
 	
-	@Test
+
 	public void insertTest() throws SQLException {
 		PurchasesService ps= new PurchasesService();
 		SuppliersService ss= new SuppliersService();
@@ -40,7 +39,6 @@ public class PurchaseTest {
 	     
 	}
 
-	@Test
 	public void getPurchaseDetailsById() throws SQLException {
 		PurchaseDetailsService pds= new PurchaseDetailsService();
 		long id = 12;

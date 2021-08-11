@@ -4,6 +4,16 @@ public class  BalanceTreat {
 
 	private long Id;
 	private long treatId;
+
+	public Treatment getTreat() {
+		return treat;
+	}
+
+	public void setTreat(DetailedTreatment treat) {
+		this.treat = treat;
+	}
+
+	private DetailedTreatment treat;
 	private long purchaseId;
 	private long purchaseDetailsId;
 	private long typeId;

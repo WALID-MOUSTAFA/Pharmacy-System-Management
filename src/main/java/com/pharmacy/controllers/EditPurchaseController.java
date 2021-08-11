@@ -73,9 +73,11 @@ public class EditPurchaseController extends MyController{
 		this.totalPharmacy.setText(String.valueOf(p.getTotalPharmacy()));
 		this.countUnit.setText(String.valueOf(p.getCountUnit()));
 		this.description.setText(p.getDescription());
-		this.purchaseDate.setValue(LocalDate.parse(p.getDatePur()));
+		this.purchaseDate.setValue(LocalDate.parse(p.getDatePur().split(" ")[0]));
 
-		this.supplierCombo.setValue(p.getSupplier().getName());
+		if(p.getSupplier() != null) {
+			this.supplierCombo.setValue(p.getSupplier().getName());
+		}
 		this.initializeSuppliersCombo();
 	}
 

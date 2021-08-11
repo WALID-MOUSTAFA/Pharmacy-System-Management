@@ -26,7 +26,7 @@ public class PurchasesService {
 	public List<Purchase>getAllPurchases() throws SQLException {
 
 		List<Purchase> purchases = new ArrayList<Purchase>();
-		String query= "SELECT  purchases.*, supliers.name as supplierName from purchases INNER JOIN supliers on purchases.suplier_id = supliers.id";
+		String query= "SELECT  purchases.*, supliers.name as supplierName from purchases left JOIN supliers on purchases.suplier_id = supliers.id or purchases.suplier_id=NULL;";
 		Statement stmt = this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		Purchase purchase;
@@ -57,7 +57,7 @@ public class PurchasesService {
 
 	public Purchase getPurchaseById(long id) throws SQLException {
 		
-		String query= "SELECT  purchases.*, supliers.name as supplierName from purchases INNER JOIN supliers on purchases.suplier_id = supliers.id WHERE purchases.id=" + id +";";
+		String query= "SELECT  purchases.*, supliers.name as supplierName from purchases LEFT JOIN supliers on purchases.suplier_id = supliers.id OR purchases.suplier_id=NULL WHERE purchases.id=" + id +";";
 		Statement stmt = this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 

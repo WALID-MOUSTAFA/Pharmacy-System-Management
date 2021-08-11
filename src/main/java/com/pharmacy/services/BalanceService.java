@@ -2,6 +2,8 @@ package com.pharmacy.services;
 
 import com.pharmacy.DatabaseConnection;
 import com.pharmacy.POGO.BalanceTreat;
+import com.pharmacy.POGO.DetailedTreatment;
+import com.pharmacy.POGO.Treatment;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class BalanceService {
 	public List<BalanceTreat> getAllBalanceTreat(long treatId)
 		throws SQLException
 	{
+		TreatmentService treatmentService= new TreatmentService();
 		List<BalanceTreat> balances= new ArrayList<>();
 		String query= "SELECT  * FROM blance_treat WHERE treat_id="
 			+treatId+" AND quantity not null;";
@@ -59,9 +62,16 @@ public class BalanceService {
 		}
 		
 		BalanceTreat balanceTreat;
+		DetailedTreatment treatment;
 		while(rs.next()){
 			balanceTreat= new BalanceTreat();
-			balanceTreat.setId(rs.getLong("id"));
+
+			if(rs.getLong("treat_id") != 0) {
+				treatment=  treatmentService.getDetailedTreatmentById(rs.getLong("treat_id"));
+				balanceTreat.setTreat(treatment);
+				treatment=null;
+			}
+				balanceTreat.setId(rs.getLong("id"));
 			balanceTreat.setTreatId(rs.getLong("treat_id"));
 			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
 			balanceTreat.setQuantity(rs.getLong("quantity"));
@@ -76,10 +86,81 @@ public class BalanceService {
 		return balances;
 	}
 	
+
+	public List<BalanceTreat> getBalanceTreatbyId(long id) throws SQLException {
+
+		List<BalanceTreat> balances= new ArrayList<>();
+
+		String query= "SELECT  * FROM blance_treat WHERE treat_id="
+			+id+" AND quantity not null;";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		
+		if(!rs.isBeforeFirst()){
+			return null;
+		}
+		
+		BalanceTreat balanceTreat;
+		while(rs.next()){
+			balanceTreat= new BalanceTreat();
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
+			balances.add(balanceTreat);
+			balanceTreat= null;
+		}
+		
+		return balances;
+
+	}
 	
 
+	public List<BalanceTreat> searchBalanceForTreatments(String treatName, String treatType) throws SQLException
+	{
+		TreatmentService treatmentService= new TreatmentService();
+		List<BalanceTreat> balances= new ArrayList<>();
+
+		String query="select blance_treat.*, treat.name as treatName, typetreat.typename as typeName from treat INNER join typetreat on typetreat.id=treat.typet INNER join blance_treat on treat.id=blance_treat.treat_id where blance_treat.quantity != 0 and typetreat.typename=\"" + treatType + "\" and treat.name=\"" + treatName+ "\";";
+		System.out.println(query);
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+
+		if(!rs.isBeforeFirst()){
+			return null;
+		}
+
+		BalanceTreat balanceTreat;
+		DetailedTreatment treatment;
+		while(rs.next()){
+			balanceTreat= new BalanceTreat();
+
+			if(rs.getLong("treat_id") != 0) {
+				treatment=  treatmentService.getDetailedTreatmentById(rs.getLong("treat_id"));
+				balanceTreat.setTreat(treatment);
+				treatment=null;
+			}
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
+			balances.add(balanceTreat);
+			balanceTreat= null;
+		}
+
+
+		return balances;
+	}
+
+	
 	public void getBalanceTreatByTreatId() throws SQLException {
-		
+
 	}
 	      
 

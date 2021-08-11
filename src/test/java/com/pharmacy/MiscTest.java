@@ -12,14 +12,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class MiscTest {
-    @Test
     public void TestSelectTreatments() throws SQLException {
         TreatmentService tr= new TreatmentService();
         List<Treatment> l = tr.getAllTreatments();
         Assert.assertTrue(l.get(0) instanceof Treatment);
     }
 
-    @Test
     public void testInsertTreatment() throws SQLException {
         DetailedTreatment dt= new DetailedTreatment();
         dt.setName("كيتوفان");
@@ -29,7 +27,7 @@ public class MiscTest {
         ts.insertTreatment(dt);
     }
 
-    @Test
+
     public void testGetTypeTreatByTypename() throws SQLException {
         TreatmentService ts= new TreatmentService();
         Assert.assertNotNull(ts.getTypeTreatByTypename("اقراص"));
