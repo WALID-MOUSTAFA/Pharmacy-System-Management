@@ -1,6 +1,5 @@
 package com.pharmacy.POGO;
 
-import javax.sound.midi.SysexMessage;
 import java.sql.Timestamp;
 
 public class SaleDetails {
@@ -21,7 +20,6 @@ public class SaleDetails {
 	public SaleDetails() {
 		//Note(walid): work around the bad design of the database;
 		this.DateIn= new Timestamp(System.currentTimeMillis()).toString();
-		this.treatId= this.treat.getId();
 	}
 
 	public long getId() {

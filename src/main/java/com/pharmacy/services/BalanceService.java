@@ -91,8 +91,7 @@ public class BalanceService {
 
 		List<BalanceTreat> balances= new ArrayList<>();
 
-		String query= "SELECT  * FROM blance_treat WHERE treat_id="
-			+id+" AND quantity not null;";
+		String query= "SELECT  blance_treat.*, treat.name as treatName, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id left join typetreat on treat.typet= typetreat.id WHERE blance_treat.treat_id="+id+" AND blance_treat.quantity not null;\n";
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		
@@ -101,8 +100,10 @@ public class BalanceService {
 		}
 		
 		BalanceTreat balanceTreat;
+		DetailedTreatment treatment;
 		while(rs.next()){
 			balanceTreat= new BalanceTreat();
+			treatment= new DetailedTreatment();
 			balanceTreat.setId(rs.getLong("id"));
 			balanceTreat.setTreatId(rs.getLong("treat_id"));
 			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
@@ -110,8 +111,12 @@ public class BalanceService {
 			balanceTreat.setDateIn(rs.getString("date_in"));
 			balanceTreat.setPrice(rs.getLong("price"));
 			balanceTreat.setExpireDate(rs.getString("expire"));
+			treatment.setName(rs.getString("treatName"));
+			treatment.setTypeTreatName(rs.getString("typeName"));
+			balanceTreat.setTreat(treatment);
 			balances.add(balanceTreat);
 			balanceTreat= null;
+			treatment= null;
 		}
 		
 		return balances;
@@ -162,6 +167,17 @@ public class BalanceService {
 	public void getBalanceTreatByTreatId() throws SQLException {
 
 	}
-	      
 
+
+	public boolean decreaseQuantity(BalanceTreat balanceTreat, double quantity)
+			throws SQLException {
+		double newQuantity= balanceTreat.getQuantity()- quantity;
+		String query="UPDATE blance_treat set quantity="
+				+newQuantity+" WHERE id="+balanceTreat.getId()+";";
+		Statement stmt= this.dbConnection.createStatement();
+		if(stmt.executeUpdate(query) > 0 ){
+			return true;
+		}
+		return false;
+	}
 }

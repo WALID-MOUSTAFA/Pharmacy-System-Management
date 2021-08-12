@@ -16,7 +16,7 @@ public class SalesService{
 	}
 
 
-	public boolean insertSale( Sale sale) throws SQLException{
+	public long insertSale( Sale sale) throws SQLException{
 		String query= "INSERT INTO sales (customer_id, total, discount, net_total, date_in, name) VALUES (?,?,?,?,?,?)";
 		
 		PreparedStatement preparedStatement=
@@ -31,13 +31,16 @@ public class SalesService{
 
 
 		if(preparedStatement.executeUpdate() > 0) {
-			return true;
-		} else {
-			return false;
+			ResultSet rs= preparedStatement.getGeneratedKeys();
+			while(rs.next()){
+				return rs.getLong(1);
+			}
 		}
 
+		return 0;
 	}
-	
+
+
 	public boolean DeleteSale() {return false;}
 
 

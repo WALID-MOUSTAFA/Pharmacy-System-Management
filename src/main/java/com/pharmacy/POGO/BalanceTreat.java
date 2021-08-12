@@ -5,7 +5,7 @@ public class  BalanceTreat {
 	private long Id;
 	private long treatId;
 
-	public Treatment getTreat() {
+	public DetailedTreatment getTreat() {
 		return treat;
 	}
 

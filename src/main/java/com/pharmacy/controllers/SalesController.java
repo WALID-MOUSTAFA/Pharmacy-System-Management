@@ -1,11 +1,10 @@
 package com.pharmacy.controllers;
 
-import com.pharmacy.POGO.BalanceTreat;
-import com.pharmacy.POGO.DetailedTreatment;
-import com.pharmacy.POGO.Treatment;
-import com.pharmacy.POGO.TypeTreat;
+import com.pharmacy.POGO.*;
 import com.pharmacy.services.BalanceService;
-import com.sun.glass.ui.Cursor;
+import com.pharmacy.services.SalesDetailsService;
+import com.pharmacy.services.SalesService;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +25,22 @@ public class SalesController {
 
 	BalanceService balanceService;
 	TreatmentService treatmentService;
+	SalesService salesService;
+	SalesDetailsService salesDetailsService;
 
 	@FXML private TextField treatName;
 	@FXML private ComboBox treatType;
 	@FXML private ListView searchResult;
 	@FXML private TableView	relatedBalancesTableView;
-	
+	@FXML private TextField billClientName;
+
 	//the detials of the balance treat;
 	@FXML private Text treatNameDetails;
 	@FXML private Text treatTypeDetails;
 	@FXML private Text treatPriceDetails;
-	@FXML private Text treatQuantityDetials;
-	
-	
+	@FXML private TextField treatQuantityDetials;
+
+	@FXML private TableView billProductsTableView;
 
 	public void initializeTreatTypeCombo() throws SQLException {
 		TreatmentService treatmentService= new TreatmentService();
@@ -124,6 +127,8 @@ public class SalesController {
 	public SalesController() throws SQLException{
 			this.balanceService= new BalanceService();
 			this.treatmentService= new TreatmentService();
+			this.salesService= new SalesService();
+			this.salesDetailsService= new SalesDetailsService();
 	}
 
 	
@@ -147,7 +152,9 @@ public class SalesController {
 	}
 	
 	private void showBalanceTreatDetails(BalanceTreat balanceTreat) {
-		this.treatTypeDetails.setText(balanceTreat.getTreat().getName());
+		this.treatNameDetails.setText(balanceTreat.getTreat().getName());
+		this.treatTypeDetails.setText(balanceTreat.getTreat().getTypeTreatName());
+		this.treatPriceDetails.setText(String.valueOf(balanceTreat.getPrice()));
 	}
 
 	
@@ -166,13 +173,131 @@ public class SalesController {
 			});
 	}
 
+	private void initalizeBillTableView() {
 
+		List<BillItemModel> productsList = new ArrayList<>();
+		ObservableList<BillItemModel> products= FXCollections.observableArrayList(productsList);
+
+		TableColumn<BillItemModel, String> treatNameColumn= new TableColumn<>("الاسم");
+		treatNameColumn.setCellValueFactory(val-> {
+			return new SimpleStringProperty(
+					((BillItemModel) val.getValue())
+							.getBalanceTreat().getTreat().getName());
+		});
+
+		TableColumn<BillItemModel, Double> quantityColumn= new TableColumn<>("الكمية");
+		quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+
+		TableColumn<BillItemModel, String> typeColumn= new TableColumn<>("النوع");
+		typeColumn.setCellValueFactory(val-> {
+			return new SimpleStringProperty(
+					((BillItemModel) val.getValue())
+							.getBalanceTreat().getTreat().getTypeTreatName());
+		});
+
+
+		TableColumn<BillItemModel, String> priceColumn= new TableColumn<>("السعرس");
+		priceColumn.setCellValueFactory(val-> {
+			return new SimpleStringProperty(
+					String.valueOf(((BillItemModel) val.getValue())
+							.getBalanceTreat().getPrice()));
+		});
+
+		TableColumn<BillItemModel, String> totalColumn= new TableColumn<>("الإجمالي");
+		totalColumn.setCellValueFactory(val-> {
+			return new SimpleStringProperty(
+					String.valueOf(((BillItemModel) val.getValue())
+							.getBalanceTreat().getPrice()*((BillItemModel) val.getValue()).getQuantity()));
+		});
+
+
+		this.billProductsTableView.getColumns().addAll(treatNameColumn, typeColumn, priceColumn, totalColumn);
+		this.billProductsTableView.setItems(products);
+	}
+
+	@FXML
+	private void addTreatmentToBill() {
+		BillItemModel billItemModel= new BillItemModel();
+		BalanceTreat currentSelected=(BalanceTreat)this.relatedBalancesTableView.
+				getSelectionModel().getSelectedItem();
+		billItemModel.setBalanceTreat(currentSelected);
+		billItemModel.setQuantity(Double.valueOf(this.treatQuantityDetials.getText()));
+		addToBillTableView(billItemModel);
+	}
+
+	private void addToBillTableView(BillItemModel billItemModel) {
+		this.billProductsTableView.getItems().add(billItemModel);
+	}
+
+	@FXML
+	private void saveBill() throws SQLException{
+
+		List<BillItemModel> items;
+		double totalBill=0;
+		Sale sale= new Sale();
+
+		if (this.billProductsTableView.getItems().isEmpty()) {
+			return;
+		}
+
+		items= this.billProductsTableView.getItems();
+		for(BillItemModel b : items){
+			totalBill+= b.getBalanceTreat().getPrice()* b.getQuantity();
+		}
+
+		sale.setTotal(totalBill);
+		sale.setNetTotal(totalBill-sale.getDiscount());
+		sale.setCustomerId(1);
+		sale.setName(this.billClientName.getText());
+		long insertedSaleId= this.salesService.insertSale(sale);
+
+		//inserting salesDetails 
+		for(BillItemModel b : items) {
+			SaleDetails saleDetails= new SaleDetails();
+			saleDetails.setSaleId(insertedSaleId);
+			saleDetails.setBalanceId(b.getBalanceTreat().getId());
+			saleDetails.setBalanceTreat(b.getBalanceTreat());
+			saleDetails.setQuantity(b.getQuantity());
+			saleDetails.setTotal(b.getQuantity()*b.getBalanceTreat().getPrice());
+			saleDetails.setDateIn(new Timestamp(System.currentTimeMillis()).toString());
+			saleDetails.setExpireDate(b.getBalanceTreat().getExpireDate());
+			saleDetails.setPriceOne(b.getBalanceTreat().getPrice());
+			saleDetails.setTreat(b.getBalanceTreat().getTreat());
+			saleDetails.setTreatId(b.getBalanceTreat().getTreatId());
+			if(b.getBalanceTreat().getQuantity() < b.getQuantity()) {
+				Alert alert= new Alert(Alert.AlertType.ERROR);
+				alert.setContentText("الكمية المطلوبة من هذا الدواء أكبر من المتوافر حالياً: " + b.getBalanceTreat().getTreat().getName());
+				alert.show();
+				return;
+			} else {
+
+				if(this.balanceService.decreaseQuantity(b.getBalanceTreat(), b.getQuantity())){
+					if (this.salesDetailsService.insertSaleDetail(saleDetails)){
+						Alert alert= new Alert(Alert.AlertType.INFORMATION);
+						alert.setContentText("تم إضافة الفاتورة بنجاح");
+						alert.show();
+						this.billProductsTableView.getItems().clear();
+						return;
+					}
+				}
+
+			}
+		}
+
+	}
+
+	@FXML
+	private void deleteItemFromBillTable(){
+		this.billProductsTableView.getItems().remove(
+				this.billProductsTableView.getSelectionModel().getSelectedItem());
+	}
 
 	@FXML
 	public void initialize() throws SQLException{
 		this.initializeTreatTypeCombo();
 		this.addSearchResultDoubleClickListener();
 		this.addTableviewRowDoubleClickListener();
+		this.initalizeBillTableView();
 	}
 
 }

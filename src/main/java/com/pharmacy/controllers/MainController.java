@@ -20,6 +20,8 @@ public class MainController extends MyController {
 	@FXML
 	private Button treatments;
 
+	@FXML
+	private VBox nav;
 
 	public void swapMainCanvasContent(Parent root) {
 		mainCanvas.getChildren().clear();
@@ -38,6 +40,7 @@ public class MainController extends MyController {
 	@FXML
 	public void initialize() {
 		//this.setMedicineGraphic();
+
 	}
 
 	@FXML
@@ -88,6 +91,7 @@ public class MainController extends MyController {
 		Parent root= loader.<VBox>load();
 		swapMainCanvasContent(root);
 	}
+
 
 
 }
