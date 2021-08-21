@@ -2,8 +2,11 @@ package com.pharmacy.POGO;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 public class Treatment {
+
+
 	public long getId() {
 		return id;
 	}
@@ -99,7 +102,7 @@ public class Treatment {
 
 	//Note(walid): overloaded to avoid shit
 	public Treatment() {
-
+		this.dateAt= new Timestamp(System.currentTimeMillis()).toString();
 	}
 
 	public Treatment(long id,

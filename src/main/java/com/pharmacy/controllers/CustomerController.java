@@ -3,8 +3,12 @@ package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.Customer;
+import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.CustomerService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,9 +24,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class CustomerController extends  MyController{
 
+	Executor executor;
     private  CustomerService customerService;
 	//note(walid): a new approach لسة خاطر على بالي;
 	private Customer currentCustomer;
@@ -32,11 +40,21 @@ public class CustomerController extends  MyController{
     @FXML private TextField name;
     @FXML private TextField address;
     @FXML private TextField cash;
-    
+	@FXML  TextField searchBox;
 
-    public CustomerController() throws SQLException {
+
+	private void initializeThreadPool() {
+		this.executor= Executors.newCachedThreadPool((runnable)-> {
+			Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
+	}
+
+	public CustomerController() throws SQLException {
         this.customerService= new CustomerService();
-    }
+    	this.initializeThreadPool();
+	}
     
     @FXML
     public void initialize() throws SQLException {
@@ -44,11 +62,27 @@ public class CustomerController extends  MyController{
 	this.addTableViewFocusListeners();
     }
 
+	private void renderCustomers() {
+		Task<List<Customer>> task= new Task<List<Customer>>() {
+			@Override
+			protected List<Customer> call() throws Exception {
+				return CustomerController.this.customerService
+						.getAllCustomers();
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.customersTableView.setItems(FXCollections.observableArrayList(
+					task.getValue()
+			));
+		});
+		task.setOnFailed(e-> task.getException().printStackTrace());
+		this.executor.execute(task);
+	}
+
+
     private void initializeCustomerTableView() throws SQLException {
-        List<Customer> customers= this.customerService.getAllCustomers();
-        if(customers == null || customers.size()== 0) {
-            return;
-        }
+		this.customersTableView.getColumns().clear();
+    	this.renderCustomers();
 
         TableColumn<Customer, String> nameColumn= new TableColumn<>("الاسم");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -64,7 +98,6 @@ public class CustomerController extends  MyController{
 
 
         this.customersTableView.getColumns().addAll(nameColumn, addressColumn, cashColumn, dateColumn);
-        this.customersTableView.setItems(FXCollections.observableArrayList(customers));
 
 
 	
@@ -100,8 +133,9 @@ public class CustomerController extends  MyController{
 			MyUtils.showValidationErrors(errors);
 			return;
 		}
-
-		if(this.customerService.insertCustomer(customer)) {
+		long inserted=this.customerService.insertCustomer(customer);
+		if(inserted > 0) {
+			customer.setId(inserted);
 			this.customersTableView.getItems().add(customer);
 		} else {
 			//TODO(walid): handle error;
@@ -166,4 +200,24 @@ public class CustomerController extends  MyController{
 		}
 	}
 
+	@FXML
+	private void doSearch() throws SQLException {
+		String q= this.searchBox.getText();
+		if(q.isEmpty()) {
+			this.initializeCustomerTableView();
+			return;
+		}
+		ObservableList<Customer> items= this.customersTableView.getItems();
+		FilteredList<Customer> filteredList= new FilteredList<>(items);
+		this.customersTableView.setItems(filteredList);
+		filteredList.setPredicate(new Predicate<Customer>() {
+			@Override
+			public boolean test(Customer customer) {
+				return customer.getName().contains(q)
+						|| customer.getAddress().contains(q)
+						|| String.valueOf(customer.getCash()).contains(q)
+						|| customer.getDateAt().contains(q);
+			}
+		});
+	}
 }

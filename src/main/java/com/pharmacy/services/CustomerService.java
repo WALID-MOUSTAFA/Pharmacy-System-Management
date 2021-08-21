@@ -26,9 +26,8 @@ public class CustomerService{
 		String query= "SELECT * FROM customer";
 		Statement stmt=  this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
-		if(!rs.isBeforeFirst()) {
-			return null;
-		}
+
+
 		Customer customer;
 		while(rs.next()){
 			customer= new Customer();
@@ -42,7 +41,7 @@ public class CustomerService{
 		return customers;
 	}
 
-	public boolean insertCustomer(Customer customer) throws SQLException {
+	public long insertCustomer(Customer customer) throws SQLException {
 		String query= "INSERT INTO customer (name, address, cash, date_at) VALUES (?,?,?,?)";
 		
 		PreparedStatement preparedStatement=
@@ -55,11 +54,13 @@ public class CustomerService{
 
 
 		if(preparedStatement.executeUpdate() > 0) {
-			return true;
-		} else {
-			return false;
+			ResultSet keys= preparedStatement.getGeneratedKeys();
+			if(keys.next()) {
+				return keys.getLong(1);
+			}
 		}
 
+		return 0;
 	}
 
 

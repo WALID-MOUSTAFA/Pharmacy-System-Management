@@ -3,9 +3,13 @@ package com.pharmacy.controllers;
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.Expense;
 import com.pharmacy.POGO.ExpenseType;
+import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.ExpensesService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,9 +22,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class ExpensesController extends MyController{
 
+	Executor executor;
 	private ExpensesService expensesService;
 	private Expense currentExpense;
 	private ExpenseType currentExpenseType;
@@ -36,15 +44,25 @@ public class ExpensesController extends MyController{
 
 	@FXML private TextField expenseTypeAddName; //for creating new Expense type
 	@FXML private TableView expenseTypeTableView;
+	@FXML private TextField searchBox;
 
-	
+
 	private List<ExpenseType> getAllExpenseTypes() throws SQLException{
 		List<ExpenseType>types= this.expensesService.getAllExpenseTypes();
 		return types;
 	}
-	
+
+	private void initializeThreadPool() {
+		this.executor= Executors.newCachedThreadPool((runnable)-> {
+			Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
+	}
+
 	public ExpensesController() throws SQLException {
 		this.expensesService= new ExpensesService();
+		this.initializeThreadPool();
 	}
 
 	@FXML
@@ -60,7 +78,27 @@ public class ExpensesController extends MyController{
 		return this.expensesService.getAllExpenses();
 	}
 
+
+	private void renderSuppliers() {
+		Task<List<Expense>> task= new Task<List<Expense>>() {
+			@Override
+			protected List<Expense> call() throws Exception {
+				return ExpensesController.this.getAllExpenses();
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.expensesTableView.setItems(FXCollections.observableArrayList(
+					task.getValue()
+			));
+		});
+		task.setOnFailed(e-> task.getException().printStackTrace());
+		this.executor.execute(task);
+	}
+
 	private void initializeExpenseTableView() throws SQLException {
+		this.expensesTableView.getColumns().clear();
+		this.renderSuppliers();
+
 		TableColumn valueColumn= new TableColumn("القيمة");
 		valueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 		TableColumn dateColumn= new TableColumn("التاريخ");
@@ -73,10 +111,7 @@ public class ExpensesController extends MyController{
 			 (row.getValue().getExpenseType().getName()));
 		this.expensesTableView.getColumns().addAll
 			(valueColumn, dateColumn, typeColumn);
-		List<Expense> expenses= this.getAllExpenses();
-		this.expensesTableView.setItems
-			(FXCollections.observableArrayList(expenses==null? new ArrayList<>(): expenses));
-			
+
 		this.expensesTableView.getSelectionModel()
 			.selectedItemProperty()
 			.addListener((obsvaal, oldval, newval)-> {
@@ -84,7 +119,7 @@ public class ExpensesController extends MyController{
 						(((Expense)newval));
 				});
 
-		this.expenseTypeTableView.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+		this.expensesTableView.focusedProperty().addListener(((observable, oldValue, newValue) -> {
 			if(newValue) {
 				this.editExpenseButton.setDisable(false);
 				this.deleteExpenseButton.setDisable(false);
@@ -140,7 +175,9 @@ public class ExpensesController extends MyController{
 		expenseType.setName(typeName);
 		expense.setExpenseType(expenseType);
 
-		if(this.expensesService.insertExpense(expense)){
+		long inserted= this.expensesService.insertExpense(expense);
+		if(inserted> 0){
+			expense.setId(inserted);
 			this.expensesTableView.getItems().add(expense);
 		}
 	}
@@ -184,8 +221,9 @@ public class ExpensesController extends MyController{
 			return ;
 		}
 		expenseType.setName(typeName);
-		
-		if(this.expensesService.insertExpenseType(expenseType)){
+		long inserted= this.expensesService.insertExpenseType(expenseType);
+		if(inserted> 0){
+			expenseType.setId(inserted);
 			this.expenseTypeTableView.getItems().add(expenseType);
 		}
 	}
@@ -223,9 +261,8 @@ public class ExpensesController extends MyController{
 		Parent root= loader.load();
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
-		// this.reInitializeExpenseTypeTableView();
-		this.clearStuff();
-		this.initialize();
+		this.reInitializeExpenseTypeTableView();
+
 	}
 
 	private void setCurrentExpense(Expense expense){
@@ -244,12 +281,6 @@ public class ExpensesController extends MyController{
 	private void reInitializeExpenseTypeTableView() throws SQLException{
 		this.expenseTypeTableView.getColumns().clear();
 		this.initializeExpenseTypeTableView();
-	}
-
-	public void clearStuff(){
-		this.expenseTypeTableView.getColumns().clear();
-		this.expensesTableView.getColumns().clear();
-		this.expenseType.getItems().clear();
 	}
 
 	@FXML
@@ -271,5 +302,26 @@ public class ExpensesController extends MyController{
 		}
 		
 		
+	}
+
+
+	@FXML
+	private void doSearch() throws SQLException {
+		String q= this.searchBox.getText();
+		if(q.isEmpty()) {
+			this.initializeExpenseTableView();
+			return;
+		}
+		ObservableList<Expense> items= this.expensesTableView.getItems();
+		FilteredList<Expense> filteredList= new FilteredList<>(items);
+		this.expensesTableView.setItems(filteredList);
+		filteredList.setPredicate(new Predicate<Expense>() {
+			@Override
+			public boolean test(Expense expense) {
+				return expense.getDateAt().contains(q)
+						|| expense.getExpenseType().getName().contains(q)
+						|| expense.getValue().contains(q);
+			}
+		});
 	}
 }

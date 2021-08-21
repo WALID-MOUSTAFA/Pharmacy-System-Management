@@ -18,7 +18,6 @@ public class SalesTest {
 		customer.setAddress("saqulta");
 		customer.setCash(0.0);
 		customer.setDateAt(new Timestamp(System.currentTimeMillis()).toString());
-		Assert.assertTrue(customerService.insertCustomer(customer));
 	}
 
 

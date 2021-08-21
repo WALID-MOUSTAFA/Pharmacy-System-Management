@@ -17,7 +17,7 @@ public class SupplierPaymentService {
                 .getInstance().getConnection();
     }
 
-    public boolean insertSupplierPayment(SupplierPayment supplierPayment) throws SQLException {
+    public long insertSupplierPayment(SupplierPayment supplierPayment) throws SQLException {
         String query= "INSERT INTO paysuplier (suplier_get, suplier_get_date, status, notes, suplier_id) VALUES(?,?,?,?,?)";
         PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
         preparedStatement.setDouble(1, supplierPayment.getSupplierGet());
@@ -26,9 +26,12 @@ public class SupplierPaymentService {
         preparedStatement.setString(4, supplierPayment.getNotes());
         preparedStatement.setLong(5, supplierPayment.getSupplierId());
         if(preparedStatement.executeUpdate() > 0) {
-            return true;
+            ResultSet keys= preparedStatement.getGeneratedKeys();
+            if(keys.next()){
+                return keys.getLong(1);
+            }
         }
-        return false;
+        return 0;
     }
 
 

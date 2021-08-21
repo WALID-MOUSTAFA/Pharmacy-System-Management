@@ -45,7 +45,7 @@
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar visible="false" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -86,7 +86,7 @@
     </MenuBar>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="SOMETIMES">
         <tabs>
-          <Tab text="الرئيسية">
+          <Tab text="شاشة البيع">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>

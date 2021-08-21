@@ -33,7 +33,7 @@ public class ExpensesService{
 //		return expenseType;
 //	}
 
-	public boolean insertExpense(Expense expense) throws SQLException {
+	public long insertExpense(Expense expense) throws SQLException {
 		expense.setExpenseTypeId(this.getExpenseTypeByName(expense.getExpenseType().getName()).getId());
 
 		String query= "INSERT INTO expenses (expensemain, value, date_in) VALUES (? ,? ,?);";
@@ -43,10 +43,13 @@ public class ExpensesService{
 		preparedStatement.setString(3, expense.getDateAt());
 
 		if(preparedStatement.executeUpdate() > 0){
-			return true;
+			ResultSet keys= preparedStatement.getGeneratedKeys();
+			if(keys.next()) {
+				return keys.getLong(1);
+			}
 		}
 		
-		return false;
+		return 0;
 	}
 
 	public boolean updateExpense(Expense expense) throws SQLException{
@@ -103,9 +106,7 @@ public class ExpensesService{
 		String query= "SELECT * FROM expensemain";
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
-		if(!rs.isBeforeFirst()){
-			return null;
-		}
+
 		while(rs.next()){
 			expenseType= new ExpenseType();
 			expenseType.setId(rs.getLong("id"));
@@ -117,15 +118,18 @@ public class ExpensesService{
 	}
 
 
-	public boolean insertExpenseType(ExpenseType expenseType)
+	public long insertExpenseType(ExpenseType expenseType)
 		throws SQLException {
 		String query= "INSERT INTO expensemain (name) VALUES (?)";
 		PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
 		preparedStatement.setString(1, expenseType.getName());
 		if(preparedStatement.executeUpdate() > 0){
-			return true;
+			ResultSet keys= preparedStatement.getGeneratedKeys();
+			if(keys.next()) {
+				return keys.getLong(1);
+			}
 		}
-		return false;
+		return 0;
 	}
 
 	public boolean updateExpenseType(ExpenseType expenseType)

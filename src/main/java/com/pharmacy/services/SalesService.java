@@ -59,9 +59,7 @@ public class SalesService{
 		String query= "SELECT sales.*, customer.name as customerName from sales join customer on sales.customer_id=customer.id;";
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
-		if(!rs.isBeforeFirst()) {
-			return null;
-		}
+
 		Sale sale;
 		Customer customer;
 		while(rs.next()) {

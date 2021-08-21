@@ -131,7 +131,9 @@ public class CreateTreatmentController extends MyController{
 			return;
 		}
 
-		if(this.treatmentService.insertTreatment(dt)){
+		long inserted= this.treatmentService.insertTreatment(dt);
+		if(inserted> 0){
+			dt.setId(inserted);
 			this.treatmentController
 				.addTreatmentItemToTheTreatmentTableView(dt);
 		} else {

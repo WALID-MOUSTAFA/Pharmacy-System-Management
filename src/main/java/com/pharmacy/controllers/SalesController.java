@@ -2,6 +2,7 @@
 //TODO(walid): add order by to the queries;
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.*;
 import com.pharmacy.services.*;
 import javafx.beans.property.SimpleStringProperty;
@@ -47,6 +48,7 @@ public class SalesController {
 	@FXML private ComboBox storedCustomerName;
 	
 	public void initializeTreatTypeCombo() throws SQLException {
+		this.treatType.getItems().clear();
 		TreatmentService treatmentService= new TreatmentService();
 		List<TypeTreat> types= treatmentService.getAllTreatTypes();
 		for (TypeTreat t : types) {
@@ -184,6 +186,8 @@ public class SalesController {
 
 	private void initalizeBillTableView() {
 
+		this.billProductsTableView.getColumns().clear();
+
 		List<BillItemModel> productsList = new ArrayList<>();
 		ObservableList<BillItemModel> products= FXCollections.observableArrayList(productsList);
 
@@ -274,7 +278,8 @@ public class SalesController {
 		sale.setTotal(totalBill);
 		sale.setNetTotal(totalBill-sale.getDiscount());
 		if(this.getChoosenStoredClientId() == 0){
-			return; //TODO(walid): handle this error
+			MyUtils.ALERT_ERROR("يلزم اختيار عميل للمتابعة!");
+			return;
 		}
 		
 		sale.setCustomerId(this.getChoosenStoredClientId());
@@ -332,6 +337,7 @@ public class SalesController {
 
 	
 	private void initalizeCustomerCombo() throws SQLException{
+		this.storedCustomerName.getItems().clear();
 		List<Customer> customers= this.customerService.getAllCustomers();
 		for (Customer c : customers) {
 			this.storedCustomerName.getItems().add(c.getName());
@@ -347,4 +353,9 @@ public class SalesController {
 		this.initalizeCustomerCombo();
 	}
 
+
+	@FXML
+	private void doRefresh() throws SQLException {
+		this.initialize();
+	}
 }

@@ -104,7 +104,7 @@ public class TreatmentService {
         return treatForm;
     }
 
-    public boolean insertTreatment(DetailedTreatment dt) throws SQLException {
+    public long insertTreatment(DetailedTreatment dt) throws SQLException {
         this.dbConnection= DatabaseConnection.getInstance().getConnection();
         TypeTreat typeTreat= this.getTypeTreatByTypename(dt.getTypeTreatName());
 	TreatForm treatForm= this.getTreatFormByName(dt.getFormTreatName());
@@ -131,7 +131,7 @@ public class TreatmentService {
         preparedStatement.setString(3, "1");
         preparedStatement.setString(4, dt.getParcode());
         preparedStatement.setString
-	    (5, new Timestamp(System.currentTimeMillis()).toString() );
+	    (5, dt.getDateAt());
         //TODO(walid): get the value from the ui;
         preparedStatement.setDouble(6, dt.getLowcount());
         //TODO(walid): get the value from the ui;
@@ -142,10 +142,13 @@ public class TreatmentService {
         preparedStatement.setLong(9, formTreat_id);
 
         if(preparedStatement.executeUpdate() >0) {
-            return true;
+            ResultSet keys= preparedStatement.getGeneratedKeys();
+            if(keys.next()) {
+                return keys.getLong(1);
+            }
         }
 
-        return false;
+        return 0;
     }
 
 

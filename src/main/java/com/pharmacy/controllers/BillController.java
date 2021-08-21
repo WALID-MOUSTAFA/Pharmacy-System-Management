@@ -3,11 +3,15 @@ package com.pharmacy.controllers;
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.Sale;
 import com.pharmacy.POGO.SaleDetails;
+import com.pharmacy.POGO.Supplier;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.SalesDetailsService;
 import com.pharmacy.services.SalesService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,14 +20,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class BillController extends MyController{
+
+    Executor executor;
 
     private SalesService salesService;
     private SalesDetailsService salesDetailsService;
@@ -31,11 +41,21 @@ public class BillController extends MyController{
     @FXML private TableView billsTableView;
     @FXML private Button deleteBillButton;
     @FXML private Button editBillButton;
+    @FXML private TextField searchBox;
 
+
+    private void initializeThreadPool() {
+        this.executor= Executors.newCachedThreadPool((runnable)-> {
+            Thread thread= new Thread(runnable);
+            thread.setDaemon(true);
+            return thread;
+        });
+    }
 
     public BillController() throws SQLException {
         this.salesService= new SalesService();
         this.salesDetailsService= new SalesDetailsService();
+        this.initializeThreadPool();
     }
 
     @FXML
@@ -89,8 +109,28 @@ public class BillController extends MyController{
         stage.showAndWait();
     }
 
+
+    private void renderBills() {
+        Task<List<Sale>> task= new Task<List<Sale>>() {
+            @Override
+            protected List<Sale> call() throws Exception {
+                return BillController.this.salesService
+                        .getAllSales();
+            }
+        };
+        task.setOnSucceeded(e-> {
+            this.billsTableView.setItems(FXCollections.observableArrayList(
+                    task.getValue()
+            ));
+        });
+        task.setOnFailed(e-> task.getException().printStackTrace());
+        this.executor.execute(task);
+    }
+
     private void inititalizeBillTableView() throws SQLException{
-        List<Sale> sales= salesService.getAllSales();
+
+        this.billsTableView.getColumns().clear();
+        this.renderBills();
 
         TableColumn<Sale, String> customerName= new TableColumn<>("العميل");
         customerName.setCellValueFactory(tv-> {
@@ -106,11 +146,13 @@ public class BillController extends MyController{
         TableColumn<Sale, Double> dateColumn= new TableColumn<>("التاريخ");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateIn"));
 
-        this.billsTableView.getColumns().addAll(customerName, netTotalColumn, discountColumn, dateColumn);
 
-        if(sales != null) {
-            this.billsTableView.setItems(FXCollections.observableArrayList(sales));
-        }
+        TableColumn<Sale, Double> nameColumn= new TableColumn<>("اسم المشتري");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        this.billsTableView.getColumns().addAll(customerName, netTotalColumn, dateColumn, nameColumn);
+
+
 
         //set currentTreatmentId
         this.billsTableView.getSelectionModel().selectedItemProperty()
@@ -136,4 +178,24 @@ public class BillController extends MyController{
 		}
 		
 	}
+
+    @FXML
+    private void doSearch() throws SQLException {
+        String q= this.searchBox.getText();
+        if(q.isEmpty()) {
+            this.inititalizeBillTableView();
+            return;
+        }
+        ObservableList<Sale> items= this.billsTableView.getItems();
+        FilteredList<Sale> filteredList= new FilteredList<>(items);
+        this.billsTableView.setItems(filteredList);
+        filteredList.setPredicate(new Predicate<Sale>() {
+            @Override
+            public boolean test(Sale sale) {
+                return sale.getName().contains(q)
+                        || sale.getCustomer().getName().contains(q)
+                        || sale.getDateIn().contains(q);
+            }
+        });
+    }
 }

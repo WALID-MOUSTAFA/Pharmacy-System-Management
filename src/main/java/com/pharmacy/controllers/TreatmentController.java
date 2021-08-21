@@ -1,10 +1,13 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.POGO.DetailedTreatment;
+import com.pharmacy.POGO.Supplier;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.TreatmentService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,9 +22,14 @@ import java.sql.Connection;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class TreatmentController extends MyController{
 
+	Executor executor;
 
 	private long currentTreatmentId;
 	
@@ -33,52 +41,79 @@ public class TreatmentController extends MyController{
 	private Button editTreatmentButton;
 	@FXML
 	private Button deleteTreatmentButton;
-
 	@FXML CreateTreatmentController createTreatmentController; //child fxml
-
-	// @FXML
-	// private Text detailedTreatment;
-
 	private TreatmentService treatmentService;
+	@FXML private TextField searchBox;
 
-	public TreatmentController() {
-		this.treatmentService= new TreatmentService();
+	private void initializeThreadPool() {
+		this.executor= Executors.newCachedThreadPool((runnable)-> {
+			Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
 	}
 
-	private void initializeTableView() throws SQLException{
-		ObservableList<Treatment> treatments= FXCollections
-			.observableArrayList(treatmentService.getAllTreatments());
 
-		TableColumn<Treatment, String> nameColumn=
+	public TreatmentController()
+	{
+		this.treatmentService= new TreatmentService();
+		this.initializeThreadPool();
+	}
+
+
+	private void renderTreatments() {
+		Task<List<DetailedTreatment>> task= new Task<List<DetailedTreatment>>() {
+			@Override
+			protected List<DetailedTreatment> call() throws Exception {
+				return TreatmentController.this.treatmentService
+						.getAllTreatments();
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.treatmentsTableView.setItems(FXCollections.observableArrayList(
+					task.getValue()
+			));
+		});
+		task.setOnFailed(e-> task.getException().printStackTrace());
+		this.executor.execute(task);
+	}
+
+
+	private void initializeTableView() throws SQLException{
+
+		this.treatmentsTableView.getColumns().clear();
+		this.renderTreatments();
+
+		TableColumn<DetailedTreatment, String> nameColumn=
 			new TableColumn<>("الاسم");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-		TableColumn<Treatment, String> dateAtColumn=
+		TableColumn<DetailedTreatment, String> dateAtColumn=
 			new TableColumn<>("تاريخ الإضافة");
 		dateAtColumn.setCellValueFactory
 			(new PropertyValueFactory<>("dateAt"));
 
-		TableColumn<Treatment, String> statusColumn=
+		TableColumn<DetailedTreatment, String> statusColumn=
 			new TableColumn<>("الحالة");
 		statusColumn.setCellValueFactory
 			(new PropertyValueFactory<>("status"));
 
-		TableColumn<Treatment, String> placeColumn=
+		TableColumn<DetailedTreatment, String> placeColumn=
 			new TableColumn<>("المكان");
 		placeColumn.setCellValueFactory
 			(new PropertyValueFactory<>("place"));
 
-		TableColumn<Treatment, String> lowCountColumn=
+		TableColumn<DetailedTreatment, String> lowCountColumn=
 			new TableColumn<>("العدد الحرج");
 		lowCountColumn.setCellValueFactory
 			(new PropertyValueFactory<>("lowcount"));
 
-		TableColumn<Treatment, String> companyColumn=
+		TableColumn<DetailedTreatment, String> companyColumn=
 			new TableColumn<>("الشركة");
 		companyColumn.setCellValueFactory
 			(new PropertyValueFactory<>("company"));
 
-		TableColumn<Treatment, String> quantityColumn=
+		TableColumn<DetailedTreatment, String> quantityColumn=
 			new TableColumn<>("الكمية المتوفرة حالياً");
 		quantityColumn.setCellValueFactory
 			(new PropertyValueFactory<>("quantity"));
@@ -89,7 +124,6 @@ public class TreatmentController extends MyController{
 							     placeColumn,
 							     companyColumn,
 							     quantityColumn);
-		this.treatmentsTableView.setItems(treatments);
 
 		this.treatmentsTableView.getSelectionModel()
 			.selectedItemProperty()
@@ -232,5 +266,29 @@ public class TreatmentController extends MyController{
 
 	public void addTreatmentItemToTheTreatmentTableView(DetailedTreatment treatment){
 		this.treatmentsTableView.getItems().add(treatment);
+	}
+
+	@FXML
+	private void doSearch() throws SQLException {
+		String q= this.searchBox.getText();
+		if(q.isEmpty()) {
+			this.initializeTableView();
+			return;
+		}
+		ObservableList<DetailedTreatment> items= this.treatmentsTableView.getItems();
+		FilteredList<DetailedTreatment> filteredList= new FilteredList<>(items);
+		this.treatmentsTableView.setItems(filteredList);
+		filteredList.setPredicate(new Predicate<DetailedTreatment>() {
+			@Override
+			public boolean test(DetailedTreatment dt) {
+				return dt.getName().contains(q)
+						|| dt.getTypeTreatName().contains(q)
+						|| dt.getFormTreatName().contains(q)
+						|| dt.getDateAt().contains(q)
+						|| dt.getCompany().contains(q)
+						|| dt.getParcode().contains(q)
+						|| dt.getPlace().contains(q);
+			}
+		});
 	}
 }

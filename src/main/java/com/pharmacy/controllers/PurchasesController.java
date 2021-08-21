@@ -10,6 +10,7 @@ import com.pharmacy.POGO.PurchaseDetails;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +20,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -30,7 +34,7 @@ import javafx.stage.Stage;
 
 public class PurchasesController extends MyController{
 
-
+	Executor exec;
     private PurchasesService purchasesService;
 
     private long currentSelectedItemId;
@@ -38,16 +42,36 @@ public class PurchasesController extends MyController{
     @FXML private TableView purchasesTableView;
     @FXML private Button editPurchaseButton;
     @FXML private Button deletePurchaseButton;
+	@FXML private Button showPurchaseDetailsButton;
 	@FXML private TextField searchBox;
 
 
 	public PurchasesController() throws SQLException{
-	this.purchasesService = new PurchasesService();
-    }
+		this.purchasesService = new PurchasesService();
+    	this.exec= Executors.newCachedThreadPool((runnable)-> {
+    		Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
+	}
+
+	private void renderPurchases(){
+		Task<List<Purchase>> task= new Task<List<Purchase>>() {
+			@Override
+			protected List<Purchase> call() throws Exception {
+				return PurchasesController.this.purchasesService.getAllPurchases();
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.purchasesTableView.setItems(FXCollections.observableArrayList(task.getValue()));
+		});
+		task.setOnFailed(e->task.getException().printStackTrace());
+		this.exec.execute(task);
+	}
+
+
 
     private void initializeTableView() throws SQLException{
-	ObservableList<Purchase> purchases= FXCollections
-	    .observableArrayList(this.purchasesService.getAllPurchases());
 
 	TableColumn<Purchase, String> datePur = new TableColumn<>("تاريخ الفاتورة");
 	datePur.setCellValueFactory(new PropertyValueFactory<>("datePur"));
@@ -86,7 +110,8 @@ public class PurchasesController extends MyController{
 						     description,
 						     dateAt,
 						     supplierName);
-	this.purchasesTableView.setItems(purchases);
+
+	this.renderPurchases();
 
 	purchasesTableView.getSelectionModel()
 		.selectedItemProperty().addListener(new ChangeListener() {
@@ -108,9 +133,12 @@ public class PurchasesController extends MyController{
 		if(newval) {
 		    this.editPurchaseButton.setDisable(false);
 		    this.deletePurchaseButton.setDisable(false);
+		    this.showPurchaseDetailsButton.setDisable(false);
+
 		} else {
 		    this.editPurchaseButton.setDisable(true);
 		    this.deletePurchaseButton.setDisable(true);
+		    this.showPurchaseDetailsButton.setDisable(true);
 		}
 	    });
     }
@@ -120,9 +148,9 @@ public class PurchasesController extends MyController{
     private void initialize() throws SQLException {
 	this.initializeTableView();
 	addTableViewFocusListeners();
-    	
 	addTableviewRowDoubleClickListener();
-    }
+
+	}
 
     private void addTableviewRowDoubleClickListener() {
 	this.purchasesTableView.setRowFactory( tv->  {
@@ -238,7 +266,10 @@ public class PurchasesController extends MyController{
 	@FXML
 	private void doSearch() throws SQLException{
     	String q= this.searchBox.getText();
-    	if(q.isEmpty()) reInitializePurchaseTableView();
+    	if(q.isEmpty()) {
+    		reInitializePurchaseTableView();
+    		return;
+		}
     	ObservableList<Purchase> items= this.purchasesTableView.getItems();
 		FilteredList<Purchase> filteredList= new FilteredList<>(items);
 		this.purchasesTableView.setItems(filteredList);
@@ -246,7 +277,16 @@ public class PurchasesController extends MyController{
 		filteredList.setPredicate(new Predicate<Purchase>() {
 			@Override
 			public boolean test(Purchase purchase) {
-				return purchase.getPillNum().contains(q);
+				return purchase.getPillNum().contains(q)
+						|| purchase.getDatePur().contains(q)
+						|| purchase.getSupplier().getName().contains(q)
+						|| purchase.getDatePur().contains(q)
+						|| purchase.getDescription().contains(q)
+						|| String.valueOf(purchase.getCountUnit()).contains(q)
+						|| String.valueOf(purchase.getTotalPeople()).contains(q)
+						|| String.valueOf(purchase.getTotalPharmacy()).contains(q)
+						|| purchase.getDateAt().contains(q);
+
 			}
 		});
 	}

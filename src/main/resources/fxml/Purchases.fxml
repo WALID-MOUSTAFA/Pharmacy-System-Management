@@ -46,7 +46,7 @@
          <items>
             <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
             <Button mnemonicParsing="false" onMouseClicked="#showAsddNewPurchase" text="إضافة" />
-            <Button mnemonicParsing="false" onMouseClicked="#showPurchaseDetails" text="عرض الفاتورة المحددة" />
+            <Button fx:id="showPurchaseDetailsButton" disable="true" mnemonicParsing="false" onMouseClicked="#showPurchaseDetails" text="عرض الفاتورة المحددة" />
             <Button fx:id="deletePurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#deletePurchase" text="حذف" />
             <Button fx:id="editPurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#editPurchase" text="تعديل" />
          </items>

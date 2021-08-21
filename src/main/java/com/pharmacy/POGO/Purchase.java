@@ -1,6 +1,7 @@
 package com.pharmacy.POGO;
 
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -31,6 +32,7 @@ public class Purchase {
 	private double totalPeople;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")
+	@Digits(integer = 100, fraction = 100)
 	private double totalPharmacy;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")

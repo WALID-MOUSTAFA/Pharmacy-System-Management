@@ -39,11 +39,21 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TableView fx:id="expensesTableView" prefHeight="200.0" prefWidth="223.0">
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
+                        <VBox>
+                           <children>
+                              <TableView fx:id="expensesTableView" prefHeight="200.0" prefWidth="223.0">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0">
+                                 <children>
+                                    <TextField fx:id="searchBox" />
+                                    <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

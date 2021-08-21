@@ -10,74 +10,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b577581e-c5ef-4948-b52d-74f102f9ded3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_3_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_glassfish_javax_el_3_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_0_13_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_2_Final.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/TableViewInitalize.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/BillController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/BillDetailsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CustomerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditCustomerController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ValidationMessages.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fxml/BillDetails.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pharmacy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pharmacy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/DatabaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/MyUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/MyUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/DetailedTreatment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/DetailedTreatment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Expense.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Expense.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Purchase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Purchase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/PurchaseDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/PurchaseDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/SaleDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/SaleDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Supplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/TreatForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/TreatForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Treatment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Treatment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/TypeTreat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/TypeTreat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreatePurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreatePurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateSupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateSupplierController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/BillController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/BillController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateTreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateTreatmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditPurchaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditPurchaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditPurchaseDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditPurchaseDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditSupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditSupplierController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditTreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditTreatmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/ExpensesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/ExpensesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PurchaseDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PurchaseDetailsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PurchasesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PurchasesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SalesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SalesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SupplierPaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SupplierPaymentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SuppliersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SuppliersController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/TreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/TreatmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/BalanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/BalanceService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/CustomerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/ExpenseService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SalesDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SalesDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/ExpensesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/ExpensesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SalesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SalesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SuppliersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SuppliersService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SupplierPaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/SupplierPaymentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/TreatmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/TreatmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Bill.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Bill.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/CreateTreatment.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/CreateTreatment.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Customer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Customer.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/EditCustomer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/EditCustomer.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Expenses.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Expenses.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Main.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Medicine.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Medicine.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/PurchaseDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/PurchaseDetails.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Purchases.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Purchases.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/SupplierPayment.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/SupplierPayment.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Suppliers.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Suppliers.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/editPurchaseDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/editPurchaseDetails.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/sales.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/sales.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/pharmacy.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pharmacy.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/pharmacy/MiscTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/pharmacy/MiscTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/pharmacy/SalesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/pharmacy/SalesTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -370,11 +331,6 @@
           <line>64</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SalesController.java</url>
-          <line>266</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditSupplierController.java</url>
           <line>25</line>
@@ -392,12 +348,12 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/BillController.java</url>
-          <line>76</line>
-          <properties class="com.pharmacy.controllers.BillController" method="showBillDetails">
+          <url>file://$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/TreatmentController.java</url>
+          <line>271</line>
+          <properties class="com.pharmacy.controllers.TreatmentController" method="doSearch">
             <option name="EMULATED" value="true" />
           </properties>
-          <option name="timeStamp" value="18" />
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
@@ -405,6 +361,11 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="this.searchBox.getText()" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pharmacygui$MiscTest_testInsertTreatment.ic" NAME="MiscTest.testInsertTreatment Coverage Results" MODIFIED="1626429056732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

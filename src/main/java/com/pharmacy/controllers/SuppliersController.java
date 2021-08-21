@@ -1,9 +1,13 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.POGO.Purchase;
+import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.SuppliersService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,33 +15,48 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class SuppliersController extends MyController{
 
-    private SuppliersService suppliersService;
+	Executor executor;
+
+	private SuppliersService suppliersService;
+	private long currentSupplierId;
+	private Supplier currentSupplier; //NOTE(walid): choose whether this or just the id, stupid;
 
 	@FXML private TableView suppliersTableView;
 	@FXML private Button editSupplierButton;
 	@FXML private Button deleteSupplierButton;
 	@FXML private Button showSupplierPaymentButton;
-	private long currentSupplierId;
+	@FXML private CreateSupplierController createSupplierController;
+	@FXML private TextField searchBox;
 
-	@FXML
-	private CreateSupplierController createSupplierController;
 
 	public void setCurrentSupplier(Supplier currentSupplier) {
 		this.currentSupplier = currentSupplier;
 	}
 
-	private Supplier currentSupplier; //NOTE(walid): choose whether this or just the id, stupid;
-	
+	private void initializeThreadPool() {
+		this.executor= Executors.newCachedThreadPool((runnable)-> {
+			Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
+	}
+
 	public SuppliersController() throws SQLException{
         this.suppliersService= new SuppliersService();
+        this.initializeThreadPool();
     }
 
     @FXML
@@ -45,9 +64,29 @@ public class SuppliersController extends MyController{
         this.swapWithControlPanelScene();
     }
 
-    public void initializeTableView() throws SQLException {
+	private void renderSuppliers() {
+		Task<List<Supplier>> task= new Task<List<Supplier>>() {
+			@Override
+			protected List<Supplier> call() throws Exception {
+				return SuppliersController.this.suppliersService
+						.getAllSuppliers();
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.suppliersTableView.setItems(FXCollections.observableArrayList(
+					task.getValue()
+			));
+		});
+		task.setOnFailed(e-> task.getException().printStackTrace());
+		this.executor.execute(task);
+	}
+
+
+	public void initializeTableView() throws SQLException {
+
 		this.suppliersTableView.getColumns().clear();
-        TableColumn<Supplier, String> nameColumn= new TableColumn<>("الاسم");
+        this.renderSuppliers();
+		TableColumn<Supplier, String> nameColumn= new TableColumn<>("الاسم");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 	   
         TableColumn<Supplier, String> phoneColumn= new TableColumn<>("رقم الهاتف");
@@ -69,10 +108,6 @@ public class SuppliersController extends MyController{
                 cashColumn,
                 dateAtColumn);
 
-		ObservableList<Supplier> suppliers= FXCollections
-				.observableArrayList(this.suppliersService.getAllSuppliers());
-
-		this.suppliersTableView.setItems(suppliers);
 
 		//set listener to set currentSupplierId
 		this.suppliersTableView.getSelectionModel()
@@ -180,6 +215,28 @@ public class SuppliersController extends MyController{
 		loader.setController(supplierPaymentController);
 		Parent root= loader.load();
 		stage.setScene(new Scene(root));
-		stage.show();
+
+		stage.showAndWait();
+	}
+
+	@FXML
+	private void doSearch() throws SQLException {
+		String q= this.searchBox.getText();
+		if(q.isEmpty()) {
+			this.initializeTableView();
+			return;
+		}
+		ObservableList<Supplier> items= this.suppliersTableView.getItems();
+		FilteredList<Supplier> filteredList= new FilteredList<>(items);
+		this.suppliersTableView.setItems(filteredList);
+		filteredList.setPredicate(new Predicate<Supplier>() {
+			@Override
+			public boolean test(Supplier supplier) {
+				return supplier.getName().contains(q)
+						|| supplier.getAddress().contains(q)
+						|| supplier.getDateAt().contains(q)
+						|| supplier.getPhone().contains(q);
+			}
+		});
 	}
 }

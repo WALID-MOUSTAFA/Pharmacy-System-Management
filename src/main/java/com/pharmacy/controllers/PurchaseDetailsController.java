@@ -11,6 +11,7 @@ import com.pharmacy.services.TreatmentService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,9 +28,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PurchaseDetailsController extends MyController {
 
+	Executor executor;
 	private PurchaseDetailsService purchaseDetailsService;
 	private BalanceService balanceService;
 
@@ -73,18 +77,40 @@ public class PurchaseDetailsController extends MyController {
 	public PurchaseDetailsController() throws SQLException {
 		this.purchaseDetailsService= new PurchaseDetailsService();
 		this.balanceService= new BalanceService();
+		initializeThreadPool();
 	}
 
+	private void initializeThreadPool() {
+		this.executor= Executors.newCachedThreadPool((runnable)-> {
+			Thread thread= new Thread(runnable);
+			thread.setDaemon(true);
+			return thread;
+		});
+	}
+
+	private void renderPurchaseDetails(Purchase purchase) {
+		Task<List<PurchaseDetails>> task= new Task<List<PurchaseDetails>>() {
+			@Override
+			protected List<PurchaseDetails> call() throws Exception {
+				return PurchaseDetailsController.this.purchaseDetailsService
+						.getAllRelatedPurchaseDetails(purchase);
+			}
+		};
+		task.setOnSucceeded(e-> {
+			this.purchasesDetailsTableView.setItems(FXCollections.observableArrayList(
+					task.getValue()
+			));
+		});
+
+		task.setOnFailed(e-> task.getException().printStackTrace());
+		this.executor.execute(task);
+	}
 
 	private void initalizeTableview() throws SQLException{
 		Purchase purchase= new Purchase();
 		purchase.setId(this.currentPurchaseId);
 
-		ObservableList<PurchaseDetails> pDS=
-			FXCollections
-			.observableArrayList(this
-			.purchaseDetailsService
-			.getAllRelatedPurchaseDetails(purchase));
+		this.renderPurchaseDetails(purchase);
 
 		TableColumn<PurchaseDetails, String> expireDate=
 			new TableColumn<>("تاريخ الصلاحية");
@@ -142,7 +168,6 @@ public class PurchaseDetailsController extends MyController {
 								   totalPharmacy,
 								   totalPeople,
 								   dateAt);
-		this.purchasesDetailsTableView.setItems(pDS);
 	}
 
 
