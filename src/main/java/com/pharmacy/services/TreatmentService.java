@@ -14,16 +14,16 @@ public class TreatmentService {
 
     private Connection dbConnection;
 
-    public List<Treatment> getAllTreatments() throws SQLException {
-        List<Treatment> treatments= new ArrayList<>();
+    public List<DetailedTreatment> getAllTreatments() throws SQLException {
+        List<DetailedTreatment> treatments= new ArrayList<>();
         this.dbConnection= DatabaseConnection.getInstance().getConnection();
-        String query= "SELECT treat.*, SUM(blance_treat.quantity) AS quantity FROM treat  LEFT OUTER JOIN blance_treat ON blance_treat.treat_id=treat.id GROUP BY treat.id;";
+        String query= "SELECT treat.*, typetreat.typename as typeName, SUM(blance_treat.quantity) AS quantity FROM treat  LEFT OUTER JOIN blance_treat ON blance_treat.treat_id=treat.id inner join typetreat on typetreat.id = treat.typet GROUP BY treat.id;";
         Statement stmt= this.dbConnection.createStatement();
         ResultSet rs= stmt.executeQuery(query);
-        Treatment treatment;
+        DetailedTreatment treatment;
 
         while(rs.next()) {
-            treatment= new Treatment();
+            treatment= new DetailedTreatment();
             treatment.setId(rs.getLong("id"));
             treatment.setName(rs.getString("name"));
             treatment.setTypet(rs.getLong("typet"));
@@ -35,7 +35,8 @@ public class TreatmentService {
             treatment.setCompany(rs.getString("company"));
             treatment.setFormtreat(rs.getLong("formtreat"));
             treatment.setPlace(rs.getString("place"));
-	         treatment.setQuantity(rs.getDouble("quantity"));
+	    treatment.setQuantity(rs.getDouble("quantity"));
+	    treatment.setTypeTreatName(rs.getString("typeName"));
             treatments.add(treatment);
             treatment= null;
         }
@@ -72,18 +73,6 @@ public class TreatmentService {
         return detailedTreatment;
     }
 
-
-    public List<TypeTreat> getAllTreatTypes () throws  SQLException{
-        this.dbConnection= DatabaseConnection.getInstance().getConnection();
-        String query= "SELECT * FROM typetreat";
-        Statement stmt= this.dbConnection.createStatement();
-        ResultSet rs= stmt.executeQuery(query);
-        List<TypeTreat> types= new ArrayList<>();
-        while (rs.next()) {
-            types.add(new TypeTreat(rs.getString("typename")));
-        }
-        return types;
-    }
 
 
     public TypeTreat getTypeTreatByTypename(String typename) throws SQLException{
@@ -152,7 +141,11 @@ public class TreatmentService {
         //TODO(walid): get the value from the ui;
         preparedStatement.setLong(9, formTreat_id);
 
-        return preparedStatement.execute();
+        if(preparedStatement.executeUpdate() >0) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -190,11 +183,26 @@ public class TreatmentService {
 		return false;
 	}
 
+	public long getTypeIdFromName(String name) throws SQLException{
+        String query= "SELECT * from typetreat where typename=\""+name+"\" limit 1";
+        ResultSet rs= this.dbConnection.createStatement().executeQuery(query);
+        if(!rs.isBeforeFirst()) {
+            return 0;
+        }
+        TypeTreat typeTreat= new TypeTreat();
+        while(rs.next()) {
+            typeTreat.setId(rs.getLong("id"));
+        }
+        return typeTreat.getId();
+    }
+
+
 	//TODO(walid): handle null values;
-	public Treatment getTreatmentByName(String treatName) throws SQLException{
+	public Treatment getTreatmentByName(String treatName, String typeName) throws SQLException{
         this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        long treatTypeId= getTypeIdFromName(typeName);
         Treatment treatment= new Treatment();
-		String query= "SELECT * FROM treat WHERE name="+"\"" + treatName + "\";" ;
+		String query= "SELECT * FROM treat WHERE name="+"\"" + treatName + "\" AND typet="+treatTypeId+";" ;
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		while(rs.next()) {
@@ -206,26 +214,6 @@ public class TreatmentService {
 	}
 
 
-	public List<TreatForm> getAllTreatForms() throws SQLException{
-		this.dbConnection=DatabaseConnection.getInstance().getConnection();
-		List<TreatForm> forms= new ArrayList<>();
-		String query= "SELECT * FROM formtreat";
-		Statement stmt= this.dbConnection.createStatement();
-		ResultSet rs= stmt.executeQuery(query);
-		TreatForm treatForm;
-		
-		if (!rs.isBeforeFirst()) {
-			return null;
-		}
-
-		while(rs.next()){
-			treatForm= new TreatForm();
-			treatForm.setName(rs.getString("name"));
-			forms.add(treatForm);
-			treatForm= null;
-		}
-		return forms;
-	}
 
     public List<DetailedTreatment> getAllTreatmentsByNameAndType(String treatName, String typeName)
             throws SQLException{
@@ -271,4 +259,127 @@ public class TreatmentService {
 
         return treatments;
     }
+
+
+
+
+	public boolean deleteTreatment(long id) throws SQLException {
+		this.dbConnection= DatabaseConnection.getInstance().getConnection();
+		String query= "DELETE FROM treat WHERE id=" + id + ";";
+		Statement stmt= this.dbConnection.createStatement();
+		if(stmt.executeUpdate(query) > 0) {
+			return true;
+		}
+		return false;
+	}
+
+
+    public List<TreatForm> getAllTreatForms() throws SQLException{
+        this.dbConnection=DatabaseConnection.getInstance().getConnection();
+        List<TreatForm> forms= new ArrayList<>();
+        String query= "SELECT * FROM formtreat";
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+        TreatForm treatForm;
+
+
+        while(rs.next()){
+            treatForm= new TreatForm();
+            treatForm.setName(rs.getString("name"));
+            treatForm.setId(rs.getLong("id"));
+            forms.add(treatForm);
+            treatForm= null;
+        }
+        return forms;
+    }
+
+
+    public List<TypeTreat> getAllTreatTypes () throws  SQLException{
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "SELECT * FROM typetreat";
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+        List<TypeTreat> types= new ArrayList<>();
+        while (rs.next()) {
+
+            types.add(new TypeTreat(rs.getLong("id"), rs.getString("typename")));
+        }
+        return types;
+    }
+
+
+    public long insertTreatType(TypeTreat typeTreat) throws SQLException{
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "INSERT INTO typetreat (typename, date_at) VALUES (?,?)";
+        PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
+        preparedStatement.setString(1, typeTreat.getTypename());
+        preparedStatement.setString(2, typeTreat.getDateAt());
+        if(preparedStatement.executeUpdate() > 0 ) {
+            ResultSet keys= preparedStatement.getGeneratedKeys();
+            if(keys.next()) {
+                return keys.getLong(1);
+            }
+        }
+        return 0;
+    }
+
+    public boolean updateTreatType(TypeTreat typeTreat) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "UPDATE typetreat SET typename=? WHERE id=" + typeTreat.getId() + ";";
+        PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
+        preparedStatement.setString(1,typeTreat.getTypename());
+        if(preparedStatement.executeUpdate() > 0 ){
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean deleteTreatType(long id) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "DELETE FROM typetreat WHERE id=" + id + ";";
+        Statement stmt= this.dbConnection.createStatement();
+        if(stmt.executeUpdate(query) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public long insertTreatForm(TreatForm treatForm) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query="INSERT INTO formtreat (name) VALUES (?)";
+        PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
+        preparedStatement.setString(1,treatForm.getName());
+        if(preparedStatement.executeUpdate()> 0) {
+            ResultSet keys= preparedStatement.getGeneratedKeys();
+            if(keys.next()) {
+                return keys.getLong(1);
+            }
+        }
+        return 0;
+    }
+
+
+    public boolean updateTreatForm(TreatForm treatForm) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query="UPDATE formtreat set name=? WHERE id=" + treatForm.getId() + ";";
+        PreparedStatement preparedStatement= this.dbConnection.prepareStatement(query);
+        preparedStatement.setString(1,treatForm.getName());
+        if(preparedStatement.executeUpdate()> 0) {
+           return true;
+        }
+        return false;
+    }
+
+
+    public boolean deleteTreatForm(long id) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "DELETE FROM formtreat WHERE id=" + id + ";";
+        Statement stmt= this.dbConnection.createStatement();
+        if(stmt.executeUpdate(query) > 0){
+            return true;
+        }
+        return false;
+    }
+
 }

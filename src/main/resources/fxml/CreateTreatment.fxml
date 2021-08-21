@@ -101,7 +101,7 @@
                         <Insets right="26.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label alignment="TOP_RIGHT" text="نوع الدواء">
+                  <Label alignment="TOP_RIGHT" text="تركيبة الدواء">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

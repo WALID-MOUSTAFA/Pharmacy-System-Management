@@ -3,11 +3,19 @@ package com.pharmacy.POGO;
 //NOTE(walid): this table in the inhireted database have a bad design;
 public class Expense {
 	private long id;
-	private long expenseMain;
+	private long expenseTypeId;
 	private String value;
 	private String dateAt;
+	private ExpenseType expenseType;
 
-	
+	public ExpenseType getExpenseType() {
+		return expenseType;
+	}
+
+	public void setExpenseType(ExpenseType expenseType) {
+		this.expenseType = expenseType;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -16,12 +24,12 @@ public class Expense {
 		this.id = id;
 	}
 
-	public long getExpenseMain() {
-		return expenseMain;
+	public long getExpenseTypeId() {
+		return expenseTypeId;
 	}
 
-	public void setExpenseMain(long expenseMain) {
-		this.expenseMain = expenseMain;
+	public void setExpenseTypeId(long expenseTypeId) {
+		this.expenseTypeId = expenseTypeId;
 	}
 
 	public String getValue() {

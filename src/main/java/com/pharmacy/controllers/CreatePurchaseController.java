@@ -2,6 +2,7 @@ package com.pharmacy.controllers;
 
 
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.Purchase;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.PurchasesService;
@@ -14,8 +15,9 @@ import javafx.scene.control.DatePicker;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class CreatePurchaseController extends MyController
 {
@@ -27,23 +29,12 @@ public class CreatePurchaseController extends MyController
 	@FXML
 	private TextField pillNum;
 	
-	@FXML
-	private DatePicker purchaseDate;
-	
-	@FXML
-	private TextField totalPeople;
-
-	@FXML
-	private TextField totalPharmacy;
-
-	@FXML
-	private TextField countUnit;
-
-	@FXML
-	private TextField description;
-
-	@FXML
-	private ComboBox supplierCombo;
+	@FXML private DatePicker purchaseDate;
+	@FXML private TextField totalPeople;
+	@FXML private TextField totalPharmacy;
+	@FXML private TextField countUnit;
+	@FXML private TextField description;
+	@FXML private ComboBox supplierCombo;
 
 
 
@@ -62,32 +53,65 @@ public class CreatePurchaseController extends MyController
 	@FXML
 	private void initialize() throws SQLException{
 		this.initializeSuppliersCombo();
+		MyUtils.setDatePickerFormat(this.purchaseDate);
 	}
 
 
 	@FXML
 	public void addNewPurchase() throws SQLException {
-		String pillNum= this.pillNum.getText();
-		Timestamp datePur= Timestamp.valueOf(purchaseDate.getValue().atStartOfDay());
-		String totalPeople= this.totalPeople.getText();
-		String totalPharmacy= this.totalPharmacy.getText();
-		String countUnit= this.countUnit.getText();
-		String description= this.description.getText();
-		String supplierName= this.supplierCombo
+		List<String> errors= new ArrayList<>();
+		Timestamp datePur= null;
+		Supplier supplier=new Supplier();
+		String totalPeople="";
+		String totalPharmacy="";
+		String countUnit="";
+		String description="";
+		String pillNum="";
+		String supplierName="";
+		Purchase purchase;
+
+		//checking here to prevent nullpointerexception;
+		if(purchaseDate.getValue() == null) {
+			errors.add("يجب أن تختار التاريخ");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(this.supplierCombo.getSelectionModel().isEmpty()) {
+			errors.add("يجب أن تختار المورد");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		pillNum = this.pillNum.getText();
+		datePur= Timestamp.valueOf(purchaseDate.getValue().atStartOfDay());
+		totalPeople= this.totalPeople.getText();
+		totalPharmacy= this.totalPharmacy.getText();
+		countUnit= this.countUnit.getText();
+		description= this.description.getText();
+		supplierName= this.supplierCombo
 			.getSelectionModel().getSelectedItem().toString();
+		supplier = this.suppliersService
+				.getSupplierByName(supplierName);
 
-		Supplier supplier= this.suppliersService
-			.getSupplierByName(supplierName);
-
-		Purchase purchase= new Purchase();
+		purchase= new Purchase();
 		purchase.setPillNum(pillNum);
 		purchase.setDatePur(datePur.toString());
-		purchase.setTotalPeople(Double.valueOf(totalPeople));
-		purchase.setTotalPharmacy(Double.valueOf(totalPharmacy));
-		purchase.setCountUnit(Double.valueOf(countUnit));
+		purchase.setTotalPeople
+			(!totalPeople.isEmpty()? Double.valueOf(totalPeople) : 0);
+		purchase.setTotalPharmacy
+			(!totalPharmacy.isEmpty()? Double.valueOf(totalPharmacy):0);
+		purchase.setCountUnit
+			(!countUnit.isEmpty()? Double.valueOf(countUnit):0);
 		purchase.setDescription(description);
 		purchase.setSupplier(supplier);
-		
+
+		MyUtils.<Purchase>validateModel(purchase, errors);
+		if(!errors.isEmpty()){
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
 		if(purchasesService.insertPurchase(purchase)) {
 
 			this.stage.close();
@@ -100,4 +124,5 @@ public class CreatePurchaseController extends MyController
 		}
 		
 	}
+
 }

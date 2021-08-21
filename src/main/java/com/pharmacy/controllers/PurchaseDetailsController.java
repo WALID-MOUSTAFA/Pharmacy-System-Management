@@ -1,11 +1,10 @@
 //TODO(walid): there is a bug in editing a newely added purchaseDetails;
+//TODO(walid): display treats with their type, and when retrive treat, retrive it with its type and name; use split;
+
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
-import com.pharmacy.POGO.BalanceTreat;
-import com.pharmacy.POGO.Purchase;
-import com.pharmacy.POGO.PurchaseDetails;
-import com.pharmacy.POGO.Treatment;
+import com.pharmacy.POGO.*;
 import com.pharmacy.services.BalanceService;
 import com.pharmacy.services.PurchaseDetailsService;
 import com.pharmacy.services.TreatmentService;
@@ -26,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseDetailsController extends MyController {
@@ -36,7 +36,7 @@ public class PurchaseDetailsController extends MyController {
 	//Note(walid): this is the purchase id, not the purchase details.
 	private long currentPurchaseId;
 	
-
+	
 	@FXML
 	private TextField quantity;
 	
@@ -163,9 +163,9 @@ public class PurchaseDetailsController extends MyController {
 
 	public void initializeTreatmentCombo() throws SQLException {
 		TreatmentService ts= new TreatmentService();
-		List<Treatment> treatments= ts.getAllTreatments();
-		for (Treatment t: treatments) {
-			this.treatName.getItems().add(t.getName());
+		List<DetailedTreatment> treatments= ts.getAllTreatments();
+		for (DetailedTreatment t: treatments) {
+			this.treatName.getItems().add(t.getName()+"-"+t.getTypeTreatName());
 		}
 	}
 
@@ -201,28 +201,63 @@ public class PurchaseDetailsController extends MyController {
 
 	@FXML
 	public void insertPurchaseDetails() throws SQLException {
+		List<String> errors= new ArrayList<>();
+		String quantity;
+		String pricePharmacy;
+		String totalPharmacy;
+		String pricePeople;
+		String totalPeople;
+		String expireDate;
+		String productionDate;
+		String treatName;
+		Treatment treatment;
+		
 		TreatmentService treatmentService= new TreatmentService();
 		PurchaseDetails purchaseDetails= new PurchaseDetails();
-		String quantity= this.quantity.getText();
-		String pricePharmacy= this.pricePharmacy.getText();
-		String totalPharmacy= this.totalPharmacy.getText();
-		String pricePeople= this.pricePeople.getText();
-		String totalPeople= this.totalPeople.getText();
-		String expireDate= Timestamp
+
+
+		if(this.expireDate.getValue() == null) {
+			errors.add("يجب اختيار تاريخ الصلاحية");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(this.productionDate.getValue() == null) {
+			errors.add("يجب اختيار تاريخ الإنتاج");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		
+		if(this.treatName.getValue() == null) {
+			errors.add("يجب اختيار اسم المنتج");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+
+
+		
+		quantity= this.quantity.getText();
+		pricePharmacy= this.pricePharmacy.getText();
+		totalPharmacy= this.totalPharmacy.getText();
+		pricePeople= this.pricePeople.getText();
+		totalPeople= this.totalPeople.getText();
+		expireDate= Timestamp
 			.valueOf(this
 				 .expireDate
 				 .getValue()
 				 .atStartOfDay()).toString();
-		String productionDate= Timestamp
+		productionDate= Timestamp
 			.valueOf(this
 				 .productionDate
 				 .getValue()
 				 .atStartOfDay()).toString();
-		String treatName= this.treatName.
+		treatName= this.treatName.
 			getSelectionModel().getSelectedItem().toString();
 
-		Treatment treatment= treatmentService
-			.getTreatmentByName(treatName);
+		treatment= treatmentService
+			.getTreatmentByName(treatName.split("-")[0], treatName.split("-")[1]);
 
 		purchaseDetails.setTreat(treatment);
 
@@ -232,14 +267,28 @@ public class PurchaseDetailsController extends MyController {
 		purchaseDetails.setTreat_id(treatment.getId());
 		purchaseDetails.setExpireDate(expireDate);
 		purchaseDetails.setProductionDate(productionDate);
-		purchaseDetails.setQuantity(Double.valueOf(quantity));
-		purchaseDetails.setPricePeople(Double.valueOf(pricePeople));
-		purchaseDetails.setTotalPeople(Double.valueOf(totalPeople));
-		purchaseDetails.setPricePharmacy(Double.valueOf(pricePharmacy));
-		purchaseDetails.setTotalPharmacy(Double.valueOf(totalPharmacy));
+		purchaseDetails.setQuantity
+			(!quantity.isEmpty()? Double.valueOf(quantity):0 );
+		purchaseDetails.setPricePeople
+			(!pricePeople.isEmpty()? Double.valueOf(pricePeople):0);
+		purchaseDetails.setTotalPeople
+			(!totalPeople.isEmpty()? Double.valueOf(totalPeople):0);
+		purchaseDetails.setPricePharmacy
+			(!pricePharmacy.isEmpty()?Double.valueOf(pricePharmacy):0);
+		purchaseDetails.setTotalPharmacy
+			(!totalPharmacy.isEmpty()?Double.valueOf(totalPharmacy):0);
+
 		
-		//do the insertion
+		MyUtils.<PurchaseDetails>validateModel(purchaseDetails, errors);
+		if(!errors.isEmpty()){
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		
+		//do the insertion 
 		//Note(walid): the insertion method returns the generated index if sucesss and 0 if falied;
+		
 		long insertedId= this.purchaseDetailsService
 			.insertPurchaseDetails(purchaseDetails);
 		if (insertedId != 0) {
@@ -277,7 +326,7 @@ public class PurchaseDetailsController extends MyController {
 		stage.setScene(new Scene(root,400, 680 ));
 		stage.showAndWait();
 		//NOTE(walid): a work around to update the table after edit;
-		this.initalizeTableview();
+		this.reInitalizeTableview();
 	}
 
 	private long getCurrentSelectedPurchaseDetailsId() {
@@ -307,7 +356,11 @@ public class PurchaseDetailsController extends MyController {
 		this.currentPurchaseId= currentSelectedItemId;
 	}
 
-	
+
+	private void reInitalizeTableview() throws SQLException {
+		this.purchasesDetailsTableView.getColumns().clear();
+		this.initalizeTableview();
+	}
 
 	
 	

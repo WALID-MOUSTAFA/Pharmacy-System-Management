@@ -1,9 +1,9 @@
+//TODO(walid): add refresh;
+//TODO(walid): add order by to the queries;
 package com.pharmacy.controllers;
 
 import com.pharmacy.POGO.*;
-import com.pharmacy.services.BalanceService;
-import com.pharmacy.services.SalesDetailsService;
-import com.pharmacy.services.SalesService;
+import com.pharmacy.services.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,8 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import com.pharmacy.services.TreatmentService;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
@@ -27,13 +27,15 @@ public class SalesController {
 	TreatmentService treatmentService;
 	SalesService salesService;
 	SalesDetailsService salesDetailsService;
-
+	CustomerService customerService;
+	
 	@FXML private TextField treatName;
 	@FXML private ComboBox treatType;
 	@FXML private ListView searchResult;
 	@FXML private TableView	relatedBalancesTableView;
 	@FXML private TextField billClientName;
-
+	
+	
 	//the detials of the balance treat;
 	@FXML private Text treatNameDetails;
 	@FXML private Text treatTypeDetails;
@@ -41,7 +43,9 @@ public class SalesController {
 	@FXML private TextField treatQuantityDetials;
 
 	@FXML private TableView billProductsTableView;
-
+	@FXML private GridPane productsDetails;
+	@FXML private ComboBox storedCustomerName;
+	
 	public void initializeTreatTypeCombo() throws SQLException {
 		TreatmentService treatmentService= new TreatmentService();
 		List<TypeTreat> types= treatmentService.getAllTreatTypes();
@@ -51,8 +55,8 @@ public class SalesController {
 	}
 
 	@FXML
-	private void treatTypeOnActionHandler(ActionEvent e) throws SQLException {
-		String typeName= ((ComboBox)e.getSource()).getValue().toString();
+	private void startSearchForTreat() throws SQLException {
+		String typeName= this.treatType.getValue().toString();
 		this.searchForTreat(this.treatName.getText(), typeName);
 	}
 
@@ -127,10 +131,11 @@ public class SalesController {
 	public SalesController() throws SQLException{
 			this.balanceService= new BalanceService();
 			this.treatmentService= new TreatmentService();
+			this.customerService= new CustomerService();
 			this.salesService= new SalesService();
 			this.salesDetailsService= new SalesDetailsService();
 	}
-
+	
 	
 
 
@@ -138,10 +143,13 @@ public class SalesController {
 	private void addTableviewRowDoubleClickListener() {
 		this.relatedBalancesTableView.setRowFactory
 			( tv-> {
+
 			  TableRow<BalanceTreat> row= new TableRow<>();
 			 row.setOnMouseClicked(event -> {
 			    if (event.getClickCount() == 2 &&(!row.isEmpty()) ) {
-			       try {
+				    this.productsDetails.setVisible(true);
+
+				    try {
 			       		System.out.println("clicked");
 				       this.showBalanceTreatDetails(row.getItem());
 					} catch (Exception e){}
@@ -162,6 +170,7 @@ public class SalesController {
 	private void addSearchResultDoubleClickListener() {
 		this.searchResult.setOnMouseClicked((ev)->{
 			if (ev.getClickCount() ==2){
+
 				try {
 					this.initializeRelatedBalanceTableView
 							(((DetailedTreatment) this.searchResult.getSelectionModel().getSelectedItem()).getId());
@@ -223,22 +232,39 @@ public class SalesController {
 		billItemModel.setBalanceTreat(currentSelected);
 		billItemModel.setQuantity(Double.valueOf(this.treatQuantityDetials.getText()));
 		addToBillTableView(billItemModel);
+
+		this.clearRelatedBalancesTableView();
+		this.productsDetails.setVisible(false);
+		
 	}
 
 	private void addToBillTableView(BillItemModel billItemModel) {
 		this.billProductsTableView.getItems().add(billItemModel);
 	}
 
+
+	public long getChoosenStoredClientId() throws SQLException {
+		if(this.storedCustomerName.getSelectionModel().isEmpty()){
+			return 0;
+		}
+		String name= this.storedCustomerName.getValue().toString();
+		return this.customerService.getCustomerByName(name).getId();
+	}
+	
 	@FXML
 	private void saveBill() throws SQLException{
 
 		List<BillItemModel> items;
 		double totalBill=0;
 		Sale sale= new Sale();
+		String storedCustomerName;
+		String clientName;
 
 		if (this.billProductsTableView.getItems().isEmpty()) {
 			return;
 		}
+
+		clientName= this.billClientName.getText();
 
 		items= this.billProductsTableView.getItems();
 		for(BillItemModel b : items){
@@ -247,8 +273,14 @@ public class SalesController {
 
 		sale.setTotal(totalBill);
 		sale.setNetTotal(totalBill-sale.getDiscount());
-		sale.setCustomerId(1);
-		sale.setName(this.billClientName.getText());
+		if(this.getChoosenStoredClientId() == 0){
+			return; //TODO(walid): handle this error
+		}
+		
+		sale.setCustomerId(this.getChoosenStoredClientId());
+
+		sale.setName(clientName);
+
 		long insertedSaleId= this.salesService.insertSale(sale);
 
 		//inserting salesDetails 
@@ -264,7 +296,7 @@ public class SalesController {
 			saleDetails.setPriceOne(b.getBalanceTreat().getPrice());
 			saleDetails.setTreat(b.getBalanceTreat().getTreat());
 			saleDetails.setTreatId(b.getBalanceTreat().getTreatId());
-			if(b.getBalanceTreat().getQuantity() < b.getQuantity()) {
+			if(b.getBalanceTreat().getQuantity() < b.getQuantity() || b.getQuantity() == 0) {
 				Alert alert= new Alert(Alert.AlertType.ERROR);
 				alert.setContentText("الكمية المطلوبة من هذا الدواء أكبر من المتوافر حالياً: " + b.getBalanceTreat().getTreat().getName());
 				alert.show();
@@ -292,12 +324,27 @@ public class SalesController {
 				this.billProductsTableView.getSelectionModel().getSelectedItem());
 	}
 
+
+	@FXML
+	private void clearRelatedBalancesTableView(){
+		this.relatedBalancesTableView.getItems().clear();
+	}
+
+	
+	private void initalizeCustomerCombo() throws SQLException{
+		List<Customer> customers= this.customerService.getAllCustomers();
+		for (Customer c : customers) {
+			this.storedCustomerName.getItems().add(c.getName());
+		}
+	}
+	
 	@FXML
 	public void initialize() throws SQLException{
 		this.initializeTreatTypeCombo();
 		this.addSearchResultDoubleClickListener();
 		this.addTableviewRowDoubleClickListener();
 		this.initalizeBillTableView();
+		this.initalizeCustomerCombo();
 	}
 
 }

@@ -1,6 +1,15 @@
 package com.pharmacy.POGO;
 
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+
 public class Purchase {
+
+	public Purchase() {
+		this.dateAt= new Timestamp(System.currentTimeMillis()).toString();
+	}
 
 	private Long id;
 
@@ -14,20 +23,29 @@ public class Purchase {
 
 	private String datePur;
 
+	@NotEmpty(message = "رقم الفاتورة مطلوب")
+	@NotNull(message = "رقم الفاتورة مطلوب")
 	private String pillNum;
 
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double totalPeople;
 
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double totalPharmacy;
 
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double countUnit;
 
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double discount;
 
 	private double profit;
 
+	@NotEmpty(message="يجب ملء البيانات بالكامل")
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private String description;
 
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private String dateAt;
 
 	private long supplierID;

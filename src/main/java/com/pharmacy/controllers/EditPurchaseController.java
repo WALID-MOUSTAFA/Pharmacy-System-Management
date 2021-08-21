@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditPurchaseController extends MyController{
@@ -93,20 +94,46 @@ public class EditPurchaseController extends MyController{
 	
 	@FXML
 	public void editPurchase() throws SQLException{
-		Purchase purchase= this.getSpecificPurchase();
-		Supplier supplier= this.suppliersService
+		List<String> errors = new ArrayList<>();
+		Purchase purchase;
+		Supplier supplier;
+		String pillNum;
+
+		if(this.supplierCombo.getSelectionModel().isEmpty()) {
+			errors.add("يجب أن تختار المورد");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(purchaseDate.getValue() == null) {
+			errors.add("يجب أن تختار التاريخ");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		purchase= this.getSpecificPurchase();
+		supplier= this.suppliersService
 			.getSupplierByName
 		       (this.supplierCombo.getSelectionModel().getSelectedItem()
 			.toString());
-		purchase.setPillNum(this.pillNum.getText());
+		pillNum = this.pillNum.getText();
+
+		purchase.setPillNum(pillNum);
 		purchase.setTotalPeople
-			(Double.valueOf(this.totalPeople.getText()));
+			(!totalPeople.getText().isEmpty()?
+					Double.valueOf(this.totalPeople.getText()) : 0);
 		purchase.setTotalPharmacy
-			(Double.valueOf(this.totalPharmacy.getText()));
+			(!totalPharmacy.getText().isEmpty()?
+					Double.valueOf(this.totalPharmacy.getText()):0);
 		purchase.setDescription(this.description.getText());
 		purchase.setDatePur(this.purchaseDate.getValue().toString());
 		purchase.setSupplier(supplier);
 
+		MyUtils.<Purchase>validateModel(purchase, errors);
+		if(!errors.isEmpty()){
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
 		if(this.purchasesService.updatePurchase(purchase)) {
 			this.stage.close();
 		} else {

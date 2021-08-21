@@ -1,5 +1,7 @@
 package com.pharmacy.POGO;
 
+import javax.validation.constraints.NotNull;
+
 public class PurchaseDetails {
 	private long id;
 	private long treat_id;
@@ -21,14 +23,20 @@ public class PurchaseDetails {
 		this.purchase_id = purchase_id;
 	}
 
-
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private String expireDate;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private String productionDate;
 	private String dateAt;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double quantity;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double pricePeople;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double pricePharmacy;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double totalPeople;
+	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double totalPharmacy;
 	private Treatment treat;
 	private Purchase purchase;

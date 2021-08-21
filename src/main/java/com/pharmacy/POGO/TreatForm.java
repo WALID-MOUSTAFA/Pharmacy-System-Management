@@ -1,8 +1,11 @@
 package com.pharmacy.POGO;
 
+import java.sql.Timestamp;
+
 public class TreatForm {
 	private long id;
 	private String name;
+
 
 	public long getId() {
 		return id;

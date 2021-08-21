@@ -1,14 +1,15 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.SuppliersService;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-		    
-		    
 
 public class EditSupplierController extends MyController {
 
@@ -47,16 +48,30 @@ public class EditSupplierController extends MyController {
 
 	@FXML
 	private void updateSupplier() throws SQLException {
-		this.supplier.setName(this.supplierName.getText());
-		this.supplier.setPhone(this.supplierPhone.getText());
-		this.supplier.setAddress(this.supplierAddress.getText());
-		this.supplier.setCash(Double.valueOf(this.supplierCash.getText()));
+		List<String> errors= new ArrayList<>();
+		String name= this.supplierName.getText();
+		String address= this.supplierPhone.getText();
+		String phone= this.supplierAddress.getText();
+		double cash= !this.supplierCash.getText().isEmpty()?
+			Double.valueOf(this.supplierCash.getText())
+			: 0;
+			  
+		this.supplier.setName(name);
+		this.supplier.setPhone(phone);
+		this.supplier.setAddress(address);
+		this.supplier.setCash(cash);
+
+		MyUtils.<Supplier>validateModel(supplier, errors);
+		if(!errors.isEmpty()) {
+			MyUtils.showValidationErrors(errors);;
+			return;
+		}
 
 		if(this.suppliersService.updateSupplier(this.supplier)) {
 			this.stage.close();
 		} else {
 			Alert alert= new Alert(Alert.AlertType.ERROR);
-			alert.setContentText("حدث خطأ أثناء الحذف");
+			alert.setContentText("حدث خطأ أثناء التعديل");
 			alert.show();
 		}
 	}

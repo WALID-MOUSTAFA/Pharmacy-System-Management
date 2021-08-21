@@ -14,7 +14,7 @@ import java.util.List;
 public class MiscTest {
     public void TestSelectTreatments() throws SQLException {
         TreatmentService tr= new TreatmentService();
-        List<Treatment> l = tr.getAllTreatments();
+        List<DetailedTreatment> l = tr.getAllTreatments();
         Assert.assertTrue(l.get(0) instanceof Treatment);
     }
 

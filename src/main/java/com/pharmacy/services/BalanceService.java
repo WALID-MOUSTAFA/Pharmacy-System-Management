@@ -180,4 +180,14 @@ public class BalanceService {
 		}
 		return false;
 	}
+
+
+	public boolean increaseBalance(long id, double quantity) throws SQLException {
+		String query= "UPDATE blance_treat SET quantity = quantity+" + quantity + ";";
+		Statement stmt= this.dbConnection.createStatement();
+		if(stmt.executeUpdate(query)>0){
+			return true;
+		}
+		return false;
+	}
 }

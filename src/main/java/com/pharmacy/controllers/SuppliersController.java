@@ -21,12 +21,20 @@ public class SuppliersController extends MyController{
 
     private SuppliersService suppliersService;
 
-    @FXML private TableView suppliersTableView;
+	@FXML private TableView suppliersTableView;
 	@FXML private Button editSupplierButton;
 	@FXML private Button deleteSupplierButton;
-
+	@FXML private Button showSupplierPaymentButton;
 	private long currentSupplierId;
-	
+
+	@FXML
+	private CreateSupplierController createSupplierController;
+
+	public void setCurrentSupplier(Supplier currentSupplier) {
+		this.currentSupplier = currentSupplier;
+	}
+
+	private Supplier currentSupplier; //NOTE(walid): choose whether this or just the id, stupid;
 	
 	public SuppliersController() throws SQLException{
         this.suppliersService= new SuppliersService();
@@ -37,10 +45,8 @@ public class SuppliersController extends MyController{
         this.swapWithControlPanelScene();
     }
 
-    private void initializeTableView() throws SQLException {
-        ObservableList<Supplier> suppliers= FXCollections
-                .observableArrayList(this.suppliersService.getAllSuppliers());
-
+    public void initializeTableView() throws SQLException {
+		this.suppliersTableView.getColumns().clear();
         TableColumn<Supplier, String> nameColumn= new TableColumn<>("الاسم");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 	   
@@ -63,7 +69,10 @@ public class SuppliersController extends MyController{
                 cashColumn,
                 dateAtColumn);
 
-        this.suppliersTableView.setItems(suppliers);
+		ObservableList<Supplier> suppliers= FXCollections
+				.observableArrayList(this.suppliersService.getAllSuppliers());
+
+		this.suppliersTableView.setItems(suppliers);
 
 		//set listener to set currentSupplierId
 		this.suppliersTableView.getSelectionModel()
@@ -71,6 +80,7 @@ public class SuppliersController extends MyController{
 			.addListener((obsvaal, oldval, newval)-> {
 					this.setCurrentSuppleirId
 						(((Supplier)newval).getId());
+						this.setCurrentSupplier(((Supplier)newval));
 				});
 
     }
@@ -85,9 +95,11 @@ public class SuppliersController extends MyController{
 		if(newval) {
 		    this.editSupplierButton.setDisable(false);
 		    this.deleteSupplierButton.setDisable(false);
+		    this.showSupplierPaymentButton.setDisable(false);
 		} else {
 		    this.editSupplierButton.setDisable(true);
 		    this.deleteSupplierButton.setDisable(true);
+			this.showSupplierPaymentButton.setDisable(true);
 		}
 	    });
 	}
@@ -96,6 +108,7 @@ public class SuppliersController extends MyController{
     public void initialize () throws SQLException{
         this.initializeTableView();
 		this.addTableViewFocusListeners();
+		this.createSupplierController.setSuppliersController(this);
 	}
 
     @FXML
@@ -118,7 +131,7 @@ public class SuppliersController extends MyController{
 		Stage stage= new Stage();
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation
-			(getClass().getResource("/fxml/editSupplier.fxml"));
+			(getClass().getResource("/fxml/EditSupplier.fxml"));
 		EditSupplierController editSupplierController=
 			new EditSupplierController();
 		editSupplierController.setId(this.currentSupplierId);
@@ -127,7 +140,7 @@ public class SuppliersController extends MyController{
 		Parent root= loader.load();
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
-		this.initializeTableView();
+		this.reInitializeTableView();
 	}
 
 	
@@ -145,5 +158,28 @@ public class SuppliersController extends MyController{
 
 	private void setCurrentSuppleirId(long id){
 		this.currentSupplierId= id;
+	}
+
+	private void reInitializeTableView() throws SQLException {
+		this.suppliersTableView.getColumns().clear();
+		this.initializeTableView();
+	}
+
+
+
+	@FXML
+	private void showSupplierPayment() throws IOException, SQLException{
+		Stage stage= new Stage();
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation
+				(getClass().getResource("/fxml/SupplierPayment.fxml"));
+		SupplierPaymentController supplierPaymentController=
+				new SupplierPaymentController();
+		supplierPaymentController.setSupplier(this.currentSupplier);
+		supplierPaymentController.setStage(stage);
+		loader.setController(supplierPaymentController);
+		Parent root= loader.load();
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 }

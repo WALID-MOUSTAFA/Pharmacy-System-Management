@@ -1,15 +1,18 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.TreatForm;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.TreatmentService;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateTreatmentController extends MyController{
@@ -36,7 +39,14 @@ public class CreateTreatmentController extends MyController{
 
 	@FXML
 	private ComboBox treatFormCombo;
-	
+
+	private TreatmentController treatmentController; //parent fxml controller ;
+
+	public void setTreatmentController(TreatmentController treatmentController) {
+		this.treatmentController = treatmentController;
+	}
+
+
 	public CreateTreatmentController() {
 		this.treatmentService= new TreatmentService();
 	}
@@ -66,16 +76,46 @@ public class CreateTreatmentController extends MyController{
 
 	@FXML
 	private void addNewTreatment() throws SQLException {
-		String typename= this.treatTypeCombo
-			.getSelectionModel().getSelectedItem().toString();
-		String name= this.treatName.getText();
-		String parcode= this.treatBarCode.getText();
-		String companyName= this.companyName.getText();
-		String treatPlace= this.treatPlace.getText();
-		double lowCount= Double.valueOf(this.lowCount.getText());
-		String treatFormName= this.treatFormCombo.getSelectionModel()
-			.getSelectedItem().toString();
-			
+		
+		
+		List<String> errors= new ArrayList<>();
+		String typename= "";
+		String name;
+		String parcode;
+		String companyName;
+		String treatPlace;
+		double lowCount;
+		String treatFormName="";
+
+		if(!this.treatTypeCombo.getSelectionModel().isEmpty()) {
+			typename= this.treatTypeCombo
+				.getSelectionModel().getSelectedItem().toString();
+		} else {
+			errors.add("يجب اختيار النوع");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(!this.treatFormCombo.getSelectionModel().isEmpty()) {
+			treatFormName= this.treatFormCombo.getSelectionModel()
+				.getSelectedItem().toString();
+
+		} else {
+			errors.add("يجب اختيار التركيبة");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		
+		name= this.treatName.getText();
+		parcode= this.treatBarCode.getText();
+		companyName= this.companyName.getText();
+		treatPlace= this.treatPlace.getText();
+
+		lowCount= !this.lowCount.getText().isEmpty()?
+			Double.valueOf(this.lowCount.getText()): 0;
+
+		
 		DetailedTreatment dt= new DetailedTreatment();
 		dt.setName(name);
 		dt.setTypeTreatName(typename);
@@ -84,8 +124,22 @@ public class CreateTreatmentController extends MyController{
 		dt.setPlace(treatPlace);
 		dt.setLowcount(lowCount);
 		dt.setFormTreatName(treatFormName);
-		//TODO(walid): handle the success message;
-		System.out.println(this.treatmentService.insertTreatment(dt));
+		
+		MyUtils.<DetailedTreatment>validateModel(dt, errors);
+		if(!errors.isEmpty()){
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(this.treatmentService.insertTreatment(dt)){
+			this.treatmentController
+				.addTreatmentItemToTheTreatmentTableView(dt);
+		} else {
+
+			Alert alert= new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("حدث خطأ ما أثناء الإضافة");
+			alert.show();
+		}
 
 	}
 

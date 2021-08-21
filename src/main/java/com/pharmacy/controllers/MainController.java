@@ -16,7 +16,7 @@ public class MainController extends MyController {
 
 	@FXML
 	private VBox mainCanvas;
-
+	private VBox originalMainCanvas;
 	@FXML
 	private Button treatments;
 
@@ -24,6 +24,10 @@ public class MainController extends MyController {
 	private VBox nav;
 
 	public void swapMainCanvasContent(Parent root) {
+		if(this.originalMainCanvas== null) {
+			this.originalMainCanvas = new VBox();
+			this.originalMainCanvas.getChildren().setAll(this.mainCanvas.getChildren());
+		}
 		mainCanvas.getChildren().clear();
 		mainCanvas.getChildren().addAll(root);
 	}
@@ -48,7 +52,9 @@ public class MainController extends MyController {
         FXMLLoader loader= new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/Medicine.fxml"));
         TreatmentController treatmentController = new TreatmentController();
+        this.stage.setTitle("المنتجات");
         treatmentController.setStage(this.stage);
+
         loader.setController(treatmentController);
         Parent root= loader.<VBox>load();
 		swapMainCanvasContent(root);
@@ -72,26 +78,62 @@ public class MainController extends MyController {
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/Suppliers.fxml"));
 		SuppliersController suppliersController= new SuppliersController();
+		this.stage.setTitle("الموردين");
 		suppliersController.setStage(this.stage);
 		loader.setController(suppliersController);
 		Parent root= loader.<VBox>load();
 		swapMainCanvasContent(root);
 	}
 
-	
+
 	@FXML
-	public void showStoreScene() throws IOException, SQLException {
+	public void showCustomerScene() throws IOException, SQLException {
 		FXMLLoader loader= new FXMLLoader();
-		loader.setLocation(getClass().getResource("/fxml/Store.fxml"));
-		StoreController storeController= new StoreController();
-		storeController.setMainCanvas(this.mainCanvas);
-		storeController.setStage(this.stage);
-		stage.setTitle("المخزن");
-		loader.setController(storeController);
+		loader.setLocation(getClass().getResource("/fxml/Customer.fxml"));
+		CustomerController customerController= new CustomerController();
+		customerController.setStage(this.stage);
+		stage.setTitle("العملاء");
+		loader.setController(customerController);
 		Parent root= loader.<VBox>load();
 		swapMainCanvasContent(root);
 	}
 
 
+	@FXML
+	public void showBillScene() throws IOException, SQLException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Bill.fxml"));
+		BillController billController= new BillController();
+		billController.setStage(this.stage);
+		stage.setTitle("المبيعات");
+		loader.setController(billController);
+		Parent root= loader.<VBox>load();
+		swapMainCanvasContent(root);
+	}
+
+
+	@FXML
+	public void showExpensesScene() throws IOException, SQLException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Expenses.fxml"));
+		ExpensesController expensesController= new ExpensesController();
+		expensesController.setStage(this.stage);
+		stage.setTitle("المصروفات");
+		loader.setController(expensesController);
+		Parent root= loader.<VBox>load();
+		swapMainCanvasContent(root);
+	}
+
+	@FXML
+	public void showFormTypeTreatScene () throws IOException, SQLException {
+		FXMLLoader loader= new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/TreatTypeAndForm.fxml"));
+		TreatTypeAndFormController treatTypeAndFormController= new TreatTypeAndFormController();
+		treatTypeAndFormController.setStage(this.stage);
+		stage.setTitle("نوع وتركيب المنتجات");
+		loader.setController(treatTypeAndFormController);
+		Parent root= loader.<VBox>load();
+		swapMainCanvasContent(root);
+	}
 
 }

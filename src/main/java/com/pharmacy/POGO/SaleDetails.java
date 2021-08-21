@@ -8,7 +8,7 @@ public class SaleDetails {
 	private long saleId;
 	private Sale sale;
 	private long treatId;
-	private Treatment treat;
+	private DetailedTreatment treat;
 	private double quantity;
 	private long balanceId;
 	private BalanceTreat balanceTreat;
@@ -54,11 +54,11 @@ public class SaleDetails {
 		this.treatId = treatId;
 	}
 
-	public Treatment getTreat() {
+	public DetailedTreatment getTreat() {
 		return treat;
 	}
 
-	public void setTreat(Treatment treat) {
+	public void setTreat(DetailedTreatment treat) {
 		this.treat = treat;
 	}
 

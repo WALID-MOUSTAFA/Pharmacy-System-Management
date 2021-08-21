@@ -1,10 +1,13 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.SuppliersService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -21,6 +24,12 @@ public class CreateSupplierController extends  MyController{
     @FXML
     private TextField supplierCash;
 
+	private SuppliersController suppliersController; //for communication between parent and included fxml
+
+	public void setSuppliersController(SuppliersController suppliersController) {
+		this.suppliersController = suppliersController;
+	}
+
 
     public CreateSupplierController() throws SQLException {
         this.suppliersService= new SuppliersService();
@@ -28,20 +37,37 @@ public class CreateSupplierController extends  MyController{
 
     @FXML
     public void addNewSupplier() throws SQLException{
-        System.out.println(this.stage);
+	    List<String> errors= new ArrayList<>();
+	    String name;
+	    String address;
+	    String phone;
+	    double cash;	    
+	    
+	    name= this.supplierName.getText();
+	    address= this.supplierAddress.getText();
+	    phone= this.supplierPhone.getText();
+	    cash= !this.supplierCash.getText().isEmpty()?
+		    Double.valueOf(supplierCash.getText())
+		    : 0;
+	    
+	    
+	    Supplier supplier= new Supplier();
+	    supplier.setName(name);
+	    supplier.setAddress(address);
+	    supplier.setPhone(phone);
+	    supplier.setCash(cash);
 
-        Supplier supplier= new Supplier();
-        supplier.setDateAt((new Timestamp(System.currentTimeMillis())).toString());
-        supplier.setName(supplierName.getText());
-        supplier.setAddress(supplierAddress.getText());
-        supplier.setPhone(supplierPhone.getText());
-        supplier.setCash(Double.valueOf(supplierCash.getText()));
+	    MyUtils.<Supplier>validateModel(supplier, errors);
+	    if(!errors.isEmpty()) {
+		    MyUtils.showValidationErrors(errors);;
+		    return;
+	    }
+	    
+	    boolean result= this.suppliersService.insertTreatment(supplier);
 
-        boolean result= this.suppliersService.insertTreatment(supplier);
-
-        if(result == true) {
-            this.stage.close();
-        }
+		if (result) {
+			this.suppliersController.initializeTableView();
+		}
 
     }
 }

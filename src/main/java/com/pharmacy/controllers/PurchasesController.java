@@ -5,9 +5,11 @@
 
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.PurchaseDetails;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.function.Predicate;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -32,17 +35,13 @@ public class PurchasesController extends MyController{
 
     private long currentSelectedItemId;
 
-    @FXML
-    private TableView purchasesTableView;
-
-    @FXML
-    private Button editPurchaseButton;
-
-    @FXML
-    private Button deletePurchaseButton;
+    @FXML private TableView purchasesTableView;
+    @FXML private Button editPurchaseButton;
+    @FXML private Button deletePurchaseButton;
+	@FXML private TextField searchBox;
 
 
-    public PurchasesController() throws SQLException{
+	public PurchasesController() throws SQLException{
 	this.purchasesService = new PurchasesService();
     }
 
@@ -120,8 +119,9 @@ public class PurchasesController extends MyController{
     @FXML
     private void initialize() throws SQLException {
 	this.initializeTableView();
-	addTableviewRowDoubleClickListener();
 	addTableViewFocusListeners();
+    	
+	addTableviewRowDoubleClickListener();
     }
 
     private void addTableviewRowDoubleClickListener() {
@@ -157,14 +157,15 @@ public class PurchasesController extends MyController{
 	Stage stage= new Stage();
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation(getClass()
-			   .getResource("/fxml/createPurchase.fxml"));
+			   .getResource("/fxml/CreatePurchase.fxml"));
 	CreatePurchaseController createPurchaseController=
 	    new CreatePurchaseController();
 	createPurchaseController.setStage(stage);
 	loader.setController(createPurchaseController);
 	Parent root= loader.load();
 	stage.setScene(new Scene(root));
-	stage.show();
+	stage.showAndWait();
+	this.reInitializePurchaseTableView();
     }
 
 
@@ -212,7 +213,8 @@ public class PurchasesController extends MyController{
 	stage.setScene(new Scene(root,400, 680 ));
 	stage.showAndWait();
 	//NOTE(walid): a work around to update the table after edit;
-	this.initializeTableView();
+
+	this.reInitializePurchaseTableView();
     }
 
     //Note(walid): this method to return the current seleced id of
@@ -225,4 +227,27 @@ public class PurchasesController extends MyController{
 		.getSelectedItem()
 		).getId();
     }
+
+
+	private  void reInitializePurchaseTableView() throws SQLException {
+    	this.purchasesTableView.getColumns().clear();
+    	this.initializeTableView();
+	}
+	
+	
+	@FXML
+	private void doSearch() throws SQLException{
+    	String q= this.searchBox.getText();
+    	if(q.isEmpty()) reInitializePurchaseTableView();
+    	ObservableList<Purchase> items= this.purchasesTableView.getItems();
+		FilteredList<Purchase> filteredList= new FilteredList<>(items);
+		this.purchasesTableView.setItems(filteredList);
+
+		filteredList.setPredicate(new Predicate<Purchase>() {
+			@Override
+			public boolean test(Purchase purchase) {
+				return purchase.getPillNum().contains(q);
+			}
+		});
+	}
 }

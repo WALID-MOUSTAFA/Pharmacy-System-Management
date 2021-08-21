@@ -1,9 +1,12 @@
 package com.pharmacy.services;
 
 import com.pharmacy.DatabaseConnection;
+import com.pharmacy.POGO.Customer;
 import com.pharmacy.POGO.Sale;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SalesService{
@@ -41,8 +44,49 @@ public class SalesService{
 	}
 
 
-	public boolean DeleteSale() {return false;}
+	public boolean deleteSale(long id) throws SQLException {
+		String query= "DELETE FROM sales WHERE id=" + id +";";
+		Statement stmt= this.dbConnection.createStatement();
+		if(stmt.executeUpdate(query) > 0){
+			return true;
+		}
+		return false;
+	}
 
 
+	public List<Sale> getAllSales() throws SQLException{
+		List<Sale> sales= new ArrayList<>();
+		String query= "SELECT sales.*, customer.name as customerName from sales join customer on sales.customer_id=customer.id;";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		if(!rs.isBeforeFirst()) {
+			return null;
+		}
+		Sale sale;
+		Customer customer;
+		while(rs.next()) {
+			sale= new Sale();
+			customer= new Customer();
+			sale.setId(rs.getLong("id"));
+			sale.setName(rs.getString("name"));
+			sale.setDiscount(rs.getDouble("discount"));
+			sale.setTotal(rs.getDouble("total"));
+			sale.setDateIn(rs.getString("date_in"));
+			sale.setCustomerId(rs.getLong("customer_id"));
+			sale.setNetTotal(rs.getDouble("net_total"));
+			customer.setId(rs.getLong("customer_id"));
+			customer.setName(rs.getString("customerName"));
+			sale.setCustomer(customer);
+			sales.add(sale);
+			customer= null;
+			sale=null;
+		}
 
+		return sales;
+	}
+
+
+	
+
+	
 }

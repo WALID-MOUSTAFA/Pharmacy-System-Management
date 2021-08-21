@@ -9,12 +9,19 @@ import java.sql.SQLException;
 
 
 public class DatabaseConnection {
-
+	
 	private static DatabaseConnection instance;
 	private Connection connection;
-	private String url = "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
 	
+	private String url;
+	private boolean production= false;
+
 	private DatabaseConnection() throws SQLException {
+		if(!production){
+			url= "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
+		}else {
+			url="jdbc:sqlite:.\\database.db";
+		}
 		SQLiteConfig config = new SQLiteConfig();
 		config.enforceForeignKeys(true);
 		config.resetOpenMode(SQLiteOpenMode.CREATE); // this disable creation

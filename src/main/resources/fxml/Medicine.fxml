@@ -48,7 +48,7 @@
             <Button fx:id="editTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#editTreatment" text="تعديل" />
          </items>
       </ToolBar>
-      <SplitPane dividerPositions="0.7" prefHeight="200.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.6" prefHeight="200.0" prefWidth="200.0">
          <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
@@ -57,7 +57,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <fx:include minWidth="-Infinity" prefWidth="200.0" source="CreateTreatment.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <fx:include fx:id="createTreatment" minWidth="-Infinity" prefWidth="200.0" source="CreateTreatment.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </items>

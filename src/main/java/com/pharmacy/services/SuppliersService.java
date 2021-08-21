@@ -24,6 +24,7 @@ public class SuppliersService {
         while(rs.next()) {
             supplier= new Supplier();
             supplier.setId(rs.getLong("id"));
+            supplier.setPhone(rs.getString("phone"));
             supplier.setName(rs.getString("name"));
             supplier.setAddress(rs.getString("address"));
             supplier.setCash(rs.getDouble("cash"));

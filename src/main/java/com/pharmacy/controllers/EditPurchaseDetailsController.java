@@ -1,5 +1,8 @@
+//TODO(walid): change the quantity when change the the quantity
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
+import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.PurchaseDetailsService;
@@ -12,6 +15,7 @@ import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditPurchaseDetailsController extends MyController{
@@ -63,7 +67,7 @@ public class EditPurchaseDetailsController extends MyController{
 	
 	public void initializeTreatmentCombo() throws SQLException {
 		TreatmentService ts= new TreatmentService();
-		List<Treatment> treatments= ts.getAllTreatments();
+		List<DetailedTreatment> treatments= ts.getAllTreatments();
 		for (Treatment t: treatments) {
 			this.treatName.getItems().add(t.getName());
 		}
@@ -93,42 +97,98 @@ public class EditPurchaseDetailsController extends MyController{
 	@FXML
 	public void initialize() throws SQLException {
 		this.initializeForm();
+		MyUtils.setDatePickerFormat(this.expireDate);
+		MyUtils.setDatePickerFormat(this.productionDate);
 	}
 
 	
 	@FXML
 	public void editPurchaseDetails() throws SQLException{
+
+		List<String> errors= new ArrayList<>();
 		TreatmentService treatmentService= new TreatmentService();
 		PurchaseDetails purchaseDetails= this.getSpecificPurchaseDetails();
-		Treatment treat= treatmentService
-			.getTreatmentByName(this.treatName
-					    .getSelectionModel()
-					    .getSelectedItem().toString());
+
+
+		String quantity;
+		String pricePharmacy;
+		String totalPharmacy;
+		String pricePeople;
+		String totalPeople;
+		String expireDate;
+		String productionDate;
+		String treatName;
+		Treatment treat;
+
+
+		
+		if(this.expireDate.getValue() == null) {
+			errors.add("يجب اختيار تاريخ الصلاحية");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		if(this.productionDate.getValue() == null) {
+			errors.add("يجب اختيار تاريخ الإنتاج");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		
+		if(this.treatName.getValue() == null) {
+			errors.add("يجب اختيار اسم المنتج");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
+
+		
+		quantity= this.quantity.getText();
+		totalPharmacy= this.totalPharmacy.getText();
+		totalPeople = this.totalPeople.getText();
+		pricePharmacy=this.pricePharmacy.getText();
+		pricePeople= this.pricePeople.getText();
+		expireDate= this.expireDate.getValue().toString();
+		productionDate= this.productionDate.getValue().toString();
+
+		String name= this.treatName
+				.getSelectionModel()
+				.getSelectedItem().toString();
+		treat= treatmentService
+			.getTreatmentByName(name.split("-")[0], name.split("-")[1]);
 
 
 		purchaseDetails.setQuantity
-			(Double.valueOf(this.quantity.getText()));
+			(!quantity.isEmpty()? Double.valueOf(quantity):0);
 		purchaseDetails.setTotalPharmacy
-			(Double.valueOf(this.totalPharmacy.getText()));
+			(!totalPharmacy.isEmpty()?Double.valueOf(totalPharmacy):0);
 		purchaseDetails.setPricePharmacy
-			(Double.valueOf(this.pricePharmacy.getText()));
+			(!pricePharmacy.isEmpty()?Double.valueOf(pricePharmacy):0);
 		purchaseDetails.setTotalPeople
-			(Double.valueOf(this.totalPeople.getText()));
+			(!totalPeople.isEmpty()? Double.valueOf(totalPeople):0);
 		purchaseDetails.setPricePeople
-			(Double.valueOf(this.pricePeople.getText()));
+			(!pricePeople.isEmpty()? Double.valueOf(pricePeople):0);
 		purchaseDetails.setExpireDate
-			(this.expireDate.getValue().toString());
+			(expireDate);
 		purchaseDetails.setProductionDate
-			(this.productionDate.getValue().toString());
+			(productionDate);
 
 		purchaseDetails.setTreat_id(treat.getId());
+		
+		
+		
+		MyUtils.<PurchaseDetails>validateModel(purchaseDetails, errors);
+		if(!errors.isEmpty()){
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
 
-
+		
 		if(this.purchaseDetailsService
 		   .updatePurchaseDetails(purchaseDetails)) {
 			this.stage.close();
 		} else {
 			Alert alert= new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("حدث خطأ ما أثناء عملية الحفظ");
 			alert.show();
 		}
 	}

@@ -33,7 +33,9 @@ public class TreatmentController extends MyController{
 	private Button editTreatmentButton;
 	@FXML
 	private Button deleteTreatmentButton;
-	
+
+	@FXML CreateTreatmentController createTreatmentController; //child fxml
+
 	// @FXML
 	// private Text detailedTreatment;
 
@@ -153,6 +155,7 @@ public class TreatmentController extends MyController{
 		this.initializeTableView();
 		this.addTableViewFocusListeners();
 		this.addTableviewRowDoubleClickListener();
+		this.createTreatmentController.setTreatmentController(this);
 	}
 
 	@FXML
@@ -176,13 +179,32 @@ public class TreatmentController extends MyController{
 		stage.setScene(new Scene(root));
 
 		stage.showAndWait();
+		this.treatmentsTableView.getColumns().clear();
 		this.initializeTableView();
 
 	}
 
 	//TODO(walid): remember to delete treatment;
 	@FXML
-	private void deleteTreatment(){
+	private void deleteTreatment() {
+		try {
+			if (this.treatmentService.deleteTreatment(this.currentTreatmentId)) {
+				this.treatmentsTableView
+						.getItems()
+						.remove(this.treatmentsTableView
+								.getSelectionModel().getSelectedItem());
+
+			} else {
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setContentText("لا يمكن حذف المنتج لأنه مرتبط بفواتير موجودة!");
+				alert.show();
+
+			}
+		} catch (SQLException e){
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("لا يمكن حذف المنتج لأنه مرتبط بفواتير موجودة!");
+			alert.show();
+		}
 	}
 
 	
@@ -207,4 +229,8 @@ public class TreatmentController extends MyController{
 		this.initializeTableView();
 	}
 
+
+	public void addTreatmentItemToTheTreatmentTableView(DetailedTreatment treatment){
+		this.treatmentsTableView.getItems().add(treatment);
+	}
 }

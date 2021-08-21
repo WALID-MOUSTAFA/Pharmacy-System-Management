@@ -1,12 +1,32 @@
 package com.pharmacy.POGO;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+
 public class Customer {
 
-	
+
+	private long id;
+	@NotNull
+	@NotEmpty
 	private String name;
 	private String address;
 	private Double cash;
 	private String dateAt;
+
+
+	public Customer() {
+		this.dateAt= new Timestamp(System.currentTimeMillis()).toString();
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
