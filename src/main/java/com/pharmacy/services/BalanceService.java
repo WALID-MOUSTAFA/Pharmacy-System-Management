@@ -169,11 +169,9 @@ public class BalanceService {
 	}
 
 
-	public boolean decreaseQuantity(BalanceTreat balanceTreat, double quantity)
+	public boolean decreaseQuantity(long id, double quantity)
 			throws SQLException {
-		double newQuantity= balanceTreat.getQuantity()- quantity;
-		String query="UPDATE blance_treat set quantity="
-				+newQuantity+" WHERE id="+balanceTreat.getId()+";";
+		String query= "UPDATE blance_treat SET quantity = quantity-" + quantity + ";";
 		Statement stmt= this.dbConnection.createStatement();
 		if(stmt.executeUpdate(query) > 0 ){
 			return true;
@@ -190,4 +188,34 @@ public class BalanceService {
 		}
 		return false;
 	}
+
+	public BalanceTreat getBalanceTreatbyPurchaseDetailsId(long id) throws SQLException {
+
+
+		String query= "SELECT  blance_treat.*, treat.name as treatName, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id left join typetreat on treat.typet= typetreat.id WHERE blance_treat.details_pur="+id+" AND blance_treat.quantity not null;\n";
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+
+		if(!rs.isBeforeFirst()) return null;
+
+		BalanceTreat balanceTreat= new BalanceTreat();
+		DetailedTreatment treatment= new DetailedTreatment();
+		while(rs.next()){
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
+			treatment.setName(rs.getString("treatName"));
+			treatment.setTypeTreatName(rs.getString("typeName"));
+			balanceTreat.setTreat(treatment);
+		}
+
+		return balanceTreat;
+
+	}
+
+
 }

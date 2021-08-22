@@ -6,6 +6,15 @@ public class PurchaseDetails {
 	private long id;
 	private long treat_id;
 	private long purchase_id;
+	private String discount;
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
 
 	public long getTreat_id() {
 		return treat_id;
@@ -38,7 +47,7 @@ public class PurchaseDetails {
 	private double totalPeople;
 	@NotNull(message="يجب ملء البيانات بالكامل")
 	private double totalPharmacy;
-	private Treatment treat;
+	private DetailedTreatment treat;
 	private Purchase purchase;
 
 	public long getId() {
@@ -113,11 +122,11 @@ public class PurchaseDetails {
 		this.totalPharmacy = totalPharmacy;
 	}
 
-	public Treatment getTreat() {
+	public DetailedTreatment getTreat() {
 		return treat;
 	}
 
-	public void setTreat(Treatment treat) {
+	public void setTreat(DetailedTreatment treat) {
 		this.treat = treat;
 	}
 

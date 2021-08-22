@@ -95,10 +95,8 @@ public class PurchasesService {
 		preparedStatement.setDouble(3, purchase.getTotalPeople());
 		preparedStatement.setDouble(4, purchase.getTotalPharmacy());
 		preparedStatement.setDouble(5, purchase.getCountUnit());
-		//TODO(walid): replace the zero value with the actuall;
-		preparedStatement.setDouble(6, 0);
-		//TODO(walid): replace the zero value with the actuall;
-		preparedStatement.setDouble(7, 0);
+		preparedStatement.setDouble(6, purchase.getTotalPeople()-purchase.getTotalPharmacy());
+		preparedStatement.setDouble(7, purchase.getTotalPeople()-purchase.getTotalPharmacy());
 		preparedStatement.setString(8, purchase.getDescription());
 		preparedStatement.setString(9, (new Timestamp(System.currentTimeMillis()).toString()));
 		preparedStatement.setLong(10, supplier.getId());

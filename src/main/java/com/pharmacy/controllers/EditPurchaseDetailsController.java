@@ -2,9 +2,11 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
+import com.pharmacy.POGO.BalanceTreat;
 import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Treatment;
+import com.pharmacy.services.BalanceService;
 import com.pharmacy.services.PurchaseDetailsService;
 import com.pharmacy.services.TreatmentService;
 import javafx.fxml.FXML;
@@ -44,6 +46,7 @@ public class EditPurchaseDetailsController extends MyController{
 
 	@FXML
 	private DatePicker productionDate;
+	@FXML TextField discount;
 
 	@FXML
 	private ComboBox treatName;
@@ -68,8 +71,10 @@ public class EditPurchaseDetailsController extends MyController{
 	public void initializeTreatmentCombo() throws SQLException {
 		TreatmentService ts= new TreatmentService();
 		List<DetailedTreatment> treatments= ts.getAllTreatments();
-		for (Treatment t: treatments) {
-			this.treatName.getItems().add(t.getName());
+		for (DetailedTreatment t: treatments) {
+			String m= t.getName()+"-"+t.getTypeTreatName();
+			this.treatName.getItems().add(m);
+
 		}
 	}
 
@@ -87,9 +92,9 @@ public class EditPurchaseDetailsController extends MyController{
 		this.productionDate
 			.setValue(LocalDate
 				  .parse(pd.getProductionDate().split(" ")[0]));
-
-		this.initializeTreatmentCombo();
-		this.treatName.setValue(pd.getTreat().getName());
+		this.discount.setText(pd.getDiscount());
+		//this.initializeTreatmentCombo();
+		this.treatName.setValue(pd.getTreat().getName()+"-"+pd.getTreat().getTypeTreatName());
 		
 	}
 
@@ -108,7 +113,7 @@ public class EditPurchaseDetailsController extends MyController{
 		List<String> errors= new ArrayList<>();
 		TreatmentService treatmentService= new TreatmentService();
 		PurchaseDetails purchaseDetails= this.getSpecificPurchaseDetails();
-
+		double oldQantity= purchaseDetails.getQuantity();
 
 		String quantity;
 		String pricePharmacy;
@@ -118,6 +123,7 @@ public class EditPurchaseDetailsController extends MyController{
 		String expireDate;
 		String productionDate;
 		String treatName;
+		String discount;
 		Treatment treat;
 
 
@@ -149,14 +155,12 @@ public class EditPurchaseDetailsController extends MyController{
 		pricePeople= this.pricePeople.getText();
 		expireDate= this.expireDate.getValue().toString();
 		productionDate= this.productionDate.getValue().toString();
-
-		String name= this.treatName
-				.getSelectionModel()
-				.getSelectedItem().toString();
+		discount= this.discount.getText();
+		String name= this.treatName.getValue().toString();
 		treat= treatmentService
 			.getTreatmentByName(name.split("-")[0], name.split("-")[1]);
 
-
+		try {
 		purchaseDetails.setQuantity
 			(!quantity.isEmpty()? Double.valueOf(quantity):0);
 		purchaseDetails.setTotalPharmacy
@@ -167,13 +171,17 @@ public class EditPurchaseDetailsController extends MyController{
 			(!totalPeople.isEmpty()? Double.valueOf(totalPeople):0);
 		purchaseDetails.setPricePeople
 			(!pricePeople.isEmpty()? Double.valueOf(pricePeople):0);
+		} catch (NumberFormatException e) {
+			MyUtils.ALERT_ERROR("ادخل البيانات الرقمية بصورة صحيحة");
+			return;
+		}
 		purchaseDetails.setExpireDate
 			(expireDate);
 		purchaseDetails.setProductionDate
 			(productionDate);
 
 		purchaseDetails.setTreat_id(treat.getId());
-		
+		purchaseDetails.setDiscount(discount);
 		
 		
 		MyUtils.<PurchaseDetails>validateModel(purchaseDetails, errors);
@@ -185,6 +193,7 @@ public class EditPurchaseDetailsController extends MyController{
 		
 		if(this.purchaseDetailsService
 		   .updatePurchaseDetails(purchaseDetails)) {
+			this.fixBalanceTreat(purchaseDetails, oldQantity);
 			this.stage.close();
 		} else {
 			Alert alert= new Alert(Alert.AlertType.ERROR);
@@ -192,6 +201,26 @@ public class EditPurchaseDetailsController extends MyController{
 			alert.show();
 		}
 	}
-    
+
+	private void fixBalanceTreat(PurchaseDetails purchaseDetails, double oldQantity) throws SQLException{
+		BalanceService balanceService= new BalanceService();
+		double purchaseNewQantity= purchaseDetails.getQuantity();
+		BalanceTreat relatedBalanceTreat = balanceService.getBalanceTreatbyPurchaseDetailsId(purchaseDetails.getId());
+		if (relatedBalanceTreat == null) return;
+		double oldbalanceQantity= relatedBalanceTreat.getQuantity();
+		if(purchaseNewQantity - oldQantity > 0) {
+			double diff= purchaseNewQantity- oldQantity;
+			balanceService.increaseBalance(relatedBalanceTreat.getId(), diff);
+		}else if (purchaseNewQantity-oldQantity < 0 && oldQantity != 0) {
+			double diff= oldQantity-purchaseNewQantity;
+			if(oldbalanceQantity - diff < 0) {
+				return; //this will cause minus quantity
+			}
+			balanceService.decreaseQuantity(relatedBalanceTreat.getId(), diff);
+		}else {
+			return; //do nothing
+		}
+	}
+
 
 }

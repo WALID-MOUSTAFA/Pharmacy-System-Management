@@ -46,7 +46,9 @@ public class SalesController {
 	@FXML private TableView billProductsTableView;
 	@FXML private GridPane productsDetails;
 	@FXML private ComboBox storedCustomerName;
-	
+
+	@FXML private ListView alternateResults;
+
 	public void initializeTreatTypeCombo() throws SQLException {
 		this.treatType.getItems().clear();
 		TreatmentService treatmentService= new TreatmentService();
@@ -58,7 +60,12 @@ public class SalesController {
 
 	@FXML
 	private void startSearchForTreat() throws SQLException {
-		String typeName= this.treatType.getValue().toString();
+		String typeName;
+		try {
+			typeName= this.treatType.getValue().toString();
+		}catch (NullPointerException e) {
+			return;
+		}
 		this.searchForTreat(this.treatName.getText(), typeName);
 	}
 
@@ -124,11 +131,10 @@ public class SalesController {
 		this.searchResult.getItems().clear();
 	}
 
-	public void addResultToResultList(String itemLabel) {
-		this.clearSearchResult();
-		HBox hBox= new HBox(new Text(itemLabel));
-		this.searchResult.getItems().add(hBox);
+	public void clearAlternateResults() {
+		this.alternateResults.getItems().clear();
 	}
+
 
 	public SalesController() throws SQLException{
 			this.balanceService= new BalanceService();
@@ -176,12 +182,45 @@ public class SalesController {
 				try {
 					this.initializeRelatedBalanceTableView
 							(((DetailedTreatment) this.searchResult.getSelectionModel().getSelectedItem()).getId());
+					this.initializeAltListView(((DetailedTreatment) this.searchResult.getSelectionModel().getSelectedItem()));
 				}catch (SQLException e) {
 
 				}
 
 			}
 			});
+	}
+
+
+
+	private void addAlternateResultDoubleClickListener() {
+		this.alternateResults.setOnMouseClicked((ev)->{
+			if (ev.getClickCount() ==2){
+
+				try {
+					this.clearRelatedBalancesTableView();
+					this.initializeRelatedBalanceTableView
+							(((DetailedTreatment) this.alternateResults.getSelectionModel().getSelectedItem()).getId());
+				}catch (SQLException e) {
+
+				}
+
+			}
+		});
+	}
+
+	private void initializeAltListView(DetailedTreatment selectedItem) throws SQLException {
+		List<DetailedTreatment> alts= this.treatmentService.getAltTreatments(selectedItem);
+		this.alternateResults.setItems(FXCollections.observableArrayList(alts));
+		this.alternateResults.setCellFactory((lv)->{
+			return new ListCell<DetailedTreatment>(){
+				@Override
+				protected void updateItem(DetailedTreatment item, boolean empty) {
+					super.updateItem(item, empty);
+					setText(empty? null : item.getName() + " ---- " + item.getTypeTreatName());
+				}
+			};
+		});
 	}
 
 	private void initalizeBillTableView() {
@@ -308,7 +347,7 @@ public class SalesController {
 				return;
 			} else {
 
-				if(this.balanceService.decreaseQuantity(b.getBalanceTreat(), b.getQuantity())){
+				if(this.balanceService.decreaseQuantity(b.getBalanceTreat().getId(), b.getQuantity())){
 					if (this.salesDetailsService.insertSaleDetail(saleDetails)){
 						Alert alert= new Alert(Alert.AlertType.INFORMATION);
 						alert.setContentText("تم إضافة الفاتورة بنجاح");
@@ -348,6 +387,7 @@ public class SalesController {
 	public void initialize() throws SQLException{
 		this.initializeTreatTypeCombo();
 		this.addSearchResultDoubleClickListener();
+		this.addAlternateResultDoubleClickListener();
 		this.addTableviewRowDoubleClickListener();
 		this.initalizeBillTableView();
 		this.initalizeCustomerCombo();

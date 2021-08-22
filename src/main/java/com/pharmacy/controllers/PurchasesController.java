@@ -88,8 +88,8 @@ public class PurchasesController extends MyController{
 	TableColumn<Purchase, String> countUnit = new TableColumn<>("عدد الوحدات المتضمنة");
 	countUnit.setCellValueFactory(new PropertyValueFactory<>("countUnit"));
 
-	TableColumn<Purchase, String> profit = new TableColumn<>("الربح");
-	profit.setCellValueFactory(new PropertyValueFactory<>("profit"));
+//	TableColumn<Purchase, String> profit = new TableColumn<>("الربح");
+//	profit.setCellValueFactory(new PropertyValueFactory<>("profit"));
 
 	TableColumn<Purchase, String> description = new TableColumn<>("الوصف");
 	description.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -106,7 +106,7 @@ public class PurchasesController extends MyController{
 						     totalPeople,
 						     totalPharmacy,
 						     countUnit,
-						     profit,
+						   //  profit,
 						     description,
 						     dateAt,
 						     supplierName);

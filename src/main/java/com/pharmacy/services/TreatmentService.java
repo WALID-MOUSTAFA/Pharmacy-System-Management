@@ -201,10 +201,10 @@ public class TreatmentService {
 
 
 	//TODO(walid): handle null values;
-	public Treatment getTreatmentByName(String treatName, String typeName) throws SQLException{
+	public DetailedTreatment getTreatmentByName(String treatName, String typeName) throws SQLException{
         this.dbConnection= DatabaseConnection.getInstance().getConnection();
         long treatTypeId= getTypeIdFromName(typeName);
-        Treatment treatment= new Treatment();
+        DetailedTreatment treatment= new DetailedTreatment();
 		String query= "SELECT * FROM treat WHERE name="+"\"" + treatName + "\" AND typet="+treatTypeId+";" ;
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
@@ -385,4 +385,34 @@ public class TreatmentService {
         return false;
     }
 
+    public List<DetailedTreatment> getAltTreatments(DetailedTreatment dt)
+    throws  SQLException{
+        List<DetailedTreatment> treatments= new ArrayList<>();
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query= "SELECT treat.*, typetreat.typename as typeName, SUM(blance_treat.quantity) AS quantity FROM treat  LEFT OUTER JOIN blance_treat ON blance_treat.treat_id=treat.id inner join typetreat on typetreat.id = treat.typet where treat.formtreat="+dt.getFormtreat()+" GROUP BY treat.id ;";
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+        DetailedTreatment treatment;
+
+        while(rs.next()) {
+            treatment= new DetailedTreatment();
+            treatment.setId(rs.getLong("id"));
+            treatment.setName(rs.getString("name"));
+            treatment.setTypet(rs.getLong("typet"));
+            treatment.setStatus(rs.getInt("status"));
+            //Note(walid): it's inherited typo in the original database;
+            treatment.setParcode(rs.getString("parcpde"));
+            treatment.setDateAt(rs.getString("date_at"));
+            treatment.setLowcount(rs.getInt("lowcount"));
+            treatment.setCompany(rs.getString("company"));
+            treatment.setFormtreat(rs.getLong("formtreat"));
+            treatment.setPlace(rs.getString("place"));
+            treatment.setQuantity(rs.getDouble("quantity"));
+            treatment.setTypeTreatName(rs.getString("typeName"));
+            treatments.add(treatment);
+            treatment= null;
+        }
+        return treatments;
+
+    }
 }

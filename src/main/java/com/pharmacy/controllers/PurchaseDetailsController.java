@@ -62,6 +62,8 @@ public class PurchaseDetailsController extends MyController {
 	@FXML
 	private DatePicker productionDate;
 
+	@FXML TextField discount;
+
 	@FXML
 	private ComboBox treatName;
 	
@@ -152,6 +154,11 @@ public class PurchaseDetailsController extends MyController {
 		totalPharmacy.setCellValueFactory(new PropertyValueFactory<>
 						  ("totalPharmacy"));
 
+		TableColumn<PurchaseDetails, String> discount=
+				new TableColumn<>("الخصم");
+		discount.setCellValueFactory(new PropertyValueFactory<>
+				("discount"));
+
 		
 		TableColumn<PurchaseDetails, String> treatName=
 			new TableColumn<>("اسم الدواء");
@@ -167,6 +174,7 @@ public class PurchaseDetailsController extends MyController {
 								   pricePeople,
 								   totalPharmacy,
 								   totalPeople,
+								   discount,
 								   dateAt);
 	}
 
@@ -235,7 +243,8 @@ public class PurchaseDetailsController extends MyController {
 		String expireDate;
 		String productionDate;
 		String treatName;
-		Treatment treatment;
+		String discount;
+		DetailedTreatment treatment;
 		
 		TreatmentService treatmentService= new TreatmentService();
 		PurchaseDetails purchaseDetails= new PurchaseDetails();
@@ -268,6 +277,7 @@ public class PurchaseDetailsController extends MyController {
 		totalPharmacy= this.totalPharmacy.getText();
 		pricePeople= this.pricePeople.getText();
 		totalPeople= this.totalPeople.getText();
+		discount= this.discount.getText();
 		expireDate= Timestamp
 			.valueOf(this
 				 .expireDate
@@ -292,17 +302,22 @@ public class PurchaseDetailsController extends MyController {
 		purchaseDetails.setTreat_id(treatment.getId());
 		purchaseDetails.setExpireDate(expireDate);
 		purchaseDetails.setProductionDate(productionDate);
-		purchaseDetails.setQuantity
-			(!quantity.isEmpty()? Double.valueOf(quantity):0 );
-		purchaseDetails.setPricePeople
-			(!pricePeople.isEmpty()? Double.valueOf(pricePeople):0);
-		purchaseDetails.setTotalPeople
-			(!totalPeople.isEmpty()? Double.valueOf(totalPeople):0);
-		purchaseDetails.setPricePharmacy
-			(!pricePharmacy.isEmpty()?Double.valueOf(pricePharmacy):0);
-		purchaseDetails.setTotalPharmacy
-			(!totalPharmacy.isEmpty()?Double.valueOf(totalPharmacy):0);
-
+		try {
+			purchaseDetails.setQuantity
+					(!quantity.isEmpty() ? Double.valueOf(quantity) : 0);
+			purchaseDetails.setPricePeople
+					(!pricePeople.isEmpty() ? Double.valueOf(pricePeople) : 0);
+			purchaseDetails.setTotalPeople
+					(!totalPeople.isEmpty() ? Double.valueOf(totalPeople) : 0);
+			purchaseDetails.setPricePharmacy
+					(!pricePharmacy.isEmpty() ? Double.valueOf(pricePharmacy) : 0);
+			purchaseDetails.setTotalPharmacy
+					(!totalPharmacy.isEmpty() ? Double.valueOf(totalPharmacy) : 0);
+		} catch (NumberFormatException e) {
+			MyUtils.ALERT_ERROR("ادخل البيانات الرقمية بصورة صحيحة");
+			return;
+		}
+		purchaseDetails.setDiscount(discount);
 		
 		MyUtils.<PurchaseDetails>validateModel(purchaseDetails, errors);
 		if(!errors.isEmpty()){

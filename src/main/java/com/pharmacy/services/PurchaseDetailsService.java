@@ -1,6 +1,7 @@
 package com.pharmacy.services;
 
 import com.pharmacy.DatabaseConnection;
+import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.Purchase;
 import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Treatment;
@@ -18,15 +19,15 @@ public class PurchaseDetailsService {
 
 	public List<PurchaseDetails> getAllRelatedPurchaseDetails(Purchase purchase) throws SQLException{
 		List<PurchaseDetails> pDS= new ArrayList<>();
-		String query= "SELECT purchases_details.*, treat.id as treat_id, treat.name as treat_name FROM purchases_details INNER JOIN treat ON purchases_details.treat_id=treat.id where purchases_id="+ "\"" + purchase.getId() + "\"";;
+		String query= "SELECT purchases_details.*, treat.id as treat_id, typetreat.typename as typeName, treat.name as treat_name FROM purchases_details INNER JOIN treat ON purchases_details.treat_id=treat.id inner join typetreat on treat.typet=typetreat.id where purchases_id="+ "\"" + purchase.getId() + "\"";;
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		PurchaseDetails pD;
-		Treatment treatment;
+		DetailedTreatment treatment;
 
 		while(rs.next()) {
 			pD= new PurchaseDetails();
-			treatment= new Treatment();
+			treatment= new DetailedTreatment();
 
 			pD.setDateAt(rs.getString("date_at"));
 			pD.setId(rs.getLong("id"));
@@ -38,10 +39,10 @@ public class PurchaseDetailsService {
 			pD.setExpireDate(rs.getString("expire_date"));
 			pD.setProductionDate(rs.getString("production_date"));
 			pD.setQuantity(rs.getDouble("quantity"));
-
+			pD.setDiscount(rs.getString("discount"));
 			treatment.setName(rs.getString("treat_name"));
 			treatment.setId(rs.getLong("treat_id"));
-
+			treatment.setTypeTreatName(rs.getString("typeName"));
 			pD.setTreat(treatment);
 			pDS.add(pD);
 			pD= null;
@@ -56,7 +57,7 @@ public class PurchaseDetailsService {
 	public long insertPurchaseDetails(PurchaseDetails purchaseDetails)
 		throws SQLException
 	{
-		String query= "INSERT INTO purchases_details (purchases_id, treat_id, expire_date, production_date, date_at, quantity, price_pl, total_people, total_pharmcy, price_p)  VALUES (?,?,?,?,?,?,?,?,?,?);";
+		String query= "INSERT INTO purchases_details (purchases_id, treat_id, expire_date, production_date, date_at, quantity, price_pl, total_people, total_pharmcy, price_p, discount)  VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 		
 		PreparedStatement preparedStatement= this.dbConnection.
 			prepareStatement(query);
@@ -71,6 +72,7 @@ public class PurchaseDetailsService {
 		preparedStatement.setDouble(8,purchaseDetails.getTotalPeople() );
 		preparedStatement.setDouble(9,purchaseDetails.getTotalPharmacy());
 		preparedStatement.setDouble(10,purchaseDetails.getPricePharmacy());
+		preparedStatement.setString(11,purchaseDetails.getDiscount());
 
 		if(preparedStatement.executeUpdate() > 0) {
 			ResultSet generatedKeys= preparedStatement.getGeneratedKeys();
@@ -86,8 +88,8 @@ public class PurchaseDetailsService {
 	public PurchaseDetails getPurchaseDetailsById(long id) throws SQLException{
 
 		PurchaseDetails pd= new PurchaseDetails();
-		Treatment treatment= new Treatment();		
-		String query= "SELECT purchases_details.*, treat.id as treat_id, treat.name as treat_name FROM purchases_details INNER JOIN treat ON purchases_details.treat_id=treat.id where purchases_details.id="+ "\"" + id + "\";";
+		DetailedTreatment treatment= new DetailedTreatment();
+		String query= "SELECT purchases_details.*, treat.id as treat_id, typetreat.typename as typeName, treat.name as treat_name FROM purchases_details INNER JOIN treat ON purchases_details.treat_id=treat.id inner join typetreat on treat.typet=typetreat.id where purchases_details.id="+ "\"" + id + "\";";
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
 		
@@ -106,8 +108,10 @@ public class PurchaseDetailsService {
 			pd.setProductionDate(rs.getString("production_date"));
 			pd.setQuantity(rs.getDouble("quantity"));
 			pd.setDateAt(rs.getString("date_at"));
+			pd.setDiscount(rs.getString("discount"));
 			treatment.setName(rs.getString("treat_name"));
 			treatment.setId(rs.getLong("treat_id"));
+			treatment.setTypeTreatName(rs.getString("typeName"));
 			pd.setTreat(treatment);
 		}
 		
@@ -141,7 +145,7 @@ public class PurchaseDetailsService {
 			+"price_pl=?,"
 			+"total_people=?,"
 			+"total_pharmcy=?,"
-			+"price_p=? WHERE id=" + purchaseDetails.getId()+ ";";
+			+"price_p=?, discount=? WHERE id=" + purchaseDetails.getId()+ ";";
 
 		PreparedStatement preparedStatement=
 			this.dbConnection.prepareStatement(query);
@@ -156,6 +160,7 @@ public class PurchaseDetailsService {
 		preparedStatement.setDouble(8,purchaseDetails.getTotalPeople() );
 		preparedStatement.setDouble(9,purchaseDetails.getTotalPharmacy());
 		preparedStatement.setDouble(10,purchaseDetails.getPricePharmacy());
+		preparedStatement.setString(11, purchaseDetails.getDiscount());
 
 		if(preparedStatement.executeUpdate() > 0) {
 			return true;
