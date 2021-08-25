@@ -102,24 +102,24 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <SplitPane dividerPositions="0.9" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.7817371937639198" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <VBox fx:id="mainCanvas" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                            <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                              <AnchorPane>
                                  <children>
-                                    <VBox fx:id="nav" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox fx:id="nav" layoutX="-81.0" prefHeight="544.0" prefWidth="168.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Button id="treatments" fx:id="purchasesButton" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showPurchasesScene" prefHeight="80.0" prefWidth="100.0" text="المشتريات" textAlignment="CENTER" />
-                                          <Button id="treatments" fx:id="purchasesButton1" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showSuppliersScene" prefHeight="80.0" prefWidth="100.0" text="الموردين" textAlignment="CENTER" />
-                                          <Button id="treatments" fx:id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showTreatmentsScene" prefHeight="80.0" prefWidth="100.0" text="الأدوية" textAlignment="CENTER" />
-                                          <Button id="treatments" fx:id="customer" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showCustomerScene" prefHeight="80.0" prefWidth="100.0" text="العملاء" textAlignment="CENTER" />
-                                          <Button id="treatments" fx:id="store2" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showBillScene" prefHeight="80.0" prefWidth="100.0" text="المبيعات" textAlignment="CENTER" />
-                                          <Button id="treatments" fx:id="store21" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showExpensesScene" prefHeight="80.0" prefWidth="100.0" text="المصروفات" textAlignment="CENTER" />
-                                          <Button id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showFormTypeTreatScene" prefHeight="80.0" prefWidth="100.0" text="النوع والتركيب" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="purchasesButton" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showPurchasesScene" prefHeight="50.0" prefWidth="200.0" text="المشتريات" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="purchasesButton1" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showSuppliersScene" prefHeight="50.0" prefWidth="200.0" text="الموردين" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showTreatmentsScene" prefHeight="50.0" prefWidth="200.0" text="الأدوية" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="customer" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showCustomerScene" prefHeight="50.0" prefWidth="200.0" text="العملاء" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="store2" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showBillScene" prefHeight="50.0" prefWidth="200.0" text="المبيعات" textAlignment="CENTER" />
+                                          <Button id="treatments" fx:id="store21" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showExpensesScene" prefHeight="50.0" prefWidth="200.0" text="المصروفات" textAlignment="CENTER" />
+                                          <Button id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showFormTypeTreatScene" prefHeight="50.0" prefWidth="200.0" text="النوع والتركيب" textAlignment="CENTER" />
                                        </children>
                                     </VBox>
                                  </children>
