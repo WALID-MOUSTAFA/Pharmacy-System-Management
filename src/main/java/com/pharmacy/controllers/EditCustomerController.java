@@ -66,7 +66,7 @@ public class EditCustomerController extends MyController{
 			this.stage.close();
 
 		} else {
-			//TODO(walid): handle errors;
+			MyUtils.ALERT_ERROR("حدث خطأ ما أثناء التعديل!");
 		}
 	}
 

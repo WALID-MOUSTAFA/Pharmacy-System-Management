@@ -130,7 +130,6 @@ public class PurchaseDetailsService {
 	}
 
 	
-	//TODO(walid): change insert to update;
 	public boolean updatePurchaseDetails(PurchaseDetails purchaseDetails)
 		throws SQLException
 	{

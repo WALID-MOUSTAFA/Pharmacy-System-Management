@@ -1,4 +1,3 @@
-//TODO(walid): change the quantity when change the the quantity
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;

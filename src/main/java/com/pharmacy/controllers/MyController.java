@@ -38,7 +38,6 @@ public class MyController {
 
     @FXML
     public void closeWindow() {
-
-
+	this.stage.close();
     }
 }

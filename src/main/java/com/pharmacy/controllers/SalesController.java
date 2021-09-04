@@ -1,4 +1,3 @@
-//TODO(walid): add refresh;
 //TODO(walid): add order by to the queries;
 package com.pharmacy.controllers;
 

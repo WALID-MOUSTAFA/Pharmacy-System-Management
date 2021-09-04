@@ -1,8 +1,3 @@
-//TODO(walid): when deleting and updatign records, implement a new
-//REinitalize tableview method that deletes the previous items and replace
-//them with new items instead of actually reinialize the whole process, for
-//performance reasons, tableViews in javafx are know to be very hungry for memory;
-
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
@@ -99,7 +94,8 @@ public class PurchasesController extends MyController{
 
 	TableColumn<Purchase, String> supplierName = new TableColumn<>("اسم المورد");
 	// supplierName.setCellValueFactory(new PropertyValueFactory<>("supplier"));
-	supplierName.setCellValueFactory(tf->new SimpleStringProperty(tf.getValue().getSupplier().getName()));
+	supplierName.setCellValueFactory
+	    (tf->new SimpleStringProperty(tf.getValue().getSupplier().getName()));
 
 	this.purchasesTableView.getColumns().addAll( datePur,
 						     pillNum,

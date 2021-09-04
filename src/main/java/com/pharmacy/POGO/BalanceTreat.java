@@ -32,16 +32,16 @@ public class  BalanceTreat {
 	}
 
 	private PurchaseDetails purchaseDetails;
-
-	public Treatment getTreatment() {
-		return treatment;
-	}
-
-	public void setTreatment(Treatment treatment) {
-		this.treatment = treatment;
-	}
-
-	private Treatment treatment;
+//
+//	public Treatment getTreatment() {
+//		return treatment;
+//	}
+//
+//	public void setTreatment(Treatment treatment) {
+//		this.treatment = treatment;
+//	}
+//
+//	private Treatment treatment;
 	
 	public String getExpireDate() {
 		return expireDate;

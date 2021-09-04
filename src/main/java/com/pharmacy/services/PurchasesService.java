@@ -145,9 +145,7 @@ public class PurchasesService {
 		preparedStatement.setString(1, purchase.getDatePur());
 		preparedStatement.setString(2, purchase.getPillNum());
 		preparedStatement.setDouble(3, purchase.getCountUnit());
-		//TODO(walid): replace the zero value with the actuall;
 		preparedStatement.setDouble(4, 0);
-		//TODO(walid): replace the zero value with the actuall;
 		preparedStatement.setDouble(5, 0);
 		preparedStatement.setString(6, purchase.getDescription());
 		preparedStatement.setString(7, (new Timestamp

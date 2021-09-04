@@ -120,6 +120,7 @@
                                           <Button id="treatments" fx:id="store2" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showBillScene" prefHeight="50.0" prefWidth="200.0" text="المبيعات" textAlignment="CENTER" />
                                           <Button id="treatments" fx:id="store21" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showExpensesScene" prefHeight="50.0" prefWidth="200.0" text="المصروفات" textAlignment="CENTER" />
                                           <Button id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showFormTypeTreatScene" prefHeight="50.0" prefWidth="200.0" text="النوع والتركيب" textAlignment="CENTER" />
+                                          <Button id="treatments" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#showInventoryCountsScene" prefHeight="50.0" prefWidth="200.0" text="الجرد" textAlignment="CENTER" />
                                        </children>
                                     </VBox>
                                  </children>

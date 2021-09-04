@@ -127,18 +127,14 @@ public class TreatmentService {
         if(typet != 0) {
             preparedStatement.setLong(2, typet);
         }
-        //TODO(walid): get the value from the ui;
+        //NOTE(walid): get the value from the ui, or not;
         preparedStatement.setString(3, "1");
         preparedStatement.setString(4, dt.getParcode());
         preparedStatement.setString
 	    (5, dt.getDateAt());
-        //TODO(walid): get the value from the ui;
         preparedStatement.setDouble(6, dt.getLowcount());
-        //TODO(walid): get the value from the ui;
         preparedStatement.setString(7, dt.getCompany());
-        //TODO(walid): get the value from the ui;
         preparedStatement.setString(8, dt.getPlace());
-        //TODO(walid): get the value from the ui;
         preparedStatement.setLong(9, formTreat_id);
 
         if(preparedStatement.executeUpdate() >0) {
@@ -200,7 +196,6 @@ public class TreatmentService {
     }
 
 
-	//TODO(walid): handle null values;
 	public DetailedTreatment getTreatmentByName(String treatName, String typeName) throws SQLException{
         this.dbConnection= DatabaseConnection.getInstance().getConnection();
         long treatTypeId= getTypeIdFromName(typeName);

@@ -1,4 +1,3 @@
-//TODO(walid): add edit and delete customer
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
@@ -138,7 +137,7 @@ public class CustomerController extends  MyController{
 			customer.setId(inserted);
 			this.customersTableView.getItems().add(customer);
 		} else {
-			//TODO(walid): handle error;
+			MyUtils.ALERT_ERROR("حدث خطأ ما أثناء الإضافة!");
 		}
 	}
 

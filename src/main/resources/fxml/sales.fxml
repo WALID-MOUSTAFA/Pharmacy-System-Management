@@ -155,9 +155,14 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </HBox>
-                                    <TextField fx:id="treatName">
+                                    <TextField fx:id="treatName" promptText="اسم الدواء">
                                        <VBox.margin>
                                           <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <TextField fx:id="parcode" layoutX="10.0" layoutY="42.0" promptText="الباركود">
+                                       <VBox.margin>
+                                          <Insets top="22.0" />
                                        </VBox.margin>
                                     </TextField>
                                     <ComboBox fx:id="treatType" prefWidth="150.0" promptText="نوع الدواء">

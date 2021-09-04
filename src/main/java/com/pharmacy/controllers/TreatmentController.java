@@ -218,7 +218,6 @@ public class TreatmentController extends MyController{
 
 	}
 
-	//TODO(walid): remember to delete treatment;
 	@FXML
 	private void deleteTreatment() {
 		try {

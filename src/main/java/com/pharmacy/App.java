@@ -12,10 +12,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.io.IOException;
 
-//TODO(walid): get the create treatment acutall values from ui;
-//TODO(walid): create a window to create new typetreat
-//TODO(walid): create a window to create form treat;
-//TODO(walid): fix the bug of reinitalize tableViews after update;
 public class App extends Application {
 
 
