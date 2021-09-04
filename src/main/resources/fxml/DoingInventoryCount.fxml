@@ -14,8 +14,8 @@
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
             <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
-            <Button fx:id="deleteBillButton" disable="true" mnemonicParsing="false" text="حذف" />
             <Button mnemonicParsing="false" onAction="#switchToIncludeEmpty" text="تضمين الأرصدة الفارغة" />
+            <Button mnemonicParsing="false" onAction="#showUpdateBalanceQuantityForm" text="تعديل القيمة الموجودة على السيستم" />
          </items>
       </ToolBar>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
@@ -30,7 +30,7 @@
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0" spacing="10.0">
                      <children>
                         <TextField fx:id="searchBox" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" text="ابحث" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#doSearch" text="ابحث" />
                         <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>

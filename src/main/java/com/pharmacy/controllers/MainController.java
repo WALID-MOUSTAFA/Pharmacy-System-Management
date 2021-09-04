@@ -21,9 +21,7 @@ public class MainController extends MyController {
     private VBox originalMainCanvas;
     @FXML
     private Button treatments;
-
-    @FXML
-    private VBox nav;
+	@FXML Button purchasesButton;
 
     public void openWindow(Stage stage, Parent root, String title) {
 	//NOTE(walid): don't use this.stage;
@@ -42,17 +40,18 @@ public class MainController extends MyController {
 	mainCanvas.getChildren().addAll(root);
     }
 
-    public void setMedicineGraphic() {
+    public void setGraphics() {
 	Image image= new Image(getClass().getResourceAsStream
-			       ("/assets/treatments.png"));
+			       ("/assets/shopping-bag.png"));
 	ImageView imageView= new ImageView(image);
 	imageView.setFitHeight(100);
 	imageView.setFitWidth(100);
-	this.treatments.setGraphic(imageView);
+	this.purchasesButton.setGraphic(imageView);
     }
 
     @FXML
     public void initialize() {
+    	setGraphics();
     }
 
     @FXML

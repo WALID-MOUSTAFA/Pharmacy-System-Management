@@ -10,10 +10,14 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -24,6 +28,8 @@ import com.pharmacy.services.BalanceService;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
 class DoingInventoryCountController extends MyController {
@@ -215,6 +221,28 @@ class DoingInventoryCountController extends MyController {
     }
 
 
+    
+    @FXML
+    private void showUpdateBalanceQuantityForm() throws IOException, SQLException{
+	Stage stage= new Stage();
+	FXMLLoader loader= new FXMLLoader();
+	loader.setLocation
+	    (getClass().getResource("/fxml/UpdateBalanceQuantity.fxml"));
+	UpdateBalanceQuantityController updateBalanceQuantityController=
+	    new UpdateBalanceQuantityController();
+	updateBalanceQuantityController.setStage(stage);
+	updateBalanceQuantityController.setBalance
+	    (this.currentSelectedBalance);
+	loader.setController(updateBalanceQuantityController);
+	Parent root= loader.load();
+	stage.setScene(new Scene(root));
+	stage.initModality(Modality.WINDOW_MODAL);
+	stage.showAndWait();
+
+    }
+	
+
+    
     @FXML
     private void doSearch() throws SQLException{
     	String q= this.searchBox.getText();
