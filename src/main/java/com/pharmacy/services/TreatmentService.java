@@ -258,6 +258,50 @@ public class TreatmentService {
         return treatments;
     }
 
+        public List<DetailedTreatment> getAllTreatmentsByParcode(String parcode)
+            throws SQLException{
+
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+
+        List<DetailedTreatment> treatments= new ArrayList<>();
+        String query= "select treat.*, typename, formtreat.name as formtreatname\n" +
+                "from treat\n" +
+                "JOIN\n" +
+                "typetreat\n" +
+                "join formtreat\n" +
+                "on\n" +
+                "typet=typetreat.id and treat.formtreat=formtreat.id where treat.parcpde="+parcode+";";
+
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+
+        if(!rs.isBeforeFirst()) {
+            return null;
+        }
+
+        DetailedTreatment detailedTreatment;
+        while(rs.next()) {
+            detailedTreatment= new DetailedTreatment();
+            detailedTreatment.setId(rs.getLong("id"));
+            detailedTreatment.setName(rs.getString("name"));
+            detailedTreatment.setTypet(rs.getLong("typet"));
+            detailedTreatment.setStatus(rs.getInt("status"));
+            //Note(walid): it's inherited typo in the original database;
+            detailedTreatment.setParcode(rs.getString("parcpde"));
+            detailedTreatment.setDateAt(rs.getString("date_at"));
+            detailedTreatment.setLowcount(rs.getInt("lowcount"));
+            detailedTreatment.setCompany(rs.getString("company"));
+            detailedTreatment.setFormtreat(rs.getLong("formtreat"));
+            detailedTreatment.setPlace(rs.getString("place"));
+            detailedTreatment.setFormTreatName(rs.getString("formtreatname"));
+            detailedTreatment.setTypeTreatName(rs.getString("typename"));
+            treatments.add(detailedTreatment);
+            detailedTreatment= null;
+        }
+
+
+        return treatments;
+    }
 
 
 

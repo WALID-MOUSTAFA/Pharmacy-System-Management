@@ -30,7 +30,8 @@ public class SalesController {
 	CustomerService customerService;
 	
 	@FXML private TextField treatName;
-	@FXML private ComboBox treatType;
+    @FXML private TextField parcode;
+    @FXML private ComboBox treatType;
 	@FXML private ListView searchResult;
 	@FXML private TableView	relatedBalancesTableView;
 	@FXML private TextField billClientName;
@@ -45,9 +46,9 @@ public class SalesController {
 	@FXML private TableView billProductsTableView;
 	@FXML private GridPane productsDetails;
 	@FXML private ComboBox storedCustomerName;
-
+    
 	@FXML private ListView alternateResults;
-
+    
 	public void initializeTreatTypeCombo() throws SQLException {
 		this.treatType.getItems().clear();
 		TreatmentService treatmentService= new TreatmentService();
@@ -60,12 +61,19 @@ public class SalesController {
 	@FXML
 	private void startSearchForTreat() throws SQLException {
 		String typeName;
-		try {
-			typeName= this.treatType.getValue().toString();
-		}catch (NullPointerException e) {
-			return;
+		String parcode= this.parcode.getText();
+
+		if(!parcode.isEmpty()) {
+		    this.searchForTreatByParcode(this.parcode.getText());
+		}else {
+			try {
+				typeName = this.treatType.getValue().toString();
+			} catch (NullPointerException e) {
+				MyUtils.ALERT_ERROR("اختر نوع المنتج.");
+				return;
+			}
+		    this.searchForTreat(this.treatName.getText(), typeName);
 		}
-		this.searchForTreat(this.treatName.getText(), typeName);
 	}
 
 	private void searchForTreat(String treatNameText, String typeName) throws SQLException {
@@ -84,6 +92,21 @@ public class SalesController {
 
 	}
 
+
+    
+	private void searchForTreatByParcode(String parcode) throws SQLException {
+	    List<DetailedTreatment> results= treatmentService.getAllTreatmentsByParcode(parcode);
+	    if(results == null){
+		this.clearSearchResult();
+	    } else {
+		this.clearSearchResult();
+		this.renderResults(results);
+	    }
+	    
+	}
+
+    
+    
 	private void renderResults(List<DetailedTreatment> results) {
 		ObservableList<DetailedTreatment> bs= FXCollections.observableArrayList(results);
 		this.searchResult.setItems(bs);
