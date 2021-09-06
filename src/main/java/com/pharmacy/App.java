@@ -26,6 +26,7 @@ public class App extends Application {
 			Parent root = loader.<VBox>load();
 			primaryStage.setTitle("الصيدلية");
 			primaryStage.setScene(new Scene(root, 900, 600));
+			primaryStage.setMaximized(true);
 			primaryStage.show();
 			//primaryStage.setMaximized(true);
 

@@ -270,7 +270,7 @@ public class SalesController {
 		});
 
 
-		TableColumn<BillItemModel, String> priceColumn= new TableColumn<>("السعرس");
+		TableColumn<BillItemModel, String> priceColumn= new TableColumn<>("السعر");
 		priceColumn.setCellValueFactory(val-> {
 			return new SimpleStringProperty(
 					String.valueOf(((BillItemModel) val.getValue())
