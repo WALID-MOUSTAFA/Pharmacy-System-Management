@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -25,7 +26,8 @@ public class App extends Application {
 			loader.setController(mainController);
 			Parent root = loader.<VBox>load();
 			primaryStage.setTitle("الصيدلية");
-			primaryStage.setScene(new Scene(root, 900, 600));
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/pharmacy.ico")));
+			primaryStage.setScene(new Scene(root));
 			primaryStage.setMaximized(true);
 			primaryStage.show();
 			//primaryStage.setMaximized(true);

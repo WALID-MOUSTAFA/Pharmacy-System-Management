@@ -22,7 +22,7 @@ public class MainController extends MyController {
     Button purchasesButton;
     public boolean isLogined;
 
-    public void openWindow(Stage stage, Parent root, String title) {
+    public void openWindow(Stage stage, Parent root, String title) throws IOException {
         stage.setScene(new Scene(root, 800, 600));
         stage.setTitle(title);
         stage.initModality(Modality.APPLICATION_MODAL);

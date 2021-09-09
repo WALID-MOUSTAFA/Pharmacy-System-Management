@@ -8,6 +8,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -19,9 +21,30 @@
    <children>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
-            <Button fx:id="deletePaymentButton" disable="true" mnemonicParsing="false" onAction="#deletePayement" text="حذف" />
-            <Button fx:id="editPaymentButton" disable="true" mnemonicParsing="false" onAction="#showEditPayment" text="تعديل" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/close_111152.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="editPaymentButton" disable="true" mnemonicParsing="false" onAction="#showEditPayment" text="تعديل">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="deletePaymentButton" disable="true" mnemonicParsing="false" onAction="#deletePayement" text="حذف">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/trash-bin.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </items>
       </ToolBar>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
@@ -42,8 +65,21 @@
                               <TableView fx:id="paymentsTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                               <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0">
                                  <children>
-                                    <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث" />
-                                    <TextField fx:id="searchBox" />
+                                    <TextField fx:id="searchBox" prefHeight="25.0" prefWidth="200.0">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin></TextField>
+                                    <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../assets/loupe.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin></Button>
                                  </children>
                               </HBox>
                            </children>
@@ -88,7 +124,7 @@
                                                 <Insets left="40.0" right="40.0" />
                                              </padding>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
+                                          <HBox alignment="CENTER" prefHeight="45.0" prefWidth="310.0">
                                              <children>
                                                 <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                                    <children>
@@ -125,6 +161,13 @@
                                              <padding>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                              </padding>
+                                             <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../assets/plus(1).png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
                                           </Button>
                                        </children>
                                     </HBox>

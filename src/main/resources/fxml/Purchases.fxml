@@ -32,10 +32,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -44,11 +47,46 @@
   <children>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
-            <Button mnemonicParsing="false" onMouseClicked="#showAsddNewPurchase" text="إضافة" />
-            <Button fx:id="showPurchaseDetailsButton" disable="true" mnemonicParsing="false" onMouseClicked="#showPurchaseDetails" text="عرض الفاتورة المحددة" />
-            <Button fx:id="deletePurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#deletePurchase" text="حذف" />
-            <Button fx:id="editPurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#editPurchase" text="تعديل" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/close_111152.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button mnemonicParsing="false" onMouseClicked="#showAsddNewPurchase" text="إضافة">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/plus(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="showPurchaseDetailsButton" disable="true" mnemonicParsing="false" onMouseClicked="#showPurchaseDetails" text="عرض الفاتورة المحددة">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/eye.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="editPurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#editPurchase" text="تعديل">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="deletePurchaseButton" disable="true" mnemonicParsing="false" onMouseClicked="#deletePurchase" text="حذف">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/trash-bin.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </items>
       </ToolBar>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
@@ -64,9 +102,25 @@
          <children>
             <HBox prefWidth="900.0">
                <children>
-                  <TextField fx:id="searchBox" />
-                  <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث" />
+                  <TextField fx:id="searchBox" prefHeight="27.0" prefWidth="198.0">
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding></TextField>
+                  <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/loupe.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin></Button>
                </children>
+               <HBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </HBox.margin>
             </HBox>
          </children></HBox>
   </children>

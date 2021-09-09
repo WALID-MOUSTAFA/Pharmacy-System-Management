@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -142,10 +143,8 @@ class DoingInventoryCountController extends MyController {
 			long result = this.inventoryCountsService
 			    .insertInventoryCountDetails
 			    (inventoryCountDetails);
-			//this.initializeInventoryBalancesTableView();
-				ObservableList o= this.inventoryBalancesTableView.getItems();
-				this.inventoryBalancesTableView.getItems().clear();
-				this.inventoryBalancesTableView.setItems(o);
+			this.initializeInventoryBalancesTableView(false);
+
 		    } catch (SQLException e) {e.printStackTrace();}
 		} else {
 		    InventoryCountDetails inventoryCountDetails=
@@ -238,7 +237,7 @@ class DoingInventoryCountController extends MyController {
 	stage.setScene(new Scene(root));
 	stage.initModality(Modality.WINDOW_MODAL);
 	stage.showAndWait();
-
+	this.initializeInventoryBalancesTableView(false);
     }
 	
 

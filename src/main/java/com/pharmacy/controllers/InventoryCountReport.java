@@ -54,7 +54,7 @@ public class InventoryCountReport extends MyController {
 			call() throws Exception {
 			return InventoryCountReport
 			.this.inventoryCountsService
-			.findInventoryCountsDetails(id);
+			.findAllInventoryCountsDetails(id);
 		    }
 		};
 	task.setOnSucceeded(e-> {

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -45,7 +47,7 @@
                         <Insets right="9.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label alignment="TOP_RIGHT" text="نوع الدواء">
+                  <Label alignment="TOP_RIGHT" text="نوع المنتج">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -101,7 +103,7 @@
                         <Insets right="26.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label alignment="TOP_RIGHT" text="نوع الدواء">
+                  <Label alignment="TOP_RIGHT" text="تركيبة المنتج">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -119,6 +121,13 @@
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </HBox>

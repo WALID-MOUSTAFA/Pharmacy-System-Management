@@ -110,10 +110,10 @@ public class InventoryCountsService {
 	  //implement showing empty and not empty balances;
 	  //implement search and filtering.
        List<InventoryCountDetails> icdList= new ArrayList<>();
-       String query= "select treat.name treatName, typetreat.typename as typeName, inventory_counts_details.*" 
-	   +"from inventory_counts_details"
-	   +"join blance_treat on blance_treat.id=inventory_counts_details.balance_id"
-	   +"join treat on blance_treat.treat_id=treat.id"
+       String query= "select treat.name as treatName, typetreat.typename as typeName, inventory_counts_details.* "
+	   +"from inventory_counts_details "
+	   +"join blance_treat on blance_treat.id=inventory_counts_details.balance_id "
+	   +"join treat on blance_treat.treat_id=treat.id "
 	   +"join typetreat on treat.typet=typetreat.id WHERE inventory_counts_details.inventory_counts_id=" + id+ ";" ;
        
        Statement stmt= this.dbConnection.createStatement();
@@ -127,7 +127,7 @@ public class InventoryCountsService {
 	   detailedTreatment= new DetailedTreatment();
 	   balanceTreat= new BalanceTreat();
 	   detailedTreatment.setTypeTreatName(rs.getString("typeName"));
-	   detailedTreatment.setName(rs.getString("typeName"));
+	   detailedTreatment.setName(rs.getString("treatName"));
 	   balanceTreat.setTreat(detailedTreatment);
 	   inventoryCountDetails.setId(rs.getLong("id"));
 	   inventoryCountDetails.setDateIn(rs.getString("date_in"));
@@ -174,6 +174,13 @@ public class InventoryCountsService {
     }
     
 
-
+	public boolean deleteInventoryCount(long id) throws SQLException {
+    	String query= "delete from inventory_counts where id="+id+";";
+    	Statement stmt= this.dbConnection.createStatement();
+    	if(stmt.executeUpdate(query) > 0) {
+    		return true;
+		}
+    	return false;
+	}
 	
 }

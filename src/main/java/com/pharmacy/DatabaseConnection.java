@@ -14,7 +14,7 @@ public class DatabaseConnection {
 	private Connection connection;
 	
 	private String url;
-	private boolean production= false;
+	private boolean production= true;
 
 	private DatabaseConnection() throws SQLException {
 		if(!production){

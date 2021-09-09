@@ -10,6 +10,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,9 +23,27 @@
    <children>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
-            <Button fx:id="editExpenseButton" disable="true" mnemonicParsing="false" onMouseClicked="#editExpense" text="تعديل" />
-            <Button fx:id="deleteExpenseButton" disable="true" mnemonicParsing="false" onAction="#deleteExpense" text="حذف" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/close_111152.png" />
+                     </image></ImageView>
+               </graphic></Button>
+            <Button fx:id="editExpenseButton" disable="true" mnemonicParsing="false" onMouseClicked="#editExpense" text="تعديل">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/edit.png" />
+                     </image></ImageView>
+               </graphic></Button>
+            <Button fx:id="deleteExpenseButton" disable="true" mnemonicParsing="false" onAction="#deleteExpense" text="حذف">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/trash-bin.png" />
+                     </image></ImageView>
+               </graphic></Button>
          </items>
       </ToolBar>
       <SplitPane dividerPositions="0.6633165829145728" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" VBox.vgrow="ALWAYS">
@@ -49,7 +69,14 @@
                               <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0">
                                  <children>
                                     <TextField fx:id="searchBox" />
-                                    <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث" />
+                                    <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../assets/loupe.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
                                  </children>
                               </HBox>
                            </children>
@@ -73,7 +100,14 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" onMouseClicked="#addExpense" text="إضافة" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#addExpense" text="إضافة">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../assets/plus(1).png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" />
@@ -89,8 +123,20 @@
                      <children>
                         <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
                            <items>
-                              <Button fx:id="editExpenseTypeButton" disable="true" mnemonicParsing="false" onMouseClicked="#editExpenseType" text="تعديل" />
-                              <Button fx:id="deleteExpenseTypeButton" disable="true" layoutX="60.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteExpenseType" text="حذف" />
+                              <Button fx:id="editExpenseTypeButton" disable="true" mnemonicParsing="false" onMouseClicked="#editExpenseType" text="تعديل">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../assets/edit.png" />
+                                       </image></ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="deleteExpenseTypeButton" disable="true" layoutX="60.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteExpenseType" text="حذف">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../assets/trash-bin.png" />
+                                       </image></ImageView>
+                                 </graphic></Button>
                               <Separator prefWidth="200.0" />
                               <Label alignment="CENTER" text="نوع المصروفات" />
                            </items>
@@ -116,7 +162,13 @@
                                           <Insets left="10.0" right="10.0" />
                                        </VBox.margin>
                                     </TextField>
-                                    <Button mnemonicParsing="false" onMouseClicked="#createExpenseType" text="إضافة" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#createExpenseType" text="إضافة">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../assets/plus(1).png" />
+                                             </image></ImageView>
+                                       </graphic></Button>
                                  </children>
                               </VBox>
                            </children>

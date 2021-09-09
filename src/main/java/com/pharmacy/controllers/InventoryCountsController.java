@@ -9,6 +9,7 @@ import com.pharmacy.services.InventoryCountsService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -27,8 +28,15 @@ public class InventoryCountsController extends MyController{
     private InventoryCountsService inventoryCountsService;
     private InventoryCount currentSelectedInventoryCount;
     @FXML private TableView inventoryCountsTableView;
+	@FXML
+	private Button addNewInventoryCountButton;
+	@FXML
+	private Button startInventoryCountButton;
+	@FXML
+	private Button inventoryCountReportButton;
+	@FXML
+	private Button deleteInventoryCountDeleteButton;
 
-	
     private void initializeThreadPool() {
 	this.executor= Executors.newCachedThreadPool((runnable)-> {
 		Thread thread= new Thread(runnable);
@@ -41,10 +49,30 @@ public class InventoryCountsController extends MyController{
 	this.inventoryCountsService= new InventoryCountsService();
 	this.initializeThreadPool();
     }
-	
+
+	public void addTableViewFocusListeners() {
+
+		this.inventoryCountsTableView.focusedProperty()
+				.addListener((observableVal,oldval,newval)-> {
+					if(newval) {
+						this.addNewInventoryCountButton.setDisable(false);
+						this.inventoryCountReportButton.setDisable(false);
+						this.deleteInventoryCountDeleteButton.setDisable(false);
+						this.startInventoryCountButton.setDisable(false);
+
+					} else {
+						this.addNewInventoryCountButton.setDisable(true);
+						this.inventoryCountReportButton.setDisable(true);
+						this.deleteInventoryCountDeleteButton.setDisable(true);
+						this.startInventoryCountButton.setDisable(true);
+					}
+				});
+	}
+
     @FXML
     public void initialize() throws SQLException{
 	this.initializeInventoryCountsTableView();
+	this.addTableViewFocusListeners();
 	//this.addInventoryCountsTableviewRowDoubleClickListener();
     }
 
@@ -103,7 +131,9 @@ public class InventoryCountsController extends MyController{
     @FXML
     public void addNewInventoryCount() throws SQLException {
 	InventoryCount inventoryCount= new InventoryCount();
-	if(this.inventoryCountsService.insertInventoryCount(inventoryCount) > 0){
+		long result = this.inventoryCountsService.insertInventoryCount(inventoryCount);
+		if(result > 0){
+		inventoryCount.setId(result);
 	    this.inventoryCountsTableView.getItems().add(inventoryCount);
 	} else {
 	    MyUtils.ALERT_ERROR("حدث خطأ ما أثناء إنشاء جرد جديد");
@@ -155,5 +185,15 @@ public class InventoryCountsController extends MyController{
 	stage.showAndWait();
     }
 
-    
+
+
+    @FXML
+	private void deleteInventoryCount() throws SQLException {
+    	if(this.inventoryCountsService.deleteInventoryCount
+				(this.currentSelectedInventoryCount.getId())){
+    		this.inventoryCountsTableView.getItems().remove(this.currentSelectedInventoryCount);
+		} else {
+    		MyUtils.ALERT_ERROR("حدث خطأ أثناء الحذف!");
+		}
+	}
 }
