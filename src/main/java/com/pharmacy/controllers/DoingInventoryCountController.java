@@ -104,6 +104,16 @@ class DoingInventoryCountController extends MyController {
 		return new SimpleStringProperty(name + "---" + type);
 	    });
 
+	
+	
+	TableColumn<BalanceTreatWithInventoryCountDetails, String> expire=
+	    new TableColumn<>("تاريخ الصلاحية");
+	expire.setCellValueFactory((rowItem)-> {
+			return new SimpleStringProperty(rowItem.getValue().getExpireDate());
+	    });
+	
+
+	
 	TableColumn<BalanceTreatWithInventoryCountDetails, String> afterQuantity=
 	    new TableColumn<>("الكمية الفعلية");
 	afterQuantity.setCellValueFactory((rowItem)-> {
@@ -203,7 +213,7 @@ class DoingInventoryCountController extends MyController {
 		});
 	
 	this.inventoryBalancesTableView.getColumns()
-	    .addAll(treatName,beforeQuantity,afterQuantity, isCounted);
+		.addAll(treatName,expire, beforeQuantity,afterQuantity, isCounted);
     }
 
 

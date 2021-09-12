@@ -229,7 +229,7 @@ public class BalanceService {
 
     public boolean decreaseQuantity(long id, double quantity)
 	throws SQLException {
-	String query= "UPDATE blance_treat SET quantity = quantity-" + quantity + ";";
+	String query= "UPDATE blance_treat SET quantity = quantity-" + quantity + " WHERE id= "+id+";";
 	Statement stmt= this.dbConnection.createStatement();
 	if(stmt.executeUpdate(query) > 0 ){
 	    return true;
@@ -239,7 +239,7 @@ public class BalanceService {
 
 
     public boolean increaseBalance(long id, double quantity) throws SQLException {
-	String query= "UPDATE blance_treat SET quantity = quantity+" + quantity + ";";
+	String query= "UPDATE blance_treat SET quantity = quantity+" + quantity + " WHERE id= "+id+";";
 	Statement stmt= this.dbConnection.createStatement();
 	if(stmt.executeUpdate(query)>0){
 	    return true;

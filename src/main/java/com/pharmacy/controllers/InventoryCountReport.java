@@ -78,6 +78,13 @@ public class InventoryCountReport extends MyController {
 		return new SimpleStringProperty(name + "---" + type);
 	    });
 
+
+	TableColumn<BalanceTreatWithInventoryCountDetails, String> expire=
+		new TableColumn<>("تاريخ الصلاحية");
+	expire.setCellValueFactory((rowItem)-> {
+			return new SimpleStringProperty(rowItem.getValue().getExpireDate());
+		});
+
 	TableColumn<InventoryCountDetails, String> afterQuantity=
 	    new TableColumn<>("الكمية الفعلية");
 	afterQuantity.setCellValueFactory(new PropertyValueFactory<>("actualQuantity"));
@@ -85,10 +92,14 @@ public class InventoryCountReport extends MyController {
 
 		TableColumn<InventoryCountDetails, String> status=
 				new TableColumn<>("الحالة");
-		status.setCellValueFactory(new PropertyValueFactory<>("status"));
+		status.setCellValueFactory((rowItem)->{
+				int statusValue= rowItem.getValue().getStatus();
+
+				return new SimpleStringProperty(String.valueOf(statusValue));
+			});
 
 
-
+		
 		TableColumn<InventoryCountDetails, String> beforeQuantity=
 	    new TableColumn<>(" الكمية على السيستم (ساعة الجرد)");
 	beforeQuantity.setCellValueFactory(new PropertyValueFactory<>("systemQuantity"));
@@ -99,7 +110,7 @@ public class InventoryCountReport extends MyController {
 	dateIn.setCellValueFactory(new PropertyValueFactory<>("dateIn"));
 
 	this.inventoryCountReportTableView.getColumns()
-	    .addAll(treatName,beforeQuantity,afterQuantity, status,dateIn);
+		.addAll(treatName,expire, beforeQuantity,afterQuantity, status,dateIn);
 
     }
 

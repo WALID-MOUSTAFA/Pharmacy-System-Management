@@ -98,7 +98,7 @@ public class EditTreatmentController extends MyController{
 		String treatPlace;
 		double lowCount;
 		String treatFormName="";
-
+		
 		if(!this.treatTypeCombo.getSelectionModel().isEmpty()) {
 			typename= this.treatTypeCombo
 				.getSelectionModel().getSelectedItem().toString();
@@ -130,6 +130,8 @@ public class EditTreatmentController extends MyController{
 		DetailedTreatment dt= this.getTheSpecificTreatment();
 		 dt.setName(name);
 		 dt.setTypeTreatName(typename);
+		 long typet= this.treatmentService.getTypeIdFromName(typename);
+		 dt.setTypet(typet);
 		 dt.setParcode(parcode);
 		 dt.setCompany(companyName);
 		 dt.setPlace(treatPlace);
