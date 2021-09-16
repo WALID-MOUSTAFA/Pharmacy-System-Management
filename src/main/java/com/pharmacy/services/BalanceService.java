@@ -285,4 +285,36 @@ public class BalanceService {
 	return false;
     }
 
+
+	public List<BalanceTreat> getAlmostExpiredTreatments(String year)  throws SQLException{
+		List<BalanceTreat> balances= new ArrayList<>();
+		String query= "SELECT  blance_treat.*, treat.name as treatName, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id left join typetreat on treat.typet= typetreat.id WHERE blance_treat.expire>='"+year+"-01-01' AND blance_treat.quantity not null;\n";
+		
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		
+		
+		BalanceTreat balanceTreat;
+		DetailedTreatment treatment;
+		while(rs.next()){
+			balanceTreat= new BalanceTreat();
+			treatment= new DetailedTreatment();
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
+			treatment.setName(rs.getString("treatName"));
+			treatment.setTypeTreatName(rs.getString("typeName"));
+			balanceTreat.setTreat(treatment);
+			balances.add(balanceTreat);
+			balanceTreat= null;
+			treatment= null;
+		}
+		
+		return balances;
+
+	}
 }

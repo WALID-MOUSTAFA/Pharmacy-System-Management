@@ -8,6 +8,8 @@ import com.pharmacy.services.BalanceService;
 import com.pharmacy.services.PurchaseDetailsService;
 import com.pharmacy.services.TreatmentService;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +26,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -141,22 +144,22 @@ public class PurchaseDetailsController extends MyController {
                 ("quantity"));
 
         TableColumn<PurchaseDetails, String> pricePeople =
-                new TableColumn<>("السعر للناس");
+                new TableColumn<>("سعر البيع");
         pricePeople.setCellValueFactory(new PropertyValueFactory<>
                 ("pricePeople"));
 
         TableColumn<PurchaseDetails, String> pricePharmacy =
-                new TableColumn<>("السعر للصيدلية");
+                new TableColumn<>("سعر الشراء");
         pricePharmacy.setCellValueFactory(new PropertyValueFactory<>
                 ("pricePharmacy"));
 
         TableColumn<PurchaseDetails, String> totalPeople =
-                new TableColumn<>("اجمالي الناس");
+                new TableColumn<>("إجمالي البيع");
         totalPeople.setCellValueFactory(new PropertyValueFactory<>
                 ("totalPeople"));
 
         TableColumn<PurchaseDetails, String> totalPharmacy =
-                new TableColumn<>("اجمالي الصيدلية");
+                new TableColumn<>("إجمالي الشراء");
         totalPharmacy.setCellValueFactory(new PropertyValueFactory<>
                 ("totalPharmacy"));
 
@@ -247,6 +250,21 @@ public class PurchaseDetailsController extends MyController {
         this.addTableViewFocusListeners();
         MyUtils.setDatePickerFormat(this.expireDate);
         MyUtils.setDatePickerFormat(this.productionDate);
+
+        try {
+            StringConverter<? extends Number> converter= new DoubleStringConverter();
+            SimpleDoubleProperty quantityProperty= new SimpleDoubleProperty();
+            SimpleDoubleProperty phramacyPriceProperty= new SimpleDoubleProperty();
+            SimpleDoubleProperty peoplePriceProperty= new SimpleDoubleProperty();
+
+            Bindings.bindBidirectional(this.quantity.textProperty(), quantityProperty, (StringConverter<Number>)converter);
+            Bindings.bindBidirectional(this.pricePeople.textProperty(), peoplePriceProperty, (StringConverter<Number>)converter);
+            Bindings.bindBidirectional(this.pricePharmacy.textProperty(), phramacyPriceProperty, (StringConverter<Number>)converter);
+
+            this.totalPharmacy.textProperty().bind(Bindings.multiply(quantityProperty, phramacyPriceProperty).asString());
+            this.totalPeople.textProperty().bind(Bindings.multiply(quantityProperty, peoplePriceProperty).asString());
+
+        } catch (NumberFormatException e) {MyUtils.ALERT_ERROR("ادخل الأرقام بصورة صحيحة");}
     }
 
 
@@ -266,7 +284,6 @@ public class PurchaseDetailsController extends MyController {
 
         TreatmentService treatmentService = new TreatmentService();
         PurchaseDetails purchaseDetails = new PurchaseDetails();
-
 
         if (this.expireDate.getValue() == null) {
             errors.add("يجب اختيار تاريخ الصلاحية");
@@ -309,7 +326,7 @@ public class PurchaseDetailsController extends MyController {
 
         treatment = treatmentService
                 .getTreatmentByName(treatName.split("-")[0], treatName.split("-")[1]);
-
+        treatment.setTypeTreatName(treatName.split("-")[1]);
         purchaseDetails.setTreat(treatment);
 
 

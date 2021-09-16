@@ -56,7 +56,7 @@ public class EditSupplierPaymentController extends MyController{
         status= this.status.isSelected();
         date= this.supplierGetDate.getValue().toString();
         notes= this.notes.getText();
-        supplierPayment= new SupplierPayment();
+        supplierPayment= this.supplierPayment;
 
         if(date == null || date.isEmpty()) {
             errors.add("يجب أن تختار التاريخ");

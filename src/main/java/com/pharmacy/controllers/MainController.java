@@ -20,7 +20,7 @@ public class MainController extends MyController {
     private Button treatments;
     @FXML
     Button purchasesButton;
-    public boolean isLogined;
+    public boolean isLogined= true;
 
     public void openWindow(Stage stage, Parent root, String title) throws IOException {
         stage.setScene(new Scene(root, 800, 600));
@@ -153,4 +153,10 @@ public class MainController extends MyController {
     }
 
 
+    @FXML
+    public void showExpireDatesScene() throws SQLException, IOException {
+	if(!this.logInMiddleWare()) {return;}
+        ExpireDatesController expireDatesController= new ExpireDatesController();
+	    expireDatesController.showStage("تواريخ الصلاحية");
+    }
 }

@@ -74,13 +74,13 @@ public class PurchasesController extends MyController{
 	TableColumn<Purchase, String> pillNum = new TableColumn<>("رقم الفاتورة");
 	pillNum.setCellValueFactory(new PropertyValueFactory<>("pillNum"));
 
-	TableColumn<Purchase, String> totalPeople = new TableColumn<>("السعر للناس");
+	TableColumn<Purchase, String> totalPeople = new TableColumn<>("إجمالي البيع");
 	totalPeople.setCellValueFactory(new PropertyValueFactory<>("totalPeople"));
 
-	TableColumn<Purchase, String> totalPharmacy = new TableColumn<>("السعر للصيدلية");
+	TableColumn<Purchase, String> totalPharmacy = new TableColumn<>("إجمالي الشراء");
 	totalPharmacy.setCellValueFactory(new PropertyValueFactory<>("totalPharmacy"));
 
-	TableColumn<Purchase, String> countUnit = new TableColumn<>("عدد الوحدات المتضمنة");
+	TableColumn<Purchase, String> countUnit = new TableColumn<>("عدد الوحدات ");
 	countUnit.setCellValueFactory(new PropertyValueFactory<>("countUnit"));
 
 //	TableColumn<Purchase, String> profit = new TableColumn<>("الربح");
