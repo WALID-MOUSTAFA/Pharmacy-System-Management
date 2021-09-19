@@ -38,6 +38,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -46,9 +48,39 @@
   <children>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق" />
-            <Button fx:id="deleteTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#deleteTreatment" text="حذف" />
-            <Button fx:id="editTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#editTreatment" text="تعديل" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/close_111152.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="deleteTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#deleteTreatment" text="حذف">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/trash-bin.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="editTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#editTreatment" text="تعديل">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/edit.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="showSpecificTreatmentButton" disable="true" mnemonicParsing="false" onMouseClicked="#showSpecificTreatment" text="عرض المنتج">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/eye.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </items>
       </ToolBar>
       <SplitPane dividerPositions="0.6" prefHeight="200.0" prefWidth="200.0">
@@ -57,11 +89,18 @@
                <children>
                   <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TableView fx:id="treatmentsTableView" onMouseClicked="#viewDetailedTreatment" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <TableView fx:id="treatmentsTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0" spacing="6.0">
                            <children>
                               <TextField fx:id="searchBox" />
-                              <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث" />
+                              <Button fx:id="searchButton" mnemonicParsing="false" onMouseClicked="#doSearch" text="ابحث">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../assets/loupe.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </HBox>
                      </children>

@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -80,8 +81,25 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </VBox>
+                        <Label fx:id="total" text="total">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
                         <ButtonBar prefHeight="40.0" prefWidth="200.0">
                           <buttons>
+                              <Button mnemonicParsing="false" onAction="#printReport" text="طباعة">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../assets/printing.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Pane prefHeight="200.0" prefWidth="200.0" />
                             <Button mnemonicParsing="false" onMouseClicked="#saveBill" text="حفظ الفاتورة">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -99,6 +117,9 @@
                                     </ImageView>
                                  </graphic></Button>
                           </buttons>
+                           <VBox.margin>
+                              <Insets right="5.0" />
+                           </VBox.margin>
                         </ButtonBar>
                      </children>
                   </VBox>

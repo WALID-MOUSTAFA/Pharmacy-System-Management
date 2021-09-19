@@ -5,6 +5,7 @@ import com.pharmacy.POGO.BalanceTreat;
 import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.services.BalanceService;
 import com.pharmacy.services.TreatmentService;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,11 +70,18 @@ public class SpecificTreatmentController extends MyController {
 	        expireColumn.setCellValueFactory
 			(new PropertyValueFactory<>("expireDate"));
 
-		
+		TableColumn<BalanceTreat, String> pill_num=
+				new TableColumn<>("رقم الفاتورة");
+		pill_num.setCellValueFactory(param -> {
+			return new SimpleStringProperty(param.getValue().getPurchase().getPillNum());
+		});
+
+
 		this.availableBalancesTableView.getColumns()
 			.addAll(quantityColumn,
 				priceColumn,
-				expireColumn);
+				expireColumn,
+					pill_num);
 
 		this.availableBalancesTableView.setItems(balances);
 	}

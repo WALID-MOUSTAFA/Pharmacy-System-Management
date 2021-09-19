@@ -24,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
@@ -247,7 +248,10 @@ public class PurchaseDetailsController extends MyController {
     private void initialize() throws SQLException {
         this.initalizeTableview();
         this.initializeTreatmentCombo();
-        this.addTableViewFocusListeners();
+       // this.addTableViewFocusListeners();
+        this.deletePurchaseDetailsButton.disableProperty().bind(Bindings.isEmpty(this.purchasesDetailsTableView.getSelectionModel().getSelectedItems()));
+        this.editPurchaseDetailsButton.disableProperty().bind(Bindings.isEmpty(this.purchasesDetailsTableView.getSelectionModel().getSelectedItems()));
+
         MyUtils.setDatePickerFormat(this.expireDate);
         MyUtils.setDatePickerFormat(this.productionDate);
 
@@ -366,6 +370,7 @@ public class PurchaseDetailsController extends MyController {
                 .insertPurchaseDetails(purchaseDetails);
         if (insertedId != 0) {
             purchaseDetails.setId(insertedId);
+            MyUtils.ALERT_SUCCESS("تمت الإضافة بنجاح!");
             this.purchasesDetailsTableView
                     .getItems().add(purchaseDetails);
 
@@ -387,6 +392,7 @@ public class PurchaseDetailsController extends MyController {
     @FXML
     public void editPurchaseDetails() throws IOException, SQLException {
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass()
                 .getResource("/fxml/editPurchaseDetails.fxml"));
@@ -416,11 +422,16 @@ public class PurchaseDetailsController extends MyController {
 
     @FXML
     public void deletePurchaseDetails() throws SQLException {
+        if(!MyUtils.ALERT_CONFIRM("حذف العنصر؟"))  {
+            return;
+        }
         long id = getCurrentSelectedPurchaseDetailsId();
         if (this.purchaseDetailsService.deletePurchaseDetailsById(id)) {
             this.purchasesDetailsTableView.getItems()
                     .remove(this.purchasesDetailsTableView
                             .getSelectionModel().getSelectedItem());
+        } else {
+            MyUtils.ALERT_ERROR("تعذر حذف العنصر، قد هذا بسبب أن هذا العنصر مرتبطاً بمبيعات أو بيانات أخرى!");
         }
     }
 

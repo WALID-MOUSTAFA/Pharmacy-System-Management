@@ -110,8 +110,8 @@ public class BalanceService {
     {
 	TreatmentService treatmentService= new TreatmentService();
 	List<BalanceTreat> balances= new ArrayList<>();
-	String query= "SELECT  * FROM blance_treat WHERE treat_id="
-	    +treatId+" AND quantity not null;";
+	String query= "SELECT blance_treat.*, purchases.pill_num from blance_treat inner join purchases on purchases.id=blance_treat.purchases_id WHERE blance_treat.treat_id="
+	    +treatId+" AND blance_treat.quantity not null AND blance_treat.quantity != 0;";
 	Statement stmt= this.dbConnection.createStatement();
 	ResultSet rs= stmt.executeQuery(query);
 		
@@ -121,9 +121,12 @@ public class BalanceService {
 		
 	BalanceTreat balanceTreat;
 	DetailedTreatment treatment;
+	Purchase purchase;
 	while(rs.next()){
 	    balanceTreat= new BalanceTreat();
-
+		purchase= new Purchase();
+		purchase.setPillNum(rs.getString("pill_num"));
+		balanceTreat.setPurchase(purchase);
 	    if(rs.getLong("treat_id") != 0) {
 		treatment=  treatmentService.getDetailedTreatmentById(rs.getLong("treat_id"));
 		balanceTreat.setTreat(treatment);
@@ -139,6 +142,7 @@ public class BalanceService {
 
 	    balances.add(balanceTreat);
 	    balanceTreat= null;
+	    purchase= null;
 	}
 		
 	return balances;
@@ -288,7 +292,7 @@ public class BalanceService {
 
 	public List<BalanceTreat> getAlmostExpiredTreatments(String year)  throws SQLException{
 		List<BalanceTreat> balances= new ArrayList<>();
-		String query= "SELECT  blance_treat.*, treat.name as treatName, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id left join typetreat on treat.typet= typetreat.id WHERE blance_treat.expire>='"+year+"-01-01' AND blance_treat.quantity not null;\n";
+		String query= "SELECT  blance_treat.*, treat.name as treatName, purchases.pill_num, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id join purchases on purchases.id=blance_treat.purchases_id left join typetreat on treat.typet= typetreat.id WHERE blance_treat.expire like '"+year+"-%' AND blance_treat.quantity not null;\n";
 		
 		Statement stmt= this.dbConnection.createStatement();
 		ResultSet rs= stmt.executeQuery(query);
@@ -296,9 +300,12 @@ public class BalanceService {
 		
 		BalanceTreat balanceTreat;
 		DetailedTreatment treatment;
+		Purchase purchase;
 		while(rs.next()){
 			balanceTreat= new BalanceTreat();
 			treatment= new DetailedTreatment();
+			purchase= new Purchase();
+			purchase.setPillNum(rs.getString("pill_num"));
 			balanceTreat.setId(rs.getLong("id"));
 			balanceTreat.setTreatId(rs.getLong("treat_id"));
 			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
@@ -309,12 +316,20 @@ public class BalanceService {
 			treatment.setName(rs.getString("treatName"));
 			treatment.setTypeTreatName(rs.getString("typeName"));
 			balanceTreat.setTreat(treatment);
+			balanceTreat.setPurchase(purchase);
 			balances.add(balanceTreat);
 			balanceTreat= null;
 			treatment= null;
+			purchase= null;
 		}
 		
 		return balances;
 
+	}
+
+	public void updateBalanceTreatExpire(BalanceTreat balanceTreat) throws SQLException {
+    	String query= "update blance_treat set expire='" +balanceTreat.getExpireDate()+ "' where id="+balanceTreat.getId();
+    	Statement stmt= this.dbConnection.createStatement();
+    	stmt.executeUpdate(query);
 	}
 }

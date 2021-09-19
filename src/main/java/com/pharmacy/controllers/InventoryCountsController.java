@@ -1,18 +1,21 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
+import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.InventoryCount;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
+import javafx.css.SimpleSelector;
 import javafx.fxml.FXML;
 import com.pharmacy.services.InventoryCountsService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -21,6 +24,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class InventoryCountsController extends MyController{
 
@@ -37,6 +41,9 @@ public class InventoryCountsController extends MyController{
 	@FXML
 	private Button deleteInventoryCountDeleteButton;
 
+	@FXML
+	TextField searchBox;
+
     private void initializeThreadPool() {
 	this.executor= Executors.newCachedThreadPool((runnable)-> {
 		Thread thread= new Thread(runnable);
@@ -51,22 +58,10 @@ public class InventoryCountsController extends MyController{
     }
 
 	public void addTableViewFocusListeners() {
+		this.deleteInventoryCountDeleteButton.disableProperty().bind(Bindings.isEmpty(this.inventoryCountsTableView.getSelectionModel().getSelectedItems()));
+		this.startInventoryCountButton.disableProperty().bind(Bindings.isEmpty(this.inventoryCountsTableView.getSelectionModel().getSelectedItems()));
+		this.inventoryCountReportButton.disableProperty().bind(Bindings.isEmpty(this.inventoryCountsTableView.getSelectionModel().getSelectedItems()));
 
-		this.inventoryCountsTableView.focusedProperty()
-				.addListener((observableVal,oldval,newval)-> {
-					if(newval) {
-						this.addNewInventoryCountButton.setDisable(false);
-						this.inventoryCountReportButton.setDisable(false);
-						this.deleteInventoryCountDeleteButton.setDisable(false);
-						this.startInventoryCountButton.setDisable(false);
-
-					} else {
-						this.addNewInventoryCountButton.setDisable(true);
-						this.inventoryCountReportButton.setDisable(true);
-						this.deleteInventoryCountDeleteButton.setDisable(true);
-						this.startInventoryCountButton.setDisable(true);
-					}
-				});
 	}
 
     @FXML
@@ -101,7 +96,9 @@ public class InventoryCountsController extends MyController{
 	this.renderInventoryCounts();
 	TableColumn<InventoryCount, String> dateInColumn=
 	    new TableColumn<>("تاريخ الجرد");
-	dateInColumn.setCellValueFactory(new PropertyValueFactory("dateIn"));
+	dateInColumn.setCellValueFactory(param -> {
+		return new SimpleStringProperty(param.getValue().getDateIn().split(" ")[0]);
+	});
 	this.inventoryCountsTableView.getColumns().add(dateInColumn);	
 
 	//set current Inventory Count;
@@ -150,7 +147,7 @@ public class InventoryCountsController extends MyController{
     @FXML
     private void showDoingInventoryCount() throws IOException, SQLException {
 	Stage stage= new Stage();
-	stage.setTitle("جرد" + this.currentSelectedInventoryCount.getId());
+	stage.setTitle("جرد: " + this.currentSelectedInventoryCount.getDateIn().split(" ")[0]);
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation
 	    (getClass().getResource("/fxml/DoingInventoryCount.fxml"));
@@ -170,7 +167,7 @@ public class InventoryCountsController extends MyController{
     @FXML
     private void showInventoryCountReport() throws IOException, SQLException {
 	Stage stage= new Stage();
-	stage.setTitle("تقرير عن جرد" + this.currentSelectedInventoryCount.getDateIn());
+	stage.setTitle("تقرير عن جرد : " + this.currentSelectedInventoryCount.getDateIn().split(" ")[0]);
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation
 	    (getClass().getResource("/fxml/InventoryCountReport.fxml"));
@@ -189,11 +186,34 @@ public class InventoryCountsController extends MyController{
 
     @FXML
 	private void deleteInventoryCount() throws SQLException {
+    	if(!MyUtils.ALERT_CONFIRM("هل تريد حذف هذا الجرد؟")) {
+    		return;
+		}
     	if(this.inventoryCountsService.deleteInventoryCount
 				(this.currentSelectedInventoryCount.getId())){
     		this.inventoryCountsTableView.getItems().remove(this.currentSelectedInventoryCount);
+    		MyUtils.ALERT_SUCCESS("تم حذف الجرد بنجاح.");
 		} else {
     		MyUtils.ALERT_ERROR("حدث خطأ أثناء الحذف!");
 		}
+	}
+
+
+	@FXML
+	private void doSearch() throws SQLException {
+		String q= this.searchBox.getText();
+		if(q.isEmpty()) {
+			this.initializeInventoryCountsTableView();
+			return;
+		}
+		ObservableList<InventoryCount> items= this.inventoryCountsTableView.getItems();
+		FilteredList<InventoryCount> filteredList= new FilteredList<>(items);
+		this.inventoryCountsTableView.setItems(filteredList);
+		filteredList.setPredicate(new Predicate<InventoryCount>() {
+			@Override
+			public boolean test(InventoryCount i) {
+				return i.getDateIn().contains(q);
+			}
+		});
 	}
 }

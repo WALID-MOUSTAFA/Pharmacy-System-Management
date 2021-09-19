@@ -4,6 +4,7 @@ import com.pharmacy.POGO.Purchase;
 import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.SuppliersService;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -142,7 +143,11 @@ public class SuppliersController extends MyController{
     @FXML
     public void initialize () throws SQLException{
         this.initializeTableView();
-		this.addTableViewFocusListeners();
+	//	this.addTableViewFocusListeners();
+		this.editSupplierButton.disableProperty().bind(Bindings.isEmpty(this.suppliersTableView.getSelectionModel().getSelectedItems()));
+		this.deleteSupplierButton.disableProperty().bind(Bindings.isEmpty(this.suppliersTableView.getSelectionModel().getSelectedItems()));
+		this.showSupplierPaymentButton.disableProperty().bind(Bindings.isEmpty(this.suppliersTableView.getSelectionModel().getSelectedItems()));
+
 		this.createSupplierController.setSuppliersController(this);
 	}
 

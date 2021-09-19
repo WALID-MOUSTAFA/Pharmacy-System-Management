@@ -88,8 +88,14 @@ public class ExpireDatesController extends MyController {
 
 		for(BalanceTreat b : balances) {
 			String expire=b.getExpireDate();
-			String value= b.getTreat().getName() + " >> " + b.getExpireDate().split(" ")[0]+ " >> " +b.getTreat().getTypeTreatName() ;
-			Timestamp ts= Timestamp.valueOf(expire);
+			String value= b.getTreat().getName() + "           |           " + b.getTreat().getTypeTreatName() + "           |           " + b.getPurchase().getPillNum();
+
+			Timestamp ts;
+			if(expire.split(" ").length == 2) {
+				ts= Timestamp.valueOf(expire );
+			} else {
+				ts= Timestamp.valueOf(expire + " 00:00:00.000");
+			}
 			Calendar cal= Calendar.getInstance();
 			cal.setTime(ts);
 			int month= cal.get(Calendar.MONTH);

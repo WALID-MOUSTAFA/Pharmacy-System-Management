@@ -79,10 +79,10 @@ public class InventoryCountReport extends MyController {
 	    });
 
 
-	TableColumn<BalanceTreatWithInventoryCountDetails, String> expire=
+	TableColumn<InventoryCountDetails, String> expire=
 		new TableColumn<>("تاريخ الصلاحية");
 	expire.setCellValueFactory((rowItem)-> {
-			return new SimpleStringProperty(rowItem.getValue().getExpireDate());
+			return new SimpleStringProperty(rowItem.getValue().getBalanceTreat().getExpireDate());
 		});
 
 	TableColumn<InventoryCountDetails, String> afterQuantity=

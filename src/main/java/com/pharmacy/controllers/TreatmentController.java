@@ -1,9 +1,11 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.TreatmentService;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,6 +18,7 @@ import javafx.scene.control.*;
 import com.pharmacy.DatabaseConnection;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -44,6 +47,7 @@ public class TreatmentController extends MyController{
 	@FXML CreateTreatmentController createTreatmentController; //child fxml
 	private TreatmentService treatmentService;
 	@FXML private TextField searchBox;
+	@FXML Button showSpecificTreatmentButton;
 
 	private void initializeThreadPool() {
 		this.executor= Executors.newCachedThreadPool((runnable)-> {
@@ -167,6 +171,7 @@ public class TreatmentController extends MyController{
 
 	public void showSpecificTreatment() throws IOException, SQLException{
 		Stage stage= new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation
 			(getClass().getResource("/fxml/SpecificTreatment.fxml"));
@@ -187,7 +192,10 @@ public class TreatmentController extends MyController{
 	@FXML
 	private void initialize() throws SQLException {
 		this.initializeTableView();
-		this.addTableViewFocusListeners();
+		//this.addTableViewFocusListeners();
+		this.editTreatmentButton.disableProperty().bind(Bindings.isEmpty(this.treatmentsTableView.getSelectionModel().getSelectedItems()));
+		this.deleteTreatmentButton.disableProperty().bind(Bindings.isEmpty(this.treatmentsTableView.getSelectionModel().getSelectedItems()));
+		this.showSpecificTreatmentButton.disableProperty().bind(Bindings.isEmpty(this.treatmentsTableView.getSelectionModel().getSelectedItems()));
 		this.addTableviewRowDoubleClickListener();
 		this.createTreatmentController.setTreatmentController(this);
 	}
@@ -220,6 +228,9 @@ public class TreatmentController extends MyController{
 
 	@FXML
 	private void deleteTreatment() {
+		if(!MyUtils.ALERT_CONFIRM("هل تريد حذف هذا المنتج؟")) {
+			return;
+		}
 		try {
 			if (this.treatmentService.deleteTreatment(this.currentTreatmentId)) {
 				this.treatmentsTableView
@@ -242,9 +253,7 @@ public class TreatmentController extends MyController{
 
 	
 	
-	@FXML
-	private void viewDetailedTreatment() throws  SQLException{}
-	
+
 
 	@FXML
 	private void showAsddNewTreatment() throws IOException, SQLException {

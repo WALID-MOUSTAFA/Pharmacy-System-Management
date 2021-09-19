@@ -8,11 +8,15 @@ import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.BalanceService;
 import com.pharmacy.services.PurchaseDetailsService;
 import com.pharmacy.services.TreatmentService;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -94,14 +98,30 @@ public class EditPurchaseDetailsController extends MyController{
 		this.discount.setText(pd.getDiscount());
 		//this.initializeTreatmentCombo();
 		this.treatName.setValue(pd.getTreat().getName()+"-"+pd.getTreat().getTypeTreatName());
-		
+
+		try {
+			StringConverter<? extends Number> converter= new DoubleStringConverter();
+			SimpleDoubleProperty quantityProperty= new SimpleDoubleProperty(pd.getQuantity());
+			SimpleDoubleProperty phramacyPriceProperty= new SimpleDoubleProperty(pd.getPricePharmacy());
+			SimpleDoubleProperty peoplePriceProperty= new SimpleDoubleProperty(pd.getPricePeople());
+
+			Bindings.bindBidirectional(this.quantity.textProperty(), quantityProperty, (StringConverter<Number>)converter);
+			Bindings.bindBidirectional(this.pricePeople.textProperty(), peoplePriceProperty, (StringConverter<Number>)converter);
+			Bindings.bindBidirectional(this.pricePharmacy.textProperty(), phramacyPriceProperty, (StringConverter<Number>)converter);
+
+			this.totalPharmacy.textProperty().bind(Bindings.multiply(quantityProperty, phramacyPriceProperty).asString());
+			this.totalPeople.textProperty().bind(Bindings.multiply(quantityProperty, peoplePriceProperty).asString());
+
+		} catch (NumberFormatException e) {MyUtils.ALERT_ERROR("ادخل الأرقام بصورة صحيحة");}
+
 	}
 
 
 	@FXML
 	public void initialize() throws SQLException {
 		this.initializeForm();
-		MyUtils.setDatePickerFormat(this.expireDate);
+
+			MyUtils.setDatePickerFormat(this.expireDate);
 		MyUtils.setDatePickerFormat(this.productionDate);
 	}
 
@@ -192,6 +212,7 @@ public class EditPurchaseDetailsController extends MyController{
 		
 		if(this.purchaseDetailsService
 		   .updatePurchaseDetails(purchaseDetails)) {
+			this.fixBalanceTreatDates(purchaseDetails);
 			this.fixBalanceTreat(purchaseDetails, oldQantity);
 			this.stage.close();
 		} else {
@@ -221,5 +242,11 @@ public class EditPurchaseDetailsController extends MyController{
 		}
 	}
 
+	public void fixBalanceTreatDates(PurchaseDetails purchaseDetails) throws SQLException {
+		BalanceService balanceService= new BalanceService();
+		BalanceTreat relatedBalanceTreat = balanceService.getBalanceTreatbyPurchaseDetailsId(purchaseDetails.getId());
+		relatedBalanceTreat.setExpireDate(purchaseDetails.getExpireDate());
+		balanceService.updateBalanceTreatExpire(relatedBalanceTreat);
+	}
 
 }

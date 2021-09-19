@@ -36,7 +36,7 @@ public class SuppliersService {
         return suppliers;
     }
 
-    public boolean insertTreatment(Supplier supplier) throws SQLException{
+    public boolean insertSupplier(Supplier supplier) throws SQLException{
         String query= "INSERT INTO supliers (name, phone, address, cash, date_at) VALUES (?,?,?,?,?)";
         PreparedStatement preparedStatement=
 		this.dbConnection.prepareStatement(query);

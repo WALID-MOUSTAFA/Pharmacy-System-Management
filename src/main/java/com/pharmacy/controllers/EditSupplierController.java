@@ -50,8 +50,8 @@ public class EditSupplierController extends MyController {
 	private void updateSupplier() throws SQLException {
 		List<String> errors= new ArrayList<>();
 		String name= this.supplierName.getText();
-		String address= this.supplierPhone.getText();
-		String phone= this.supplierAddress.getText();
+		String address= this.supplierAddress.getText();
+		String phone= this.supplierPhone.getText();
 		double cash= !this.supplierCash.getText().isEmpty()?
 			Double.valueOf(this.supplierCash.getText())
 			: 0;

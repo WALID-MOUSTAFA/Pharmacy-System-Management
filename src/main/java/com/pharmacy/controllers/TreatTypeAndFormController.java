@@ -4,6 +4,7 @@ import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.TreatForm;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.TreatmentService;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -43,6 +44,10 @@ public class TreatTypeAndFormController extends MyController {
     private void initialize() throws SQLException{
         this.initializeFormTableView();
         this.initializeTypeTableView();
+        this.editFormButton.disableProperty().bind(Bindings.isEmpty(this.formTableView.getSelectionModel().getSelectedItems()));
+        this.deleteFormButton.disableProperty().bind(Bindings.isEmpty(this.formTableView.getSelectionModel().getSelectedItems()));
+        this.editTypeButton.disableProperty().bind(Bindings.isEmpty(this.typeTableView.getSelectionModel().getSelectedItems()));
+        this.deleteTypeButton.disableProperty().bind(Bindings.isEmpty(this.typeTableView.getSelectionModel().getSelectedItems()));
     }
 
 
@@ -91,15 +96,7 @@ public class TreatTypeAndFormController extends MyController {
             this.currentForm= (TreatForm) neo;
         });
 
-        this.formTableView.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
-                this.editFormButton.setDisable(false);
-                this.deleteFormButton.setDisable(false);
-            }else {
-                this.editFormButton.setDisable(true);
-                this.deleteFormButton.setDisable(true);
-            }
-        });
+
     }
 
 
@@ -159,15 +156,6 @@ public class TreatTypeAndFormController extends MyController {
         this.currentType= (TypeTreat) neo;
         });
 
-        this.typeTableView.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
-                this.editTypeButton.setDisable(false);
-                this.deleteTypeButton.setDisable(false);
-            }else {
-                this.editTypeButton.setDisable(true);
-                this.deleteTypeButton.setDisable(true);
-            }
-        });
     }
 
     @FXML

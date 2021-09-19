@@ -53,7 +53,7 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <fx:include source="sales.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <fx:include source="Sales.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -69,15 +69,12 @@
                           <columnConstraints>
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="143.0" valignment="CENTER" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="173.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="192.0" minHeight="0.0" prefHeight="128.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="156.0" minHeight="0.0" prefHeight="106.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="156.0" minHeight="0.0" prefHeight="106.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="193.33334350585938" minHeight="10.0" prefHeight="193.33334350585938" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="192.0" minHeight="0.0" prefHeight="169.99996948242188" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Button id="treatments" fx:id="purchasesButton" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showPurchasesScene" prefHeight="25.0" prefWidth="200.0" text="المشتريات" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -116,7 +113,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" fx:id="customer" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showCustomerScene" prefHeight="25.0" prefWidth="200.0" text="العملاء" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <Button id="treatments" fx:id="customer" alignment="CENTER" contentDisplay="TOP" ellipsisString="" graphicTextGap="16.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#showCustomerScene" prefHeight="121.0" prefWidth="202.0" text="العملاء" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -128,7 +125,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" fx:id="store2" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showBillScene" prefHeight="25.0" prefWidth="200.0" text="المبيعات" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <Button id="treatments" fx:id="store2" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showBillScene" prefHeight="25.0" prefWidth="200.0" text="المبيعات" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -140,7 +137,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showFormTypeTreatScene" prefHeight="25.0" prefWidth="200.0" text="النوع والتركيب" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                              <Button id="treatments" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showFormTypeTreatScene" prefHeight="25.0" prefWidth="200.0" text="النوع والتركيب" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -152,7 +149,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showInventoryCountsScene" prefHeight="25.0" prefWidth="200.0" text="الجرد" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                              <Button id="treatments" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showInventoryCountsScene" prefHeight="25.0" prefWidth="200.0" text="الجرد" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -164,7 +161,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" fx:id="store21" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showExpensesScene" prefHeight="25.0" prefWidth="200.0" text="المصروفات" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                              <Button id="treatments" fx:id="store21" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showExpensesScene" prefHeight="25.0" prefWidth="200.0" text="المصروفات" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
@@ -176,14 +173,14 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <Button id="treatments" fx:id="store211" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showExpireDatesScene" prefHeight="25.0" prefWidth="200.0" text="تواريخ الصلاحية" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Button id="treatments" fx:id="store211" alignment="CENTER" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#showExpireDatesScene" prefHeight="25.0" prefWidth="200.0" text="تواريخ الصلاحية" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="17.0" />
                                  </font>
                                  <graphic>
                                     <ImageView fitHeight="79.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../assets/noun_expenses_1666185.png" />
+                                          <Image url="@../assets/calendar.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>

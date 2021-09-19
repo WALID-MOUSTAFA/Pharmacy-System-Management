@@ -63,7 +63,7 @@ public class CreateSupplierController extends  MyController{
 		    return;
 	    }
 	    
-	    boolean result= this.suppliersService.insertTreatment(supplier);
+	    boolean result= this.suppliersService.insertSupplier(supplier);
 
 		if (result) {
 			this.suppliersController.initializeTableView();

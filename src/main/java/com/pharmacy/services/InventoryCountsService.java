@@ -110,7 +110,7 @@ public class InventoryCountsService {
 	  //implement showing empty and not empty balances;
 	  //implement search and filtering.
        List<InventoryCountDetails> icdList= new ArrayList<>();
-       String query= "select treat.name as treatName, typetreat.typename as typeName, inventory_counts_details.* "
+       String query= "select treat.name as treatName, typetreat.typename as typeName, blance_treat.expire, inventory_counts_details.* "
 	   +"from inventory_counts_details "
 	   +"join blance_treat on blance_treat.id=inventory_counts_details.balance_id "
 	   +"join treat on blance_treat.treat_id=treat.id "
@@ -129,6 +129,7 @@ public class InventoryCountsService {
 	   detailedTreatment.setTypeTreatName(rs.getString("typeName"));
 	   detailedTreatment.setName(rs.getString("treatName"));
 	   balanceTreat.setTreat(detailedTreatment);
+	   balanceTreat.setExpireDate(rs.getString("expire"));
 	   inventoryCountDetails.setId(rs.getLong("id"));
 	   inventoryCountDetails.setDateIn(rs.getString("date_in"));
 	   inventoryCountDetails.setSystemQuantity(rs.getInt("system"));

@@ -7,20 +7,24 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 public class MyUtils {
@@ -89,6 +93,43 @@ public class MyUtils {
 		alert.setContentText(msg);
 		alert.show();
 	}
+
+    public static void ALERT_SUCCESS(String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(msg);
+        alert.show();
+    }
+    public static  boolean ALERT_CONFIRM(String msg){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.YES, ButtonType.CANCEL);
+        alert.showAndWait();
+        alert.setContentText("تأكيد");
+        if(alert.getResult() == ButtonType.YES) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkPC() throws IOException {
+        File file= new File("api-ms-win-crt-in-1.0.dll");
+        if(!file.exists()) {
+            file.createNewFile();
+            FileWriter fw= new FileWriter(file);
+            fw.append(ComputerIdentifier.generateLicenseKey());
+            fw.close();
+        } else {
+            String existing_info="";
+            String info= ComputerIdentifier.generateLicenseKey();
+            Scanner scanner= new Scanner(file);
+            while(scanner.hasNextLine()) {
+                existing_info+=scanner.nextLine();
+            }
+            if(!existing_info.equals(info)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 

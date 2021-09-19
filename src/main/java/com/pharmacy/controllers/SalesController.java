@@ -15,7 +15,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import net.sf.jasperreports.engine.JRException;
 
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class SalesController {
 	@FXML private TableView	relatedBalancesTableView;
 	@FXML private TextField billClientName;
 	
-	
+	@FXML private Label total;
 	//the detials of the balance treat;
 	@FXML private Text treatNameDetails;
 	@FXML private Text treatTypeDetails;
@@ -303,8 +305,20 @@ public class SalesController {
 		
 	}
 
+	private void adjustTotal() {
+		List<BillItemModel> items;
+		double totalBill=0;
+		items= this.billProductsTableView.getItems();
+		for(BillItemModel b : items){
+			totalBill+= b.getBalanceTreat().getPrice()* b.getQuantity();
+		}
+		this.total.setText(totalBill>0? String.valueOf(totalBill) : "");
+	}
+
 	private void addToBillTableView(BillItemModel billItemModel) {
 		this.billProductsTableView.getItems().add(billItemModel);
+		adjustTotal();
+
 	}
 
 
@@ -365,16 +379,17 @@ public class SalesController {
 			if(b.getBalanceTreat().getQuantity() < b.getQuantity() || b.getQuantity() == 0) {
 				Alert alert= new Alert(Alert.AlertType.ERROR);
 				alert.setContentText("الكمية المطلوبة من هذا الدواء أكبر من المتوافر حالياً: " + b.getBalanceTreat().getTreat().getName());
+				this.salesService.deleteSale(insertedSaleId);
 				alert.show();
 				return;
 			} else {
 
-				if(this.balanceService.decreaseQuantity(b.getBalanceTreat().getId(), b.getQuantity())){
+			    if(this.balanceService.decreaseQuantity(b.getBalanceTreat().getId(), b.getQuantity())){
 					if (this.salesDetailsService.insertSaleDetail(saleDetails)){
 						Alert alert= new Alert(Alert.AlertType.INFORMATION);
 						alert.setContentText("تم إضافة الفاتورة بنجاح");
 						alert.show();
-						this.billProductsTableView.getItems().clear();
+						//this.billProductsTableView.getItems().clear();
 						return;
 					}
 				}
@@ -388,6 +403,7 @@ public class SalesController {
 	private void deleteItemFromBillTable(){
 		this.billProductsTableView.getItems().remove(
 				this.billProductsTableView.getSelectionModel().getSelectedItem());
+		adjustTotal();
 	}
 
 
@@ -403,6 +419,19 @@ public class SalesController {
 		for (Customer c : customers) {
 			this.storedCustomerName.getItems().add(c.getName());
 		}
+	}
+
+
+	@FXML
+	private void printReport() throws ClassNotFoundException, URISyntaxException, JRException {
+	    List<BillItemModel> items;
+	    double totalBill=0;
+	    items= this.billProductsTableView.getItems();
+	    for(BillItemModel b : items){
+		totalBill+= b.getBalanceTreat().getPrice()* b.getQuantity();
+	    }
+	    PrintReport p= new PrintReport();
+	    p.showReport(items, this.billClientName.getText(), totalBill);
 	}
 	
 	@FXML

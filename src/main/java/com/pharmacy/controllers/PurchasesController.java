@@ -2,7 +2,10 @@ package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.PurchaseDetails;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
@@ -25,6 +28,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.pharmacy.POGO.Purchase;
 import com.pharmacy.services.PurchasesService;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PurchasesController extends MyController{
@@ -122,45 +126,46 @@ public class PurchasesController extends MyController{
 
 
 
-    public void addTableViewFocusListeners() {
-
-	    this.purchasesTableView.focusedProperty()
-		    .addListener((observableVal,oldval,newval)-> {
-		if(newval) {
-		    this.editPurchaseButton.setDisable(false);
-		    this.deletePurchaseButton.setDisable(false);
-		    this.showPurchaseDetailsButton.setDisable(false);
-
-		} else {
-		    this.editPurchaseButton.setDisable(true);
-		    this.deletePurchaseButton.setDisable(true);
-		    this.showPurchaseDetailsButton.setDisable(true);
-		}
-	    });
-    }
+//    public void addTableViewFocusListeners() {
+//
+//	    this.purchasesTableView.focusedProperty()
+//		    .addListener((observableVal,oldval,newval)-> {
+//		if(newval) {
+//		    this.editPurchaseButton.setDisable(false);
+//		    this.deletePurchaseButton.setDisable(false);
+//		    this.showPurchaseDetailsButton.setDisable(false);
+//
+//		} else {
+//		    this.editPurchaseButton.setDisable(true);
+//		    this.deletePurchaseButton.setDisable(true);
+//		    this.showPurchaseDetailsButton.setDisable(true);
+//		}
+//	    });
+//    }
 
 
     @FXML
     private void initialize() throws SQLException {
 	this.initializeTableView();
-	addTableViewFocusListeners();
-	addTableviewRowDoubleClickListener();
+		this.editPurchaseButton.disableProperty().bind(Bindings.isEmpty(this.purchasesTableView.getSelectionModel().getSelectedItems()));
+		this.showPurchaseDetailsButton.disableProperty().bind(Bindings.isEmpty(this.purchasesTableView.getSelectionModel().getSelectedItems()));
+		this.deletePurchaseButton.disableProperty().bind(Bindings.isEmpty(this.purchasesTableView.getSelectionModel().getSelectedItems()));
 
 	}
 
-    private void addTableviewRowDoubleClickListener() {
-	this.purchasesTableView.setRowFactory( tv->  {
-		TableRow<Purchase> row= new TableRow<>();
-		row.setOnMouseClicked(event -> {
-			if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-			    try {
-				this.showPurchaseDetails();
-			    } catch (SQLException|IOException e){}
-			}
-		    });
-		return row ;
-	    });
-    }
+//    private void addTableviewRowDoubleClickListener() {
+//	this.purchasesTableView.setRowFactory( tv->  {
+//		TableRow<Purchase> row= new TableRow<>();
+//		row.setOnMouseClicked(event -> {
+//			if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+//			    try {
+//				this.showPurchaseDetails();
+//			    } catch (SQLException|IOException e){}
+//			}
+//		    });
+//		return row ;
+//	    });
+//    }
 
 
     @FXML
@@ -179,6 +184,7 @@ public class PurchasesController extends MyController{
     @FXML
     public void showAsddNewPurchase() throws IOException, SQLException {
 	Stage stage= new Stage();
+	stage.initModality(Modality.APPLICATION_MODAL);
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation(getClass()
 			   .getResource("/fxml/CreatePurchase.fxml"));
@@ -212,12 +218,17 @@ public class PurchasesController extends MyController{
 
     @FXML
     public void deletePurchase() throws SQLException{
+		if(!MyUtils.ALERT_CONFIRM("حذف العنصر؟"))  {
+			return;
+		}
 	if(this.purchasesService.deletePurchase(this.currentSelectedItemId)){
 	    Alert alert= new Alert(Alert.AlertType.INFORMATION);
 	    alert.setHeaderText(null);
 	    alert.setContentText("تم حذف الفاتورة بنجاح");
 	    alert.show();
-	    this.initializeTableView();
+		this.purchasesTableView.getItems().remove(this.purchasesTableView.getSelectionModel().getSelectedItem());
+	} else {
+		MyUtils.ALERT_ERROR("حدث خطأ أثناء حذف العنصر!");
 	}
 	
     }
@@ -225,6 +236,7 @@ public class PurchasesController extends MyController{
     @FXML
     public void editPurchase() throws SQLException, IOException{
 	Stage stage= new Stage();
+	stage.initModality(Modality.APPLICATION_MODAL);
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation(getClass()
 			   .getResource("/fxml/editPurchase.fxml"));

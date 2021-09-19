@@ -9,7 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.io.IOException;
 
@@ -18,6 +22,10 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
+			if(!MyUtils.checkPC()) {
+				MyUtils.ALERT_ERROR("Device is not compatible with the application!");
+				return;
+			}
 
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/Main.fxml"));

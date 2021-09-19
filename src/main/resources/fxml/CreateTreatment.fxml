@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -19,7 +21,7 @@
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Label text="اسم الدواء" />
+                  <Label text="اسم المنتج" />
                </children>
                <padding>
                   <Insets left="40.0" right="40.0" />
@@ -45,7 +47,7 @@
                         <Insets right="9.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label alignment="TOP_RIGHT" text="نوع الدواء">
+                  <Label alignment="TOP_RIGHT" text="نوع المنتج">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -98,10 +100,10 @@
                <children>
                   <ComboBox fx:id="treatFormCombo" prefWidth="150.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets right="26.0" />
+                        <Insets right="16.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label alignment="TOP_RIGHT" text="تركيبة الدواء">
+                  <Label alignment="TOP_RIGHT" text="تركيبة المنتج">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -119,6 +121,13 @@
                <padding>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/plus(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </HBox>

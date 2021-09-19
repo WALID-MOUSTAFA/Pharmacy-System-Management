@@ -15,6 +15,16 @@ public class  BalanceTreat {
 
 	private DetailedTreatment treat;
 	private long purchaseId;
+
+	public Purchase getPurchase() {
+		return purchase;
+	}
+
+	public void setPurchase(Purchase purchase) {
+		this.purchase = purchase;
+	}
+
+	private Purchase purchase;
 	private long purchaseDetailsId;
 	private long typeId;
 	private String expireDate;
@@ -123,5 +133,6 @@ public class  BalanceTreat {
 	public void setDateIn(String dateIn) {
 		this.dateIn = dateIn;
 	}
+
 }
 

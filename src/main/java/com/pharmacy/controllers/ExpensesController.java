@@ -134,6 +134,7 @@ public class ExpensesController extends MyController{
 
 		
 	private void initializeExpenseTypeCombo() throws SQLException{
+		this.expenseType.getItems().clear();
 		for(ExpenseType et : this.getAllExpenseTypes()){
 			this.expenseType.getItems().add(et.getName());
 		}
@@ -225,6 +226,8 @@ public class ExpensesController extends MyController{
 		if(inserted> 0){
 			expenseType.setId(inserted);
 			this.expenseTypeTableView.getItems().add(expenseType);
+			MyUtils.ALERT_SUCCESS("تمت إضافة العنصر بنجاح!");
+			this.initializeExpenseTypeCombo();
 		}
 	}
 
@@ -285,8 +288,12 @@ public class ExpensesController extends MyController{
 
 	@FXML
 	private void deleteExpense() throws SQLException {
+		if(!MyUtils.ALERT_CONFIRM("هل انت واثق من حذف هذا العنصر؟")) {
+			return;
+		}
 		if(this.expensesService.deleteExpense(this.currentExpense.getId())) {
 			this.expensesTableView.getItems().remove(this.currentExpense);
+			MyUtils.ALERT_SUCCESS("تم الحذف بنجاح.");
 		} else {
 			MyUtils.ALERT_ERROR("حدث خطأ أثناء الحذف");
 		}
@@ -295,8 +302,12 @@ public class ExpensesController extends MyController{
 
 	@FXML
 	private void deleteExpenseType() throws SQLException {
+		if(!MyUtils.ALERT_CONFIRM("هل انت واثق من حذف هذا العنصر، وبالتالي جميع المصروفات المتعلقة به؟")) {
+			return;
+		}
 		if(this.expensesService.deleteExpenseType(this.currentExpenseType.getId())){
 			this.expenseTypeTableView.getItems().remove(this.currentExpenseType);
+			MyUtils.ALERT_SUCCESS("تم الحذف بنجاح.");
 		} else {
 			MyUtils.ALERT_ERROR("حدث خطأ أثناء الحذف");
 		}

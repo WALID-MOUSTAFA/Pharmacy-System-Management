@@ -5,6 +5,9 @@ open module com.pharmacy {
     requires org.xerial.sqlitejdbc;
     requires java.validation;
     requires org.hibernate.validator;
+    requires com.github.oshi;
+    requires java.desktop;
+    requires jasperreports;
 
     exports  com.pharmacy;
 }

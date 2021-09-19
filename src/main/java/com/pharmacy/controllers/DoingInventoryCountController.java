@@ -118,7 +118,7 @@ class DoingInventoryCountController extends MyController {
 	    new TableColumn<>("الكمية الفعلية");
 	afterQuantity.setCellValueFactory((rowItem)-> {
 		return rowItem.getValue().getAfterQuantity() == 0?
-		    new SimpleStringProperty(" ") :
+		    new SimpleStringProperty("0") :
 		    new SimpleStringProperty
 		    (String.valueOf(rowItem.getValue().getAfterQuantity()));
 	    });
@@ -198,8 +198,8 @@ class DoingInventoryCountController extends MyController {
 			  super.updateItem(item, empty);
 			  if(item != null && !empty) {
 			      if (item.getCountId() != 0) {
-				  setStyle("-fx-background-color: lightgreen");
-
+				 // setStyle("-fx-background-color: lightgreen");
+			    	return;
 			      }
 			  }
 		      }
