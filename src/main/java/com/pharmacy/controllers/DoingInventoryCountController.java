@@ -1,8 +1,10 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.BalanceTreatWithInventoryCountDetails;
 import com.pharmacy.POGO.InventoryCount;
 import com.pharmacy.POGO.InventoryCountDetails;
+import com.pharmacy.YearMonthFilterable;
 import com.pharmacy.services.InventoryCountsService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,9 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 import com.pharmacy.services.BalanceService;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
@@ -42,6 +41,7 @@ class DoingInventoryCountController extends MyController {
     private BalanceTreatWithInventoryCountDetails currentSelectedBalance;
     @FXML private TableView inventoryBalancesTableView;
     @FXML private TextField searchBox;
+	@FXML private Button deleteBalanceButton;
 
     
     private void initializeThreadPool() {
@@ -83,7 +83,7 @@ class DoingInventoryCountController extends MyController {
 
     @FXML
     private void initialize() throws SQLException {
-	this.initializeInventoryBalancesTableView(false);
+		this.initializeInventoryBalancesTableView(false);
     }
 
     
@@ -280,4 +280,21 @@ class DoingInventoryCountController extends MyController {
 	    });
     }
 
+    @FXML
+	private void deleteBalance() throws SQLException {
+		if(!MyUtils.ALERT_CONFIRM("هل أنت متأكد من حذف هذا الرصيد؟"))  {
+			return;
+		}
+    	if(balanceService.deleteBalanceTreat(((BalanceTreatWithInventoryCountDetails)this.inventoryBalancesTableView.getSelectionModel().getSelectedItem()).getId())){
+			MyUtils.ALERT_SUCCESS("تم حذف الرصيد بنجاح.");
+		} else {
+    		MyUtils.ALERT_ERROR("تعذر حذف الرصيد");
+		}
+	}
+
+
+	@Override
+	protected void onFilterChange(Filter filter){
+
+	}
 }

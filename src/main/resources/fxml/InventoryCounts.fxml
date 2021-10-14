@@ -15,7 +15,7 @@
    <children>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
+            <Button fx:id="closeButton" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#closeWindow" text="إغلاق">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -23,7 +23,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="addNewInventoryCountButton" mnemonicParsing="false" onAction="#addNewInventoryCount" text="إضافة جرد جديد">
+            <Button fx:id="addNewInventoryCountButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#addNewInventoryCount" text="إضافة جرد جديد">
                <graphic>
                   <ImageView disable="true" fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -31,7 +31,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="startInventoryCountButton" disable="true" mnemonicParsing="false" onAction="#showDoingInventoryCount" text="بدء/متابعة الجرد">
+            <Button fx:id="startInventoryCountButton" contentDisplay="TOP" disable="true" mnemonicParsing="false" onAction="#showDoingInventoryCount" text="بدء/متابعة الجرد">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -39,7 +39,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="inventoryCountReportButton" disable="true" mnemonicParsing="false" onAction="#showInventoryCountReport" text="تقرير عن الجرد">
+            <Button fx:id="inventoryCountReportButton" contentDisplay="TOP" disable="true" mnemonicParsing="false" onAction="#showInventoryCountReport" text="تقرير عن الجرد">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -47,11 +47,20 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="deleteInventoryCountDeleteButton" disable="true" mnemonicParsing="false" onAction="#deleteInventoryCount" text="حذف">
+            <Button fx:id="deleteInventoryCountDeleteButton" contentDisplay="TOP" disable="true" mnemonicParsing="false" onAction="#deleteInventoryCount" text="حذف الجرد">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/trash-bin.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="addBalanceTreatButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#showAddBalanceTreatWindow" text=" إضافة رصيد بلا فاتورة">
+               <graphic>
+                  <ImageView disable="true" fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/plus(1).png" />
                      </image>
                   </ImageView>
                </graphic>

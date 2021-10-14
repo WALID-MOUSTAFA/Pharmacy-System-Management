@@ -2,8 +2,8 @@ package com.pharmacy.POGO;
 
 public class  BalanceTreat {
 
-	private long Id;
-	private long treatId;
+	private Long Id;
+	private Long treatId;
 
 	public DetailedTreatment getTreat() {
 		return treat;
@@ -14,7 +14,7 @@ public class  BalanceTreat {
 	}
 
 	private DetailedTreatment treat;
-	private long purchaseId;
+	private Long purchaseId;
 
 	public Purchase getPurchase() {
 		return purchase;
@@ -25,8 +25,8 @@ public class  BalanceTreat {
 	}
 
 	private Purchase purchase;
-	private long purchaseDetailsId;
-	private long typeId;
+	private Long purchaseDetailsId;
+	private Long typeId;
 	private String expireDate;
 	private double quantity;
 	private double price;
@@ -62,43 +62,43 @@ public class  BalanceTreat {
 	}
 
 	
-	public long getId() {
+	public Long getId() {
 		return Id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		Id = id;
 	}
 
-	public long getTreatId() {
+	public Long getTreatId() {
 		return treatId;
 	}
 
-	public void setTreatId(long treatId) {
+	public void setTreatId(Long treatId) {
 		this.treatId = treatId;
 	}
 
-	public long getPurchaseId() {
+	public Long getPurchaseId() {
 		return purchaseId;
 	}
 
-	public void setPurchaseId(long purchaseId) {
+	public void setPurchaseId(Long purchaseId) {
 		this.purchaseId = purchaseId;
 	}
 
-	public long getPurchaseDetailsId() {
+	public Long getPurchaseDetailsId() {
 		return purchaseDetailsId;
 	}
 
-	public void setPurchaseDetailsId(long purchaseDetailsId) {
+	public void setPurchaseDetailsId(Long purchaseDetailsId) {
 		this.purchaseDetailsId = purchaseDetailsId;
 	}
 
-	public long getTypeId() {
+	public Long getTypeId() {
 		return typeId;
 	}
 
-	public void setTypeId(long typeId) {
+	public void setTypeId(Long typeId) {
 		this.typeId = typeId;
 	}
 

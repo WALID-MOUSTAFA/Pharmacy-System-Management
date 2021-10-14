@@ -319,12 +319,12 @@ public class PurchaseDetailsController extends MyController {
                 .valueOf(this
                         .expireDate
                         .getValue()
-                        .atStartOfDay()).toString();
+			 .atStartOfDay()).toString().split(" ")[0].toString();
         productionDate = Timestamp
                 .valueOf(this
                         .productionDate
                         .getValue()
-                        .atStartOfDay()).toString();
+                        .atStartOfDay()).toString().split(" ")[0].toString();
         treatName = this.treatName.
                 getSelectionModel().getSelectedItem().toString();
 

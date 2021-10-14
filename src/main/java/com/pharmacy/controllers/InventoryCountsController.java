@@ -1,7 +1,6 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
-import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.InventoryCount;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,14 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
-import javafx.css.SimpleSelector;
 import javafx.fxml.FXML;
 import com.pharmacy.services.InventoryCountsService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,7 +37,8 @@ public class InventoryCountsController extends MyController{
 	private Button inventoryCountReportButton;
 	@FXML
 	private Button deleteInventoryCountDeleteButton;
-
+	@FXML
+	private Button addBalanceTreatButton;
 	@FXML
 	TextField searchBox;
 
@@ -215,5 +213,11 @@ public class InventoryCountsController extends MyController{
 				return i.getDateIn().contains(q);
 			}
 		});
+	}
+
+	@FXML
+	private void showAddBalanceTreatWindow() throws IOException, SQLException {
+		AddBalanceTreatController addBalanceTreatController = new AddBalanceTreatController();
+		addBalanceTreatController.show();
 	}
 }

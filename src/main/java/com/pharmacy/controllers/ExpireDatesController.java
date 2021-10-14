@@ -2,6 +2,7 @@ package com.pharmacy.controllers;
 
 import com.pharmacy.POGO.BalanceTreat;
 import com.pharmacy.services.BalanceService;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -55,7 +57,7 @@ public class ExpireDatesController extends MyController {
 			call() throws Exception {
 			return ExpireDatesController
 			.this.balanceService
-			.getAlmostExpiredTreatments(year);
+			.getAllBalances();
 		    }
 		};
 	task.setOnSucceeded(e-> {
@@ -66,48 +68,90 @@ public class ExpireDatesController extends MyController {
 	this.executor.execute(task);
        }
 
-
+	
 	private void renderTreeView(List<BalanceTreat> balances) {
-		TreeItem<String> rootItem= new TreeItem<>(this.getCurrentYear());
 
-		String[] months= {"يناير",
-				"فبراير", "مارس"
-				, "إبريل"
-				, "مايو",
-				"يونيو",
-				"يوليو",
-				"أغسطس",
-				"سبتمبر",
-				"أكتوبر",
-				"نوفمبر",
-				"ديسمبر"};
-		for(String s: months) {
-			rootItem.getChildren().addAll(new TreeItem<>(s));
+		TreeItem<String> rootItem= new TreeItem<>("السنوات");
+		List<TreeItem<String>> presentedYears= new ArrayList<>();
+
+		
+		String[] months= {
+			"يناير",
+			"فبراير"
+			, "مارس"
+			, "إبريل"
+			, "مايو",
+			"يونيو",
+			"يوليو",
+			"أغسطس",
+			"سبتمبر",
+			"أكتوبر",
+			"نوفمبر",
+			"ديسمبر"
+		};
+
+		//adding available years to the presented tree structure;
+		for( String i : this.getAvailableYears(balances)) {
+			presentedYears.add(new TreeItem<String>(i));
 		}
 
-
-		for(BalanceTreat b : balances) {
-			String expire=b.getExpireDate();
-			String value= b.getTreat().getName() + "           |           " + b.getTreat().getTypeTreatName() + "           |           " + b.getPurchase().getPillNum();
-
-			Timestamp ts;
-			if(expire.split(" ").length == 2) {
-				ts= Timestamp.valueOf(expire );
-			} else {
-				ts= Timestamp.valueOf(expire + " 00:00:00.000");
+		//adding months to presentedYears
+		for(String m: months) {
+			for (TreeItem<String> item : presentedYears) {
+				item.getChildren().add(new TreeItem<String>(m));
 			}
-			Calendar cal= Calendar.getInstance();
-			cal.setTime(ts);
-			int month= cal.get(Calendar.MONTH);
-			TreeItem<String> tmp= new TreeItem<>(value);
-			rootItem.getChildren().get(month).getChildren().add(tmp);
 		}
-
-
+		
+		rootItem.getChildren().addAll(presentedYears.toArray
+					      (new TreeItem[0]));
+		for(BalanceTreat b : balances) {
+			this.placeBalanceInsideTree(rootItem, b);
+		}
 		this.treeView.setRoot(rootItem);
-
 	}
-			
+
+
+	private List<String> getAvailableYears(List<BalanceTreat> balances) {
+		List<String> years= new ArrayList<>();
+		for(BalanceTreat balance : balances) {
+			String expireDate = balance.getExpireDate().split(" ")[0];
+			String expireDateYear = expireDate.split("-")[0];
+			if(years.contains(expireDateYear)) {
+				continue;
+			} else {
+				years.add(expireDateYear);
+			}
+		}
+		return years;
+	}
+
+
+	
+	private void placeBalanceInsideTree(TreeItem<String> root,
+					    BalanceTreat balance) {
+		String expireDate;
+		int expireDateYear, expireDateMonth;
+		
+		expireDate = balance.getExpireDate().split(" ")[0];
+		expireDateYear = Integer.valueOf(expireDate.split("-")[0]);
+		expireDateMonth = Integer.valueOf(expireDate.split("-")[1]) -1; //arrays is zero bases, while months starts from 1 in dates.
+
+		ObservableList<TreeItem<String>> years= root.getChildren();
+		for(TreeItem<String> i : years){
+			if(i.getValue().equals(String.valueOf(expireDateYear))){
+				String value= balance.getTreat().getName() +
+					"           |           "
+					+ balance.getTreat().getTypeTreatName()
+					+ "           |           "
+					+ balance.getPurchase().getPillNum();
+				i.getChildren().get(expireDateMonth)
+					.getChildren().add(new TreeItem<String>
+							   (value));
+			}
+		}
+	}
+	
+	
 	@FXML
 	private void initialize() {
 		this.renderBalanceTreats(this.getCurrentYear());

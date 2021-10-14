@@ -3,6 +3,7 @@ package com.pharmacy.services;
 import com.pharmacy.DatabaseConnection;
 import com.pharmacy.POGO.*;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,11 @@ public class BalanceService {
 
 	preparedStatement.setLong(1, balanceTreat.getTreatId());
 	preparedStatement.setString(2, balanceTreat.getExpireDate());
-	preparedStatement.setLong(3, balanceTreat.getPurchaseId());
+	if(balanceTreat.getPurchaseId() == null) {
+		preparedStatement.setNull(3, Types.BIGINT);
+	} else {
+		preparedStatement.setLong(3, balanceTreat.getPurchaseId());
+	}
 	preparedStatement.setDouble(4, balanceTreat.getQuantity());
 	//NOTE(walid): redundant database column;
 	preparedStatement.setLong(5, 0);
@@ -94,8 +99,11 @@ public class BalanceService {
 	    (7, new Timestamp(System.currentTimeMillis()).toString());
 
 	preparedStatement.setDouble(8, balanceTreat.getTotal());
-	preparedStatement.setLong(9, balanceTreat.getPurchaseDetailsId());
-
+	if(balanceTreat.getPurchaseDetailsId() == null) {
+		preparedStatement.setNull(9, Types.BIGINT);
+	} else {
+		preparedStatement.setLong(9, balanceTreat.getPurchaseDetailsId());
+	}
 	if(preparedStatement.executeUpdate() > 0) {
 	    return true;
 	}
@@ -110,7 +118,7 @@ public class BalanceService {
     {
 	TreatmentService treatmentService= new TreatmentService();
 	List<BalanceTreat> balances= new ArrayList<>();
-	String query= "SELECT blance_treat.*, purchases.pill_num from blance_treat inner join purchases on purchases.id=blance_treat.purchases_id WHERE blance_treat.treat_id="
+	String query= "SELECT blance_treat.*, purchases.pill_num from blance_treat left join purchases on purchases.id=blance_treat.purchases_id WHERE blance_treat.treat_id="
 	    +treatId+" AND blance_treat.quantity not null AND blance_treat.quantity != 0;";
 	Statement stmt= this.dbConnection.createStatement();
 	ResultSet rs= stmt.executeQuery(query);
@@ -332,4 +340,57 @@ public class BalanceService {
     	Statement stmt= this.dbConnection.createStatement();
     	stmt.executeUpdate(query);
 	}
+
+
+	public boolean deleteBalanceTreat(long id) throws SQLException {
+		String query= "DELETE FROM blance_treat WHERE id="+ id + ";";
+		Statement stmt= this.dbConnection.createStatement();
+		int result= stmt.executeUpdate(query);
+		if(result > 0) {
+			return true;
+		}
+		return false;
+
+	}
+
+
+	//returns all balances.
+	public List<BalanceTreat> getAllBalances()  throws SQLException{
+		List<BalanceTreat> balances= new ArrayList<>();
+		String query= "SELECT  blance_treat.*, treat.name as treatName, purchases.pill_num, typetreat.typename as typeName FROM blance_treat  join treat on blance_treat.treat_id = treat.id left join purchases on purchases.id=blance_treat.purchases_id left join typetreat on treat.typet= typetreat.id  WHERE blance_treat.quantity not null;\n";
+		
+		Statement stmt= this.dbConnection.createStatement();
+		ResultSet rs= stmt.executeQuery(query);
+		
+		
+		BalanceTreat balanceTreat;
+		DetailedTreatment treatment;
+		Purchase purchase;
+		while(rs.next()){
+			balanceTreat= new BalanceTreat();
+			treatment= new DetailedTreatment();
+			purchase= new Purchase();
+			purchase.setPillNum(rs.getString("pill_num"));
+			balanceTreat.setId(rs.getLong("id"));
+			balanceTreat.setTreatId(rs.getLong("treat_id"));
+			balanceTreat.setPurchaseId(rs.getLong("purchases_id"));
+			balanceTreat.setQuantity(rs.getLong("quantity"));
+			balanceTreat.setDateIn(rs.getString("date_in"));
+			balanceTreat.setPrice(rs.getLong("price"));
+			balanceTreat.setExpireDate(rs.getString("expire"));
+			treatment.setName(rs.getString("treatName"));
+			treatment.setTypeTreatName(rs.getString("typeName"));
+			balanceTreat.setTreat(treatment);
+			balanceTreat.setPurchase(purchase);
+			balances.add(balanceTreat);
+			balanceTreat= null;
+			treatment= null;
+			purchase= null;
+		}
+		
+		return balances;
+
+	}
+
+
 }

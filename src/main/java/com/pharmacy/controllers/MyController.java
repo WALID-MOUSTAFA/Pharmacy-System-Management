@@ -1,5 +1,6 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.YearMonthFilterable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MyController {
+public class MyController extends YearMonthFilterable {
     protected Stage stage;
 
     public void setStage(Stage stage) {
@@ -40,4 +41,5 @@ public class MyController {
     public void closeWindow() {
 	this.stage.close();
     }
+
 }
