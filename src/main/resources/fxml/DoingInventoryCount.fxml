@@ -50,6 +50,15 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#printTableView" text="print">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/printing.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </items>
       </ToolBar>
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
@@ -59,19 +68,14 @@
                   <ComboBox fx:id="typeFilter" onAction="#onTypeFilterChange" prefWidth="150.0" promptText="النوع" />
                </children>
             </HBox>
-            <Button fx:id="applyFilterButton" mnemonicParsing="false" text="عرض" />
-            <Button fx:id="showAllButton" mnemonicParsing="false" text="عرض الكل" />
+            <Button mnemonicParsing="false" onAction="#onDeleteFilter" text="محو الفلتر" />
          </items>
       </ToolBar>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="inventoryBalancesTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
+                  <TableView fx:id="inventoryBalancesTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="42.0" prefWidth="900.0" spacing="10.0">
                      <children>
                         <TextField fx:id="searchBox" prefHeight="25.0" prefWidth="216.0" />

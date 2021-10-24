@@ -1,6 +1,7 @@
 package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
+import com.pharmacy.POGO.BalanceTreatWithInventoryCountDetails;
 import com.pharmacy.POGO.InventoryCount;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,11 +15,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
@@ -66,6 +70,9 @@ public class InventoryCountsController extends MyController{
     public void initialize() throws SQLException{
 	this.initializeInventoryCountsTableView();
 	this.addTableViewFocusListeners();
+	this.initalizeYearFilter();
+	this.initalizeMonthFilter();
+
 	//this.addInventoryCountsTableviewRowDoubleClickListener();
     }
 
@@ -145,6 +152,7 @@ public class InventoryCountsController extends MyController{
     @FXML
     private void showDoingInventoryCount() throws IOException, SQLException {
 	Stage stage= new Stage();
+	stage.initModality(Modality.WINDOW_MODAL);
 	stage.setTitle("جرد: " + this.currentSelectedInventoryCount.getDateIn().split(" ")[0]);
 	FXMLLoader loader= new FXMLLoader();
 	loader.setLocation
@@ -196,6 +204,12 @@ public class InventoryCountsController extends MyController{
 		}
 	}
 
+	@FXML
+	private void showAddBalanceTreatWindow() throws IOException, SQLException {
+		AddBalanceTreatController addBalanceTreatController = new AddBalanceTreatController();
+		addBalanceTreatController.show();
+		
+	}
 
 	@FXML
 	private void doSearch() throws SQLException {
@@ -215,9 +229,120 @@ public class InventoryCountsController extends MyController{
 		});
 	}
 
+
+
+	private List<String> getAvailableYears(List<InventoryCount> ics) {
+		List<String> years= new ArrayList<>();
+		for(InventoryCount ic : ics) {
+			String dateIn = ic.getDateIn().split(" ")[0];
+			String year = dateIn.split("-")[0];
+			if(years.contains(year)) {
+				continue;
+			} else {
+				years.add(year);
+			}
+		}
+		return years;
+	}
+			
+
+	//NOTE(walid): this method force the code to query all the
+	//inventory counts from the db twice, that cause a bad performance;
+	private void initalizeYearFilter() throws SQLException{
+		List<InventoryCount> inventoryCounts = this.inventoryCountsService
+			.findAllInventoryCounts();
+			List<String> availableYears= this.getAvailableYears(inventoryCounts);
+		for(String s : availableYears) {
+			this.yearFilter.getItems().add(s);
+		}
+	}
+
+	private void initalizeMonthFilter() {
+		String[] months= {
+			"يناير",
+			"فبراير"
+			, "مارس"
+			, "إبريل"
+			, "مايو",
+			"يونيو",
+			"يوليو",
+			"أغسطس",
+			"سبتمبر",
+			"أكتوبر",
+			"نوفمبر",
+			"ديسمبر"
+		};
+
+		for(String m : months) {
+			this.monthFilter.getItems().add(m);
+		}
+	}
+	
 	@FXML
-	private void showAddBalanceTreatWindow() throws IOException, SQLException {
-		AddBalanceTreatController addBalanceTreatController = new AddBalanceTreatController();
-		addBalanceTreatController.show();
+	protected void onFilterChange(Filter filter) {
+		try {
+			this.inventoryCountsTableView.setItems(FXCollections
+					.observableArrayList(this.inventoryCountsService.findAllInventoryCounts()));
+		} catch (SQLException throwables) {
+				throwables.printStackTrace();
+		}
+		switch(filter) {
+		case YEAR: {
+			String year= this.yearFilter.getValue();
+			ObservableList<InventoryCount> items=
+					this.inventoryCountsTableView.getItems();
+			FilteredList<InventoryCount> filteredList=
+					new FilteredList<>(items);
+			this.inventoryCountsTableView.setItems(filteredList);
+			filteredList.setPredicate
+					(new Predicate<InventoryCount>()
+					{
+						@Override
+						public boolean test(InventoryCount i) {
+
+							return i.getDateIn().split(" ")[0].split("-")[0].equals(year);
+
+						}
+					});
+			break;
+		}
+		case MONTH: {
+
+			String  month= this.monthFilter.getValue();
+			String year= this.yearFilter.getValue();
+			String monthNum= MyUtils.getMonthNumric(month);
+
+			ObservableList<InventoryCount> items=
+					this.inventoryCountsTableView.getItems();
+			FilteredList<InventoryCount> filteredList=
+					new FilteredList<>(items);
+			this.inventoryCountsTableView.setItems(filteredList);
+
+			filteredList.setPredicate
+					(new Predicate<InventoryCount>()
+					{
+						@Override
+						public boolean test(InventoryCount i) {
+							if(year!= null && !year.isEmpty() ) {
+								return i.getDateIn().split(" ")[0].split("-")[0].equals(year)
+										&& i.getDateIn().split(" ")[0].split("-")[1].equals(monthNum);
+							} else {
+								return i.getDateIn().split(" ")[0].split("-")[1].equals(monthNum);
+							}
+						}
+					});
+		break;
+		}
+
+
+		default: return;
+		}
+	}
+
+	@Override
+	protected void deleteFilter() throws SQLException{
+		this.initializeInventoryCountsTableView();
+		this.yearFilter.setValue("");
+		this.monthFilter.setValue("");
 	}
 }

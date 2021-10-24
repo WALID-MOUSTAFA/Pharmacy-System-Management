@@ -29,6 +29,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
                <children>
+                  <Button mnemonicParsing="false" onAction="#generateNewBarcode" text="جديد" />
                   <TextField fx:id="treatBarCode" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets left="10.0" right="24.0" />

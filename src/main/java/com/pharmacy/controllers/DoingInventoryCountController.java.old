@@ -4,9 +4,8 @@ import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.BalanceTreatWithInventoryCountDetails;
 import com.pharmacy.POGO.InventoryCount;
 import com.pharmacy.POGO.InventoryCountDetails;
-import com.pharmacy.POGO.TypeTreat;
+import com.pharmacy.Filters;
 import com.pharmacy.services.InventoryCountsService;
-import com.pharmacy.services.TreatmentService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,36 +13,28 @@ import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.print.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
 import com.pharmacy.services.BalanceService;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import net.sf.jasperreports.engine.JRException;
-import oshi.jna.platform.mac.SystemB;
 
 
 class DoingInventoryCountController extends MyController {
 
-	private boolean includeEmpty= false;
     private Executor executor;
-    private ExecutorService executorService;
     private InventoryCount inventoryCount;
     private BalanceService balanceService;
     private InventoryCountsService inventoryCountsService;
@@ -54,8 +45,6 @@ class DoingInventoryCountController extends MyController {
 
     
     private void initializeThreadPool() {
-    	this.executorService=  Executors.newFixedThreadPool(4);
-
 	this.executor= Executors.newCachedThreadPool((runnable)-> {
 		Thread thread= new Thread(runnable);
 		thread.setDaemon(true);
@@ -78,55 +67,26 @@ class DoingInventoryCountController extends MyController {
 		    @Override
 		    protected List<BalanceTreatWithInventoryCountDetails>
 			call() throws Exception {
-				return getAllBalanceTreatWithInventoryCountDetailsList(id, includeEmpty);
-			}
+			return DoingInventoryCountController
+			.this.balanceService
+			.findAllBalanceTreatWithInventoryCountDetails
+			(id, includeEmpty);
+		    }
 		};
 	task.setOnSucceeded(e-> {
 		this.inventoryBalancesTableView.setItems
 		    (FXCollections.observableArrayList(task.getValue()));
 	    });
 	task.setOnFailed(e-> task.getException().printStackTrace());
-	this.executorService.execute(task);
-
-	}
-
-	private List<BalanceTreatWithInventoryCountDetails> getAllBalanceTreatWithInventoryCountDetailsList(long id, boolean includeEmpty) throws SQLException {
-		return DoingInventoryCountController
-		.this.balanceService
-		.findAllBalanceTreatWithInventoryCountDetails
-		(id, includeEmpty);
-	}
-
-	@FXML
-    private void initialize() throws SQLException {
-	    this.initializeInventoryBalancesTableView(includeEmpty);
-	    this.renderTypesInTypeFilter();
+	this.executor.execute(task);
     }
 
+    @FXML
+    private void initialize() throws SQLException {
+		this.initializeInventoryBalancesTableView(false);
+    }
 
-	@FXML
-	private void renderTypesInTypeFilter() throws SQLException{
-		TreatmentService treatmentSrevice= new TreatmentService();
-		
-		Task<List<TypeTreat>> task
-			= new Task<List<TypeTreat>>() {
-					@Override
-					protected List<TypeTreat> call() throws Exception {
-						return treatmentSrevice.getAllTreatTypes();
-					}
-				};
-		
-		task.setOnSucceeded(e-> {
-				List<TypeTreat> types= task.getValue();
-				for(TypeTreat t : types) {
-					this.typeFilter.getItems().add(t.getTypename());
-				}
-			});
-		task.setOnFailed(e-> task.getException().printStackTrace());
-		this.executor.execute(task);
-
-	}
-	
+    
 
     private void initializeInventoryBalancesTableView(boolean includeEmpty)
 	throws SQLException {
@@ -267,7 +227,6 @@ class DoingInventoryCountController extends MyController {
     @FXML
     private void switchToIncludeEmpty() throws SQLException{
 	this.initializeInventoryBalancesTableView(true);
-	this.includeEmpty= true;
     }
 
 
@@ -286,13 +245,40 @@ class DoingInventoryCountController extends MyController {
 	loader.setController(updateBalanceQuantityController);
 	Parent root= loader.load();
 	stage.setScene(new Scene(root));
-	stage.initModality(Modality.APPLICATION_MODAL);
+	stage.initModality(Modality.WINDOW_MODAL);
 	stage.showAndWait();
 	this.initializeInventoryBalancesTableView(false);
     }
 	
 
-	
+    
+    @FXML
+    private void doSearch() throws SQLException{
+    	String q= this.searchBox.getText();
+    	if(q.isEmpty()) {
+	    initializeInventoryBalancesTableView(false);
+	    return;
+	}
+    	ObservableList<BalanceTreatWithInventoryCountDetails> items=
+	    this.inventoryBalancesTableView.getItems();
+	FilteredList<BalanceTreatWithInventoryCountDetails> filteredList=
+	    new FilteredList<>(items);
+	this.inventoryBalancesTableView.setItems(filteredList);
+
+	filteredList.setPredicate
+	    (new Predicate<BalanceTreatWithInventoryCountDetails>() {
+		@Override
+		public boolean test(BalanceTreatWithInventoryCountDetails p) {
+		    return String.valueOf(p.getBeforeQuantity()).contains(q)
+			|| p.getTreat().getParcode().contains(q)
+			|| p.getTreat().getName().contains(q)
+			|| p.getTreat().getTypeTreatName().contains(q)
+			|| p.getExpireDate().contains(q);
+					
+
+		}
+	    });
+    }
 
     @FXML
 	private void deleteBalance() throws SQLException {
@@ -305,90 +291,10 @@ class DoingInventoryCountController extends MyController {
     		MyUtils.ALERT_ERROR("تعذر حذف الرصيد");
 		}
 	}
-	
 
-
-	@FXML
-	private void printTableView() throws SQLException,
-					     ClassNotFoundException,
-					     URISyntaxException, JRException {
-		List<BalanceTreatWithInventoryCountDetails> items=
-			this.inventoryBalancesTableView.getItems();
-		PrintInventory printInventory= new PrintInventory();
-		printInventory.showReport(items);
-	}
-
-
-	
-	@FXML
-	private void doSearch() throws SQLException{
-		String q= this.searchBox.getText();
-		if(q.isEmpty()) {
-			initializeInventoryBalancesTableView(false);
-			return;
-		}
-		ObservableList<BalanceTreatWithInventoryCountDetails> items=
-			this.inventoryBalancesTableView.getItems();
-		FilteredList<BalanceTreatWithInventoryCountDetails> filteredList=
-			new FilteredList<>(items);
-		this.inventoryBalancesTableView.setItems(filteredList);
-
-		filteredList.setPredicate
-			(new Predicate<BalanceTreatWithInventoryCountDetails>()
-			 {
-				 @Override
-				 public boolean test(BalanceTreatWithInventoryCountDetails p) {
-					 return String.valueOf(p.getBeforeQuantity()).contains(q)
-						 || p.getTreat().getParcode().contains(q)
-						 || p.getTreat().getName().contains(q)
-						 || p.getTreat().getTypeTreatName().contains(q)
-						 || p.getExpireDate().contains(q);
-					 
-
-				 }
-				});
-	}
-
-	
-	@Override
-	protected synchronized void onFilterChange(Filter filter){
-
-		//NOTE(walid): restore all items before applying the filter, this can be expensive!!!;
-		//another apprach is to use static variable to hold the real items;
-		try {
-			this.inventoryBalancesTableView.setItems(FXCollections.observableArrayList
-								 (this.getAllBalanceTreatWithInventoryCountDetailsList(this.inventoryCount.getId(), includeEmpty)));
-		} catch (SQLException throwables) {
-				throwables.printStackTrace();
-		}
-
-		switch(filter) {
-		case TYPE: {
-			String type= this.typeFilter.getValue();
-
-			ObservableList<BalanceTreatWithInventoryCountDetails> items=
-					this.inventoryBalancesTableView.getItems();
-			FilteredList<BalanceTreatWithInventoryCountDetails> filteredList=
-					new FilteredList<>(items);
-			this.inventoryBalancesTableView.setItems(filteredList);
-			filteredList.setPredicate
-					(new Predicate<BalanceTreatWithInventoryCountDetails>()
-					{
-						@Override
-						public boolean test(BalanceTreatWithInventoryCountDetails p) {
-							return p.getTreat().getTypeTreatName().equals(type);
-						}
-					});
-		};
-		default: return;
-			
-		}
-	}
 
 	@Override
-	protected void deleteFilter() throws SQLException{
-    	this.initializeInventoryBalancesTableView(false);
-	}
+	protected void onFilterChange(Filter filter){
 
+	}
 }
-

@@ -1,16 +1,14 @@
 package com.pharmacy.controllers;
 
-import com.pharmacy.YearMonthFilterable;
+import com.pharmacy.Filters;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MyController extends YearMonthFilterable {
+public class MyController extends Filters {
     protected Stage stage;
 
     public void setStage(Stage stage) {

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
@@ -65,6 +66,21 @@
                   </ImageView>
                </graphic>
             </Button>
+         </items>
+      </ToolBar>
+      <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT">
+               <children>
+                  <ComboBox fx:id="yearFilter" onAction="#onYearFilterChange" prefWidth="150.0" promptText="السنة" />
+                  <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT">
+                     <children>
+                        <ComboBox fx:id="monthFilter" onAction="#onMonthFilterChange" prefWidth="150.0" promptText="الشهر" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#onDeleteFilter" text="محو الفلتر" />
          </items>
       </ToolBar>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" VBox.vgrow="ALWAYS">

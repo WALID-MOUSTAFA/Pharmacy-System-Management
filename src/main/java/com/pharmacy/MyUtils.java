@@ -23,9 +23,7 @@ import java.nio.file.Path;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class MyUtils {
 
@@ -130,6 +128,25 @@ public class MyUtils {
         }
         return true;
     }
+
+	public static String getMonthNumric(String month) {
+
+		Map<String, String> monthNum= new HashMap<>();
+		monthNum.put("يناير" , "01");
+		monthNum.put("فبراير", "02");
+		monthNum.put("مارس","03");
+		monthNum.put("إبريل", "04");
+		monthNum.put("مايو", "05");
+		monthNum.put("يونيو", "06");
+		monthNum.put("يوليو", "07");;
+		monthNum.put("أغسطس","08");
+		monthNum.put("سبتمبر","09");
+		monthNum.put("أكتوبر","10");
+		monthNum.put("نوفمبر","11");
+		monthNum.put("ديسمبر","12");
+
+		return monthNum.get(month);
+	}
 }
 
 

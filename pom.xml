@@ -11,135 +11,148 @@
   </properties>
 
   <dependencies>
-      <dependency>
-          <groupId>com.github.oshi</groupId>
-          <artifactId>oshi-core</artifactId>
-          <version>LATEST</version>
-      </dependency>
+    <dependency>
+      <groupId>com.github.oshi</groupId>
+      <artifactId>oshi-core</artifactId>
+      <version>LATEST</version>
+    </dependency>
 
-<!--    <dependency>-->
-<!--      <artifactId>javafx</artifactId>-->
-<!--      <groupId>javafx.controls</groupId>-->
-<!--      <scope>system</scope>-->
-<!--      <version>15</version>-->
-<!--      <systemPath>${project.basedir}/lib/javafx.controls.jar</systemPath>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <artifactId>javafx</artifactId>-->
+    <!--      <groupId>javafx.controls</groupId>-->
+    <!--      <scope>system</scope>-->
+    <!--      <version>15</version>-->
+    <!--      <systemPath>${project.basedir}/lib/javafx.controls.jar</systemPath>-->
+    <!--    </dependency>-->
 
-<!--    -->
-<!--    <dependency>-->
-<!--      <artifactId>javafx</artifactId>-->
-<!--      <groupId>javafx.graphics</groupId>-->
-<!--      <scope>system</scope>-->
-<!--      <version>15</version>-->
-<!--      <systemPath>${project.basedir}/lib/javafx.graphics.jar</systemPath>-->
-<!--    </dependency>-->
+    <!--    -->
+    <!--    <dependency>-->
+    <!--      <artifactId>javafx</artifactId>-->
+    <!--      <groupId>javafx.graphics</groupId>-->
+    <!--      <scope>system</scope>-->
+    <!--      <version>15</version>-->
+    <!--      <systemPath>${project.basedir}/lib/javafx.graphics.jar</systemPath>-->
+    <!--    </dependency>-->
 
-<!--    <dependency>-->
-<!--      <artifactId>javafx</artifactId>-->
-<!--      <groupId>javafx.base</groupId>-->
-<!--      <scope>system</scope>-->
-<!--      <version>15</version>-->
-<!--      <systemPath>${project.basedir}/lib/javafx.base.jar</systemPath>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <artifactId>javafx</artifactId>-->
+    <!--      <groupId>javafx.base</groupId>-->
+    <!--      <scope>system</scope>-->
+    <!--      <version>15</version>-->
+    <!--      <systemPath>${project.basedir}/lib/javafx.base.jar</systemPath>-->
+    <!--    </dependency>-->
 
 
-      
+    
 
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-controls</artifactId>
-        <version>15.0.1</version>
-      </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>15.0.1</version>
+    </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
       <version>15.0.1</version>
     </dependency>
-      <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
-      <dependency>
-          <groupId>net.sf.jasperreports</groupId>
-          <artifactId>jasperreports</artifactId>
-          <version>6.17.0</version>
-      </dependency>
+    <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+    <dependency>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+      <version>6.17.0</version>
+    </dependency>
 
 
 
-      <dependency>
-          <groupId>javax.validation</groupId>
-          <artifactId>validation-api</artifactId>
-          <version>2.0.1.Final</version>
-      </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.hibernate.validator</groupId>
-          <artifactId>hibernate-validator</artifactId>
-          <version>6.0.13.Final</version>
-      </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.0.13.Final</version>
+    </dependency>
 
-      <dependency>
-          <groupId>org.glassfish</groupId>
-          <artifactId>javax.el</artifactId>
-          <version>3.0.0</version>
-      </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>3.0.0</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
-<dependency>
-    <groupId>org.xerial</groupId>
-    <artifactId>sqlite-jdbc</artifactId>
-    <version>3.36.0</version>
-</dependency>
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.36.0</version>
+    </dependency>
+
+
+
+    <!-- https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue -->
+    <dependency>
+      <groupId>net.sourceforge.barbecue</groupId>
+      <artifactId>barbecue</artifactId>
+      <version>1.5-beta1</version>
+    </dependency>
+
+
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+
+
     </dependency>
 
   </dependencies>
-<build>
+  <build>
 
-  <plugins>
+    <plugins>
 
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
-          <configuration>
-              <source>11</source>
-              <target>11</target>
-          </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
       </plugin>
-    <plugin>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-maven-plugin</artifactId>
-      <version>0.0.6</version>
-      <!-- <configuration> -->
-      <!--   <mainClass>com.pharmacy.App</mainClass> -->
-      <!-- </configuration> -->
+      <plugin>
+	<groupId>org.openjfx</groupId>
+	<artifactId>javafx-maven-plugin</artifactId>
+	<version>0.0.6</version>
+	<!-- <configuration> -->
+	<!--   <mainClass>com.pharmacy.App</mainClass> -->
+	<!-- </configuration> -->
 
-       <executions>
-         <execution>
+	<executions>
+          <execution>
             <!-- Default configuration for running -->
             <id>default-cli</id>
             <configuration>
               <mainClass>com.pharmacy.App</mainClass>
             </configuration>
-        </execution>
-        <execution>
+          </execution>
+          <execution>
             <!-- Configuration for debugging -->
             <id>debug</id>
             <configuration>
-                <options>
-                    <option>-Xdebug -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y</option>
-                </options>
-                <mainClass>com.pharmacy.App</mainClass>
+              <options>
+                <option>-Xdebug -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y</option>
+              </options>
+              <mainClass>com.pharmacy.App</mainClass>
             </configuration>
-        </execution>
-    </executions>
-    </plugin>
-  </plugins>
+          </execution>
+	</executions>
+      </plugin>
+    </plugins>
 
-</build>
+  </build>
 
 </project>

@@ -10,7 +10,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
+import net.sourceforge.barbecue.output.OutputException;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,5 +153,17 @@ public class CreateTreatmentController extends MyController{
 
 	}
 
+
+
+	@FXML
+	private void generateNewBarcode() throws BarcodeException, OutputException {
+		String number = String.valueOf(Math.floor(Math.random() * 9_000_000_000_00L) + 1_000_000_000_00L);
+		Barcode barcode= BarcodeFactory.createCodabar("123456789123");
+		barcode.setDrawingText(false);
+
+		barcode.setResolution(72);
+		File file= new File("test.png");
+		BarcodeImageHandler.savePNG(barcode, file);
+	}
 
 }

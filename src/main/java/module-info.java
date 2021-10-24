@@ -8,6 +8,7 @@ open module com.pharmacy {
     requires com.github.oshi;
     requires java.desktop;
     requires jasperreports;
+    requires barbecue;
 
     exports  com.pharmacy;
 }
