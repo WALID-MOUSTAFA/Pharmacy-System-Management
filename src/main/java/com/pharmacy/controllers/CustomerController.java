@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -162,6 +163,7 @@ public class CustomerController extends  MyController{
 	private void editCustomer() throws SQLException, IOException {
 
 		Stage stage= new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation
 			(getClass().getResource("/fxml/EditCustomer.fxml"));
@@ -201,6 +203,7 @@ public class CustomerController extends  MyController{
 
 	@FXML
 	private void doSearch() throws SQLException {
+		this.customersTableView.setItems(FXCollections.observableArrayList(this.customerService.getAllCustomers()));
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			this.initializeCustomerTableView();

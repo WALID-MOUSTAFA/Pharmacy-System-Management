@@ -209,6 +209,7 @@ public class TreatmentController extends MyController{
 	@FXML
 	private void editTreatment() throws IOException, SQLException{
 		Stage stage= new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
 		FXMLLoader loader= new FXMLLoader();
 		loader.setLocation
 			(getClass().getResource("/fxml/editTreatment.fxml"));
@@ -278,6 +279,8 @@ public class TreatmentController extends MyController{
 
 	@FXML
 	private void doSearch() throws SQLException {
+
+		this.treatmentsTableView.setItems(FXCollections.observableArrayList(this.treatmentService.getAllTreatments()));
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			this.initializeTableView();

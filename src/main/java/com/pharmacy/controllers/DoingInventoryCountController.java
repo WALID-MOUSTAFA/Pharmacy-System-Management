@@ -7,6 +7,7 @@ import com.pharmacy.POGO.InventoryCountDetails;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.InventoryCountsService;
 import com.pharmacy.services.TreatmentService;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -101,6 +102,7 @@ class DoingInventoryCountController extends MyController {
     private void initialize() throws SQLException {
 	    this.initializeInventoryBalancesTableView(includeEmpty);
 	    this.renderTypesInTypeFilter();
+	    this.deleteBalanceButton.disableProperty().bind(Bindings.isEmpty(this.inventoryBalancesTableView.getSelectionModel().getSelectedItems()));
     }
 
 
@@ -322,6 +324,8 @@ class DoingInventoryCountController extends MyController {
 	
 	@FXML
 	private void doSearch() throws SQLException{
+		this.inventoryBalancesTableView.setItems(FXCollections.observableArrayList
+				(this.getAllBalanceTreatWithInventoryCountDetailsList(this.inventoryCount.getId(), includeEmpty)));
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			initializeInventoryBalancesTableView(false);

@@ -213,6 +213,8 @@ public class InventoryCountsController extends MyController{
 
 	@FXML
 	private void doSearch() throws SQLException {
+		this.inventoryCountsTableView.setItems(FXCollections
+				.observableArrayList(this.inventoryCountsService.findAllInventoryCounts()));
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			this.initializeInventoryCountsTableView();

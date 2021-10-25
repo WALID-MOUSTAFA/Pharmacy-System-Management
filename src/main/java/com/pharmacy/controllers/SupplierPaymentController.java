@@ -202,6 +202,7 @@ public class SupplierPaymentController extends MyController {
 
     @FXML
     private void doSearch() throws SQLException {
+        this.paymentsTableView.setItems(FXCollections.observableArrayList(this.supplierPaymentService.getAllSupplierPayment(supplier)));
         String q= this.searchBox.getText();
         if(q.isEmpty()) {
             this.initializePaymentsTableView();

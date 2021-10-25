@@ -318,6 +318,7 @@ public class ExpensesController extends MyController{
 
 	@FXML
 	private void doSearch() throws SQLException {
+		this.expensesTableView.setItems(FXCollections.observableArrayList(this.expensesService.getAllExpenses()));
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			this.initializeExpenseTableView();

@@ -273,6 +273,8 @@ public class PurchasesController extends MyController{
 	
 	@FXML
 	private void doSearch() throws SQLException{
+
+		this.purchasesTableView.setItems(FXCollections.observableArrayList(this.purchasesService.getAllPurchases()));
     	String q= this.searchBox.getText();
     	if(q.isEmpty()) {
     		reInitializePurchaseTableView();

@@ -226,6 +226,9 @@ public class SuppliersController extends MyController{
 
 	@FXML
 	private void doSearch() throws SQLException {
+
+		this.suppliersTableView.setItems(FXCollections.observableArrayList(this.suppliersService.getAllSuppliers()));
+
 		String q= this.searchBox.getText();
 		if(q.isEmpty()) {
 			this.initializeTableView();
