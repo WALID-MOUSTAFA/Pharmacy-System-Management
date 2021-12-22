@@ -456,5 +456,28 @@ public class TreatmentService {
     }
 
 
+    public int getTreatmentsCount() throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        int count=0;
+        String query = "SELECT COUNT(*) as count FROM treat";
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+        while(rs.next()) {
+                count= rs.getInt("count");
+        }
+        return count;
+    }
+
+
+    public boolean checkIfBarcodeExists(String barcode) throws SQLException {
+        this.dbConnection= DatabaseConnection.getInstance().getConnection();
+        String query="SELECT * FROM treat where parcpde="+barcode+ ";";
+        Statement stmt= this.dbConnection.createStatement();
+        ResultSet rs= stmt.executeQuery(query);
+        if(!rs.isBeforeFirst()) {
+            return false;
+        }
+        return true;
+    }
 
 }

@@ -1,12 +1,14 @@
 //TODO(walid): add order by to the queries;
 package com.pharmacy.controllers;
 
+import com.pharmacy.InputFilter;
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.*;
 import com.pharmacy.services.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import net.sf.jasperreports.engine.JRException;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -33,7 +36,7 @@ public class SalesController {
 	
 	@FXML private TextField treatName;
     @FXML private TextField parcode;
-    @FXML private ComboBox treatType;
+    @FXML private ComboBox<String> treatType;
 	@FXML private ListView searchResult;
 	@FXML private TableView	relatedBalancesTableView;
 	@FXML private TextField billClientName;
@@ -53,11 +56,18 @@ public class SalesController {
     
 	public void initializeTreatTypeCombo() throws SQLException {
 		this.treatType.getItems().clear();
+
 		TreatmentService treatmentService= new TreatmentService();
 		List<TypeTreat> types= treatmentService.getAllTreatTypes();
+		List<String> typesNameStringList = new ArrayList<>();
 		for (TypeTreat t : types) {
-			this.treatType.getItems().add(t.typename);
+			typesNameStringList.add(t.typename);
 		}
+		ObservableList<String> items = FXCollections.observableArrayList(typesNameStringList);
+		FilteredList<String> filteredList = new FilteredList<>(items);
+		treatType.getEditor().textProperty().addListener(new InputFilter(treatType,filteredList , false));
+		treatType.setEditable(true);
+		treatType.setItems(filteredList);
 	}
 
 	@FXML
@@ -390,13 +400,17 @@ public class SalesController {
 						alert.setContentText("تم إضافة الفاتورة بنجاح");
 						alert.show();
 						//this.billProductsTableView.getItems().clear();
+
+						this.relatedBalancesTableView.getItems().clear();
+						this.alternateResults.getItems().clear();
+						this.searchResult.getItems().clear();
+						this.billProductsTableView.getItems().clear();
 						return;
 					}
 				}
 
 			}
 		}
-
 	}
 
 	@FXML
@@ -423,7 +437,7 @@ public class SalesController {
 
 
 	@FXML
-	private void printReport() throws ClassNotFoundException, URISyntaxException, JRException {
+	private void printReport() throws ClassNotFoundException, URISyntaxException, JRException, SQLException {
 	    List<BillItemModel> items;
 	    double totalBill=0;
 	    items= this.billProductsTableView.getItems();
@@ -444,6 +458,11 @@ public class SalesController {
 		this.initalizeCustomerCombo();
 	}
 
+	@FXML
+	private void choosePrinterAction() throws IOException, SQLException {
+		ChooseReciptPrinterController chooseReciptPrinterController = new ChooseReciptPrinterController();
+		chooseReciptPrinterController.open();
+	}
 
 	@FXML
 	private void doRefresh() throws SQLException {

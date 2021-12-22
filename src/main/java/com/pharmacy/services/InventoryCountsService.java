@@ -106,9 +106,6 @@ public class InventoryCountsService {
 
    public List<InventoryCountDetails> findAllInventoryCountsDetails(long id)
     throws SQLException{
-	  //TODO(walid): implement this and put it on the report controller;
-	  //implement showing empty and not empty balances;
-	  //implement search and filtering.
        List<InventoryCountDetails> icdList= new ArrayList<>();
        String query= "select treat.name as treatName, typetreat.typename as typeName, blance_treat.expire, inventory_counts_details.* "
 	   +"from inventory_counts_details "

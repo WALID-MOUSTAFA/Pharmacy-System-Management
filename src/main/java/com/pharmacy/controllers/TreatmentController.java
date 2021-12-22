@@ -2,7 +2,6 @@ package com.pharmacy.controllers;
 
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.DetailedTreatment;
-import com.pharmacy.POGO.Supplier;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.TreatmentService;
 import javafx.beans.binding.Bindings;
@@ -15,13 +14,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import com.pharmacy.DatabaseConnection;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -47,7 +42,8 @@ public class TreatmentController extends MyController{
 	@FXML CreateTreatmentController createTreatmentController; //child fxml
 	private TreatmentService treatmentService;
 	@FXML private TextField searchBox;
-	@FXML Button showSpecificTreatmentButton;
+	@FXML private Button showSpecificTreatmentButton;
+	@FXML private Label treatmentsCount;
 
 	private void initializeThreadPool() {
 		this.executor= Executors.newCachedThreadPool((runnable)-> {
@@ -136,6 +132,7 @@ public class TreatmentController extends MyController{
 						(((Treatment)newval).getId());
 				});
 
+		this.renderTreatmentsCount();
 	}
 
 	public void addTableViewFocusListeners() {
@@ -228,7 +225,7 @@ public class TreatmentController extends MyController{
 	}
 
 	@FXML
-	private void deleteTreatment() {
+	private void deleteTreatment() throws SQLException {
 		if(!MyUtils.ALERT_CONFIRM("هل تريد حذف هذا المنتج؟")) {
 			return;
 		}
@@ -250,6 +247,7 @@ public class TreatmentController extends MyController{
 			alert.setContentText("لا يمكن حذف المنتج لأنه مرتبط بفواتير موجودة!");
 			alert.show();
 		}
+		this.renderTreatmentsCount();
 	}
 
 	
@@ -273,8 +271,14 @@ public class TreatmentController extends MyController{
 	}
 
 
-	public void addTreatmentItemToTheTreatmentTableView(DetailedTreatment treatment){
+	public void addTreatmentItemToTheTreatmentTableView(DetailedTreatment treatment) throws SQLException {
 		this.treatmentsTableView.getItems().add(treatment);
+		this.renderTreatmentsCount();
+	}
+
+	private void renderTreatmentsCount() throws SQLException {
+		int count= this.treatmentService.getTreatmentsCount();
+		this.treatmentsCount.setText(String.valueOf(count));
 	}
 
 	@FXML
@@ -292,9 +296,9 @@ public class TreatmentController extends MyController{
 		filteredList.setPredicate(new Predicate<DetailedTreatment>() {
 			@Override
 			public boolean test(DetailedTreatment dt) {
+
 				return dt.getName().contains(q)
 						|| dt.getTypeTreatName().contains(q)
-						|| dt.getFormTreatName().contains(q)
 						|| dt.getDateAt().contains(q)
 						|| dt.getCompany().contains(q)
 						|| dt.getParcode().contains(q)

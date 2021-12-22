@@ -36,6 +36,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
+            <Button mnemonicParsing="false" onAction="#choosePrinterAction" text="اختيار الطابعة" />
         </items>
       </ToolBar>
       <SplitPane dividerPositions="0.34938704028021017, 0.6996497373029772" focusTraversable="true" prefHeight="-1.0">

@@ -303,6 +303,7 @@ class DoingInventoryCountController extends MyController {
 		}
     	if(balanceService.deleteBalanceTreat(((BalanceTreatWithInventoryCountDetails)this.inventoryBalancesTableView.getSelectionModel().getSelectedItem()).getId())){
 			MyUtils.ALERT_SUCCESS("تم حذف الرصيد بنجاح.");
+			this.initializeInventoryBalancesTableView(this.includeEmpty);
 		} else {
     		MyUtils.ALERT_ERROR("تعذر حذف الرصيد");
 		}

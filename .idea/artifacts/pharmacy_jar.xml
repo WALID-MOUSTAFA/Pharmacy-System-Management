@@ -44,6 +44,10 @@
       <element id="library" level="project" name="Maven: org.eclipse.jdt:ecj:3.21.0" />
       <element id="library" level="project" name="Maven: org.jfree:jcommon:1.0.23" />
       <element id="library" level="project" name="Maven: org.jfree:jfreechart:1.0.19" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/oshi/oshi-core/5.8.3/oshi-core-5.8.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/sourceforge/barbecue/barbecue/1.5-beta1/barbecue-1.5-beta1.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Maven: com.github.oshi:oshi-core:5.8.3" />
+      <element id="library" level="project" name="Maven: net.sourceforge.barbecue:barbecue:1.5-beta1" />
     </root>
   </artifact>
 </component>

@@ -20,7 +20,7 @@ public class MainController extends MyController {
     private Button treatments;
     @FXML
     Button purchasesButton;
-    public boolean isLogined = true;
+    public boolean isLogined = false;
 
     public void openWindow(Stage stage, Parent root, String title) throws IOException {
         stage.setScene(new Scene(root, 800, 600));

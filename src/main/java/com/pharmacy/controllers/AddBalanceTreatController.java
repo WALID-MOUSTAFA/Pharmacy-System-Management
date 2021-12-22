@@ -183,7 +183,7 @@ public class AddBalanceTreatController extends MyController{
 		balanceTreat.setTreat(treatment);
 		balanceTreat.setQuantity(Double.valueOf(quantity));
 		balanceTreat.setTreatId(treatment.getId());
-		balanceTreat.setExpireDate(expireDate);
+		balanceTreat.setExpireDate(expireDate.split(" ")[0]);
 		balanceTreat.setPrice(Double.valueOf(pricePeople));
 		balanceTreat.setPurchaseId(null);
 		balanceTreat.setPurchaseDetailsId(null);

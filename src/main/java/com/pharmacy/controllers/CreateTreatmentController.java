@@ -19,6 +19,7 @@ import net.sourceforge.barbecue.output.OutputException;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,14 +157,20 @@ public class CreateTreatmentController extends MyController{
 
 
 	@FXML
-	private void generateNewBarcode() throws BarcodeException, OutputException {
-		String number = String.valueOf(Math.floor(Math.random() * 9_000_000_000_00L) + 1_000_000_000_00L);
-		Barcode barcode= BarcodeFactory.createCodabar("123456789123");
-		barcode.setDrawingText(false);
-
-		barcode.setResolution(72);
-		File file= new File("test.png");
-		BarcodeImageHandler.savePNG(barcode, file);
+	private void generateNewBarcode() throws BarcodeException, OutputException, SQLException {
+		String number = String.valueOf(Math.floor(Math.random() * 9_000_000_000_000L) + 1_000_000_0000_00L);
+		BigDecimal bigDecimal= new BigDecimal(number);
+		number= bigDecimal.toString();
+		//Barcode barcode= BarcodeFactory.createCodabar("123456789123");
+		//barcode.setDrawingText(false);
+		//barcode.setResolution(72);
+		//File file= new File("test.png");
+		//BarcodeImageHandler.savePNG(barcode, file);
+		if(!this.treatmentService.checkIfBarcodeExists(number)) {
+			this.treatBarCode.setText(number);
+		} else {
+			this.generateNewBarcode();
+		}
 	}
 
 }

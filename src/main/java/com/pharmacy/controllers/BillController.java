@@ -200,7 +200,6 @@ public class BillController extends MyController{
         }
         ObservableList<Sale> items= this.billsTableView.getItems();
         FilteredList<Sale> filteredList= new FilteredList<>(items);
-        this.billsTableView.setItems(filteredList);
         filteredList.setPredicate(new Predicate<Sale>() {
 			@Override
 			public boolean test(Sale sale) {
@@ -209,7 +208,8 @@ public class BillController extends MyController{
 					|| sale.getDateIn().contains(q);
 			}
 		});
-        this.calculateTotal();
+            this.billsTableView.setItems(filteredList);
+            this.calculateTotal();
     }
 
 
@@ -255,7 +255,6 @@ public class BillController extends MyController{
 				this.billsTableView.getItems();
 			FilteredList<Sale> filteredList=
 				new FilteredList<>(items);
-			this.billsTableView.setItems(filteredList);
 
 			filteredList.setPredicate
 				(new Predicate<Sale>()
@@ -267,8 +266,10 @@ public class BillController extends MyController{
 							 .equals(monthNum);
 					 }
 					});
-			
-			break;
+                        this.billsTableView.setItems(filteredList);
+
+
+                        break;
 		}
 		default: return;
 		}
