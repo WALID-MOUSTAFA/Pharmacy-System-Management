@@ -165,6 +165,11 @@ public class TreatTypeAndFormController extends MyController {
             MyUtils.ALERT_ERROR("يجب كتابة نوع المنتج");
             return;
         }
+        if(typename.contains("-")){
+            MyUtils.ALERT_ERROR("يجب ألا يحتوي الاسم على العلامة '-'");
+            return;
+        }
+
         TypeTreat typeTreat= new TypeTreat();
         typeTreat.setTypename(typename);
         long inserted= this.treatmentService.insertTreatType(typeTreat);

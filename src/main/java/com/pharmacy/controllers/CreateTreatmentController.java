@@ -1,10 +1,13 @@
 package com.pharmacy.controllers;
 
+import com.pharmacy.InputFilter;
 import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.TreatForm;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.TreatmentService;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -49,6 +52,7 @@ public class CreateTreatmentController extends MyController{
 	@FXML
 	private ComboBox treatFormCombo;
 
+
 	private TreatmentController treatmentController; //parent fxml controller ;
 
 	public void setTreatmentController(TreatmentController treatmentController) {
@@ -61,18 +65,30 @@ public class CreateTreatmentController extends MyController{
 	}
 
 	private void initializeTreatTypeCombo() throws SQLException {
+
 		List<TypeTreat> types= this.treatmentService.getAllTreatTypes();
+		List<String> typesString = new ArrayList<>();
 		for (TypeTreat t : types) {
-			this.treatTypeCombo.getItems().add(t.typename);
+			typesString.add(t.typename);
 		}
+		FilteredList<String> filteredList = new FilteredList<String>(FXCollections.observableArrayList(typesString));
+		treatTypeCombo.getEditor().textProperty().addListener(new InputFilter(treatTypeCombo, filteredList, false));
+		treatTypeCombo.setEditable(true);
+		this.treatTypeCombo.setItems(filteredList);
+
 	}
 
 	
 	private void initializeTreatFormCombo() throws SQLException{
 		List<TreatForm> forms= this.treatmentService.getAllTreatForms();
+		ArrayList<String> formsString = new ArrayList<>();
 		for (TreatForm t : forms) {
-			this.treatFormCombo.getItems().add(t.getName());
+			formsString.add(t.getName());
 		}
+		FilteredList<String> filteredList = new FilteredList<String>(FXCollections.observableArrayList(formsString));
+		treatFormCombo.getEditor().textProperty().addListener(new InputFilter(treatFormCombo, filteredList, false));
+		treatFormCombo.setEditable(true);
+		this.treatFormCombo.setItems(filteredList);
 	}
 	
 
@@ -81,11 +97,12 @@ public class CreateTreatmentController extends MyController{
 	private void initialize() throws SQLException {
 		this.initializeTreatTypeCombo();
 		this.initializeTreatFormCombo();
+
 	}
 
 	@FXML
 	private void addNewTreatment() throws SQLException {
-		
+
 		
 		List<String> errors= new ArrayList<>();
 		String typename= "";
@@ -124,6 +141,11 @@ public class CreateTreatmentController extends MyController{
 		lowCount= !this.lowCount.getText().isEmpty()?
 			Double.valueOf(this.lowCount.getText()): 0;
 
+		if(name.contains("-") ){
+			errors.add("يجب ألا يحتوي الاسم على العلامة '-' ");
+			MyUtils.showValidationErrors(errors);
+			return;
+		}
 		
 		DetailedTreatment dt= new DetailedTreatment();
 		dt.setName(name);
