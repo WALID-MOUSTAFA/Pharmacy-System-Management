@@ -4,6 +4,9 @@ import com.pharmacy.MyUtils;
 import com.pharmacy.POGO.TreatForm;
 import com.pharmacy.POGO.TypeTreat;
 import com.pharmacy.services.TreatmentService;
+
+import org.sqlite.SQLiteException;
+
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -100,22 +103,30 @@ public class TreatTypeAndFormController extends MyController {
     }
 
 
-    @FXML
-    private void addForm() throws SQLException {
-        String formname=this.formName.getText();
-        if(formname.isEmpty()) {
-            MyUtils.ALERT_ERROR("يجب كتابة التركيبة");
-            return;
-        }
-        TreatForm treatForm= new TreatForm();
-        treatForm.setName(formname);
-        long inserted= this.treatmentService.insertTreatForm(treatForm);
-        if(inserted== 0) {
-            MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ!");
-        } else {
-            treatForm.setId(inserted);
-        }
-        this.formTableView.getItems().add(treatForm);
+	@FXML
+	private void addForm() throws SQLException {
+		String formname=this.formName.getText();
+		if(formname.isEmpty()) {
+			MyUtils.ALERT_ERROR("يجب كتابة التركيبة");
+			return;
+		}
+		TreatForm treatForm= new TreatForm();
+		treatForm.setName(formname);
+		try {
+			long inserted= this.treatmentService.insertTreatForm(treatForm);
+			if(inserted== 0) {
+				MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ!");
+			} else {
+				treatForm.setId(inserted);
+				this.formTableView.getItems().add(treatForm);
+				this.formTableView.scrollTo(treatForm);
+
+			}
+		} catch (SQLiteException e) {
+			MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ! تأكد أن العنصر غير موجود مسبقا");
+			e.printStackTrace();
+
+	}
     }
 
 
@@ -172,13 +183,22 @@ public class TreatTypeAndFormController extends MyController {
 
         TypeTreat typeTreat= new TypeTreat();
         typeTreat.setTypename(typename);
-        long inserted= this.treatmentService.insertTreatType(typeTreat);
-        if(inserted== 0) {
-            MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ!");
-        } else {
-            typeTreat.setId(inserted);
-        }
-        this.typeTableView.getItems().add(typeTreat);
+	try {
+		long inserted= this.treatmentService.insertTreatType(typeTreat);
+	 
+		if(inserted== 0) {
+			MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ!");
+		} else {
+			typeTreat.setId(inserted);
+			this.typeTableView.getItems().add(typeTreat);
+			this.typeTableView.scrollTo(this.typeTableView.getItems().size() - 1);
+		}
+	}catch (SQLiteException e) {
+		MyUtils.ALERT_ERROR("حدث خطأ أثناء الحفظ! تأكد أن العنصر غير موجود مسبقا");
+		e.printStackTrace();
+
+	}
+    
     }
 
     @FXML

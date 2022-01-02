@@ -10,9 +10,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b577581e-c5ef-4948-b52d-74f102f9ded3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/pharmacy_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/pharmacy_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Treatment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/POGO/Treatment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateTreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/CreateTreatmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditTreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/EditTreatmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PrintReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/PrintReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SalesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SalesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SpecificTreatmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/SpecificTreatmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/TreatTypeAndFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/controllers/TreatTypeAndFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/TreatmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pharmacy/services/TreatmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Main.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/Sales.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/Sales.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/editTreatment.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/editTreatment.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/pharmacy.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pharmacy.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +67,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="full.screen.before.presentation.mode" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/target" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -68,8 +80,8 @@
       <recent name="com.pharmacy.controllers" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\walid\workspace\pharmacygui\target" />
       <recent name="C:\Users\walid\workspace\pharmacygui\src\main\resources" />
+      <recent name="C:\Users\walid\workspace\pharmacygui\target" />
       <recent name="C:\Users\walid\workspace\pharmacygui\target\classes" />
       <recent name="C:\Users\walid\workspace\pharmacygui\src\main\resources\fxml" />
     </key>

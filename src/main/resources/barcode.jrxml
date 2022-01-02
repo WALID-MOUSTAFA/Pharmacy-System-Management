@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="barcode" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c6ca0c3-1474-4178-8c8c-8aae594e967c">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="title" class="java.lang.String"/>
+	<parameter name="phone" class="java.lang.String"/>
+	<parameter name="barcodeNumber" class="java.lang.String"/>
+	<parameter name="treatName" class="java.lang.String"/>
+	<parameter name="expire" class="java.lang.String"/>
+	<parameter name="price" class="java.lang.Double"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<componentElement>
+				<reportElement x="28" y="6" width="62" height="14" uuid="34b01f0b-d3f8-4f6d-a1cb-4937403e9fa6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.barWidth" value="cm"/>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Codabar" drawText="true" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{barcodeNumber}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="60" y="0" width="52" height="6" uuid="70e6559a-6f7e-4323-9160-decb6c6eb0b5"/>
+				<textElement textAlignment="Center">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="60" height="6" uuid="43d0a438-6f84-49e3-b63f-1b3318e562a4"/>
+				<textElement textAlignment="Center">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[ $P{phone}  ]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="40" height="10" uuid="24268e1f-6ebc-4331-9854-d77cb2cd6058"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{treatName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="20" width="40" height="10" uuid="6f3eeac5-bf15-4eae-b348-7e7f6f5e4b66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{expire}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="20" width="32" height="10" uuid="67863edf-74d7-46c3-897f-133b57b5332a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(int) $P{price} + " L.E"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -101,4 +101,35 @@ public class PrintReport extends JFrame {
         }
         return selectedService;
     }
+
+
+
+	public void printBarCode(String barcodeNumber, String treatName, String expire,double price) throws JRException {
+
+        InputStream reportSrcFile = getClass().getResourceAsStream("/barcode.jrxml");
+        //File file = Paths.get(resourceFile.toURI()).toFile();
+        //String reportSrcFile = file.getAbsolutePath();
+
+
+        // First, compile jrxml file.
+        JasperReport jasperReport = JasperCompileManager.compileReport(reportSrcFile);
+        // Fields for report
+        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("title", "ص/ د شعبان");
+        // parameters.put("client", clientName);
+        parameters.put("phone", "012012");
+	parameters.put("treatName", treatName);
+	parameters.put("price", price);
+	parameters.put("expire", expire);
+        parameters.put("barcodeNumber", barcodeNumber);
+
+        JasperPrint print = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+
+        JRViewer viewer = new JRViewer(print);
+        viewer.setOpaque(true);
+        this.add(viewer);
+        this.setSize(700, 500);
+        this.setVisible(true);
+    }
 }

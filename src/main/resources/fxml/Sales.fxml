@@ -39,7 +39,7 @@
             <Button mnemonicParsing="false" onAction="#choosePrinterAction" text="اختيار الطابعة" />
         </items>
       </ToolBar>
-      <SplitPane dividerPositions="0.34938704028021017, 0.6996497373029772" focusTraversable="true" prefHeight="-1.0">
+      <SplitPane dividerPositions="0.34938704028021017, 0.6996497373029772" focusTraversable="true" prefHeight="-1.0" VBox.vgrow="ALWAYS">
          <items>
             <AnchorPane>
                <children>
@@ -240,14 +240,14 @@
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
                               </Separator>
-                              <VBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="100.0">
+                              <VBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                                  <children>
                                     <Label text="نتائج البحث: ">
                                        <VBox.margin>
                                           <Insets bottom="3.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <ListView fx:id="searchResult" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="searchResult" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                                     <Separator prefWidth="200.0">
                                        <padding>
                                           <Insets bottom="10.0" top="10.0" />
@@ -258,7 +258,7 @@
                                           <Insets bottom="3.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <ListView fx:id="alternateResults" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="alternateResults" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                                  </children>
                               </VBox>
                            </children>
@@ -274,6 +274,9 @@
                </opaqueInsets>
             </ScrollPane>
          </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </SplitPane>
    </children>
 </VBox>

@@ -41,6 +41,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -196,5 +197,10 @@
           </Tab>
         </tabs>
       </TabPane>
+      <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="0.0" prefWidth="1335.0">
+         <children>
+            <fx:include source="Copyright.fxml" />
+         </children>
+      </HBox>
   </children>
 </VBox>

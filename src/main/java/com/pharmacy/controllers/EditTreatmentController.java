@@ -9,7 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.output.OutputException;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +125,14 @@ public class EditTreatmentController extends MyController{
 		
 		name= this.treatName.getText();
 		parcode= this.treatBarCode.getText();
+		if (parcode != null && !parcode.isEmpty()) {
+			if(Character.isLetter(parcode.charAt(0)) && Character.isLetter(parcode.charAt(parcode.length() - 1))) {
+				parcode = parcode.substring(1, parcode.length() -1);
+				
+			}
+
+		}
+
 		companyName= this.companyName.getText();
 		treatPlace= this.treatPlace.getText();
 		lowCount= !this.lowcount.getText().isEmpty()?
@@ -165,4 +176,22 @@ public class EditTreatmentController extends MyController{
 	public long getId(){
 		return this.id;
 	}
+
+	@FXML
+	private void generateNewBarcode() throws BarcodeException, OutputException, SQLException {
+		String number = String.valueOf(Math.floor(Math.random() * 9_000_000_000_000L) + 1_000_000_0000_00L);
+		BigDecimal bigDecimal= new BigDecimal(number);
+		number= bigDecimal.toString();
+		//Barcode barcode= BarcodeFactory.createCodabar("123456789123");
+		//barcode.setDrawingText(false);
+		//barcode.setResolution(72);
+		//File file= new File("test.png");
+		//BarcodeImageHandler.savePNG(barcode, file);
+		if(!this.treatmentService.checkIfBarcodeExists(number)) {
+			this.treatBarCode.setText(number);
+		} else {
+			this.generateNewBarcode();
+		}
+	}
+
 }

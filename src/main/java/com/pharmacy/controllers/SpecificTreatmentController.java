@@ -8,11 +8,17 @@ import com.pharmacy.services.TreatmentService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
 
 import java.sql.SQLException;
 
@@ -60,6 +66,9 @@ public class SpecificTreatmentController extends MyController {
 		quantityColumn.setCellValueFactory
 			(new PropertyValueFactory<>("quantity"));
 
+
+
+
 		TableColumn<BalanceTreat, Double> priceColumn=
 			new TableColumn<>("السعر");
 		priceColumn.setCellValueFactory
@@ -76,12 +85,57 @@ public class SpecificTreatmentController extends MyController {
 			return new SimpleStringProperty(param.getValue().getPurchase().getPillNum());
 		});
 
+		TableColumn<BalanceTreat, Void> printBarCodeColumn = new TableColumn<>("طباعة باركود");
+
+		Callback<TableColumn<BalanceTreat, Void> , TableCell<BalanceTreat, Void>> printBarCodeCellFactory =
+			new Callback<TableColumn<BalanceTreat, Void> , TableCell<BalanceTreat, Void>>(){
+
+				@Override
+				public TableCell<BalanceTreat, Void> call(TableColumn<BalanceTreat, Void> param) {
+					final TableCell<BalanceTreat, Void> cell = new TableCell<>(){
+						Button btn = new Button("طباعة باركود");
+
+						{
+							btn.setOnAction((ActionEvent e) -> {
+									String treatName = getTableRow().getItem().getTreat().getName();
+									String expireDate = getTableRow().getItem().getExpireDate();
+									Double price = getTableRow().getItem().getPrice();
+									String barcode = getTableRow().getItem().getTreat().getParcode() ;
+									if (barcode == null) {
+										return;
+									}
+									try {
+										PrintReport printReport= new PrintReport();
+										printReport.printBarCode(barcode,treatName, expireDate, price );
+									} catch (SQLException | JRException throwables) {
+										throwables.printStackTrace();
+										System.out.println("error");
+									}
+									
+							});
+						}
+
+						@Override
+						protected void updateItem(Void item, boolean empty) {
+							super.updateItem(item, empty);
+							if(empty) {
+								setGraphic(null);
+							} else {
+								setGraphic(btn);
+							}
+						}
+					};
+					return cell;
+				}
+
+			};
+		printBarCodeColumn.setCellFactory(printBarCodeCellFactory);
 
 		this.availableBalancesTableView.getColumns()
 			.addAll(quantityColumn,
 				priceColumn,
 				expireColumn,
-					pill_num);
+					pill_num, printBarCodeColumn);
 
 		this.availableBalancesTableView.setItems(balances);
 	}

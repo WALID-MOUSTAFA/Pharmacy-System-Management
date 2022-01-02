@@ -135,6 +135,13 @@ public class CreateTreatmentController extends MyController{
 		
 		name= this.treatName.getText();
 		parcode= this.treatBarCode.getText();
+		if (parcode != null && !parcode.isEmpty()) {
+			if(Character.isLetter(parcode.charAt(0)) && Character.isLetter(parcode.charAt(parcode.length() - 1))) {
+				parcode = parcode.substring(1, parcode.length() -1);
+				
+			}
+
+		}
 		companyName= this.companyName.getText();
 		treatPlace= this.treatPlace.getText();
 
@@ -146,6 +153,13 @@ public class CreateTreatmentController extends MyController{
 			MyUtils.showValidationErrors(errors);
 			return;
 		}
+
+		List<DetailedTreatment> existing = this.treatmentService.getAllTreatmentsByNameAndType(name, typename);
+		if(existing != null) {
+			MyUtils.ALERT_ERROR("هذا المنتج متوفر مسبقا");
+			return;
+		}
+
 		
 		DetailedTreatment dt= new DetailedTreatment();
 		dt.setName(name);
@@ -167,6 +181,7 @@ public class CreateTreatmentController extends MyController{
 			dt.setId(inserted);
 			this.treatmentController
 				.addTreatmentItemToTheTreatmentTableView(dt);
+			
 		} else {
 
 			Alert alert= new Alert(Alert.AlertType.ERROR);

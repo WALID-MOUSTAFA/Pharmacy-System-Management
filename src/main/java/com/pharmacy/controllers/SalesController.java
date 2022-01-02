@@ -107,7 +107,13 @@ public class SalesController {
 
     
 	private void searchForTreatByParcode(String parcode) throws SQLException {
-	    List<DetailedTreatment> results= treatmentService.getAllTreatmentsByParcode(parcode);
+		if (parcode.length() != 13) {
+			if(Character.isLetter(parcode.charAt(0)) && Character.isLetter(parcode.charAt(parcode.length() - 1))) {
+				parcode = parcode.substring(1, parcode.length() -1);
+				
+			}
+		}
+		List<DetailedTreatment> results= treatmentService.getAllTreatmentsByParcode(parcode);
 	    if(results == null){
 		this.clearSearchResult();
 	    } else {

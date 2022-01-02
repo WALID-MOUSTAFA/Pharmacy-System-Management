@@ -142,7 +142,5 @@ public class Treatment {
 	protected long formtreat;
 	protected double quantity;
 
-	@NotNull
-	@NotEmpty
 	protected String place;
 }
