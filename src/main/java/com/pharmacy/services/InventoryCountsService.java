@@ -148,7 +148,7 @@ public class InventoryCountsService {
 	throws SQLException {
 	List<Long> ids= new ArrayList<>();
 	for(InventoryCountDetails i : icdList){
-	    ids.add(i.getId());
+	    ids.add(i.getBalanceId());
 	}
 	return ids;
     }

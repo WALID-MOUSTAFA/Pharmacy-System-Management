@@ -195,6 +195,7 @@ public class AddBalanceTreatController extends MyController{
 		} else {
 			if(this.balanceService.insertBalanceTreat(balanceTreat)) {
 				MyUtils.ALERT_SUCCESS("تم إضافة الرصيد بنجاح");
+				this.stage.close();
 			};
 		}
 

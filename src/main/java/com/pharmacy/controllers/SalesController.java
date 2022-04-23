@@ -303,7 +303,7 @@ public class SalesController {
 		});
 
 
-		this.billProductsTableView.getColumns().addAll(treatNameColumn, typeColumn, priceColumn, totalColumn);
+		this.billProductsTableView.getColumns().addAll(treatNameColumn, typeColumn, priceColumn, quantityColumn, totalColumn);
 		this.billProductsTableView.setItems(products);
 	}
 

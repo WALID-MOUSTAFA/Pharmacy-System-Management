@@ -134,8 +134,7 @@ class DoingInventoryCountController extends MyController {
 	throws SQLException {
 	
 	this.inventoryBalancesTableView.getColumns().clear();
-	this.renderBalanceTreatWithInventoryCountDetails
-	    (this.inventoryCount.getId(), includeEmpty);
+
 	this.inventoryBalancesTableView.setEditable(true);
 
 	TableColumn<BalanceTreatWithInventoryCountDetails, String> treatName=
@@ -195,10 +194,11 @@ class DoingInventoryCountController extends MyController {
 			long result = this.inventoryCountsService
 			    .insertInventoryCountDetails
 			    (inventoryCountDetails);
-			this.initializeInventoryBalancesTableView(false);
+			//this.initializeInventoryBalancesTableView(includeEmpty);
 
 		    } catch (SQLException e) {e.printStackTrace();}
-		} else {
+		}
+		else {
 		    InventoryCountDetails inventoryCountDetails=
 			new InventoryCountDetails();
 		    inventoryCountDetails.setId
@@ -256,6 +256,9 @@ class DoingInventoryCountController extends MyController {
 	
 	this.inventoryBalancesTableView.getColumns()
 		.addAll(treatName,expire, beforeQuantity,afterQuantity, isCounted);
+
+	    this.renderBalanceTreatWithInventoryCountDetails
+		    (this.inventoryCount.getId(), includeEmpty);
     }
 
 

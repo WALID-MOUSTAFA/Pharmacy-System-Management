@@ -42,13 +42,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="60" height="6" uuid="43d0a438-6f84-49e3-b63f-1b3318e562a4"/>
-				<textElement textAlignment="Center">
-					<font size="4"/>
-				</textElement>
-				<textFieldExpression><![CDATA[ $P{phone}  ]]></textFieldExpression>
-			</textField>
+<!--			<textField>-->
+<!--				<reportElement x="0" y="0" width="60" height="6" uuid="43d0a438-6f84-49e3-b63f-1b3318e562a4"/>-->
+<!--				<textElement textAlignment="Center">-->
+<!--					<font size="4"/>-->
+<!--				</textElement>-->
+<!--				<textFieldExpression><![CDATA[ $P{phone}  ]]></textFieldExpression>-->
+<!--			</textField>-->
 			<textField>
 				<reportElement x="0" y="20" width="40" height="10" uuid="24268e1f-6ebc-4331-9854-d77cb2cd6058"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -68,7 +68,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="3"/>
 				</textElement>
-				<textFieldExpression><![CDATA[(int) $P{price} + " L.E"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{price} + " L.E"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

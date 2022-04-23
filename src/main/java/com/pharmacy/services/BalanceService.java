@@ -61,10 +61,10 @@ public class BalanceService {
 	
 	List<InventoryCountDetails> icd= this.inventoryCountsService
 	    .findInventoryCountsDetails(id);
-	List<Long> icd_IDs= this.inventoryCountsService.extractIDsList(icd); 
+	List<Long> icdbalances_IDs= this.inventoryCountsService.extractIDsList(icd);
 
 	for(BalanceTreatWithInventoryCountDetails b : balances) {
-	    if(icd_IDs.contains(b.getId())) {
+	    if(icdbalances_IDs.contains(b.getId())) {
 		b.setCountId(icd.stream().filter(e->e.getBalanceId() == b.getId()).findFirst().get().getInventoryCountsId());
 		b.setBeforeQuantity(icd.stream().filter(e->e.getBalanceId() == b.getId()).findFirst().get().getSystemQuantity());
 		b.setAfterQuantity(icd.stream().filter(e->e.getBalanceId() == b.getId()).findFirst().get().getActualQuantity());
