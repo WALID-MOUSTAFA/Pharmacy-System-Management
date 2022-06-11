@@ -29,19 +29,19 @@ public class Purchase {
 	private String pillNum;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")
-	private double totalPeople;
+	private int totalPeople;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")
 	@Digits(integer = 100, fraction = 100)
-	private double totalPharmacy;
+	private int totalPharmacy;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")
-	private double countUnit;
+	private int countUnit;
 
 	@NotNull(message="يجب ملء البيانات بالكامل")
-	private double discount;
+	private int discount;
 
-	private double profit;
+	private int profit;
 
 	@NotEmpty(message="يجب ملء البيانات بالكامل")
 	@NotNull(message="يجب ملء البيانات بالكامل")
@@ -70,43 +70,43 @@ public class Purchase {
 		this.pillNum = pillNum;
 	}
 
-	public double getTotalPeople() {
+	public int getTotalPeople() {
 		return totalPeople;
 	}
 
-	public void setTotalPeople(double totalPeople) {
+	public void setTotalPeople(int totalPeople) {
 		this.totalPeople = totalPeople;
 	}
 
-	public double getTotalPharmacy() {
+	public int getTotalPharmacy() {
 		return totalPharmacy;
 	}
 
-	public void setTotalPharmacy(double totalPharmacy) {
+	public void setTotalPharmacy(int totalPharmacy) {
 		this.totalPharmacy = totalPharmacy;
 	}
 
-	public double getCountUnit() {
+	public int getCountUnit() {
 		return countUnit;
 	}
 
-	public void setCountUnit(double countUnit) {
+	public void setCountUnit(int countUnit) {
 		this.countUnit = countUnit;
 	}
 
-	public double getDiscount() {
+	public int getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(double discount) {
+	public void setDiscount(int discount) {
 		this.discount = discount;
 	}
 
-	public double getProfit() {
+	public int getProfit() {
 		return profit;
 	}
 
-	public void setProfit(double profit) {
+	public void setProfit(int profit) {
 		this.profit = profit;
 	}
 

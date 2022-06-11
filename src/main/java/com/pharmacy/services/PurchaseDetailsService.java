@@ -38,7 +38,7 @@ public class PurchaseDetailsService {
 			pD.setPricePharmacy(rs.getDouble("price_p"));
 			pD.setExpireDate(rs.getString("expire_date"));
 			pD.setProductionDate(rs.getString("production_date"));
-			pD.setQuantity(rs.getDouble("quantity"));
+			pD.setQuantity(rs.getInt("quantity"));
 			pD.setDiscount(rs.getString("discount"));
 			treatment.setName(rs.getString("treat_name"));
 			treatment.setId(rs.getLong("treat_id"));
@@ -106,7 +106,7 @@ public class PurchaseDetailsService {
 			pd.setPricePharmacy(rs.getDouble("price_p"));
 			pd.setExpireDate(rs.getString("expire_date"));
 			pd.setProductionDate(rs.getString("production_date"));
-			pd.setQuantity(rs.getDouble("quantity"));
+			pd.setQuantity(rs.getInt("quantity"));
 			pd.setDateAt(rs.getString("date_at"));
 			pd.setDiscount(rs.getString("discount"));
 			treatment.setName(rs.getString("treat_name"));

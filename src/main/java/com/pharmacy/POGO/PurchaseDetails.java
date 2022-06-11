@@ -1,8 +1,13 @@
 package com.pharmacy.POGO;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 public class PurchaseDetails {
+
+	public PurchaseDetails() {
+		this.productionDate = new Timestamp(System.currentTimeMillis()).toString();
+	}
 	private long id;
 	private long treat_id;
 	private long purchase_id;

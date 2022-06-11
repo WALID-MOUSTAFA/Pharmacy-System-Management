@@ -69,9 +69,6 @@ public class PurchaseDetailsController extends MyController {
     private DatePicker expireDate;
 
     @FXML
-    private DatePicker productionDate;
-
-    @FXML
     TextField discount;
 
     @FXML
@@ -129,15 +126,8 @@ public class PurchaseDetailsController extends MyController {
         expireDate.setCellValueFactory(new PropertyValueFactory<>
                 ("expireDate"));
 
-        TableColumn<PurchaseDetails, String> productionDate =
-                new TableColumn<>("تاريخ الانتاج");
-        productionDate.setCellValueFactory(new PropertyValueFactory<>
-                ("productionDate"));
 
-        TableColumn<PurchaseDetails, String> dateAt =
-                new TableColumn<>("تاريخ الانشاء");
-        dateAt.setCellValueFactory(new PropertyValueFactory<>
-                ("dateAt"));
+
 
         TableColumn<PurchaseDetails, String> quantity =
                 new TableColumn<>("الكمية");
@@ -184,14 +174,13 @@ public class PurchaseDetailsController extends MyController {
 
         this.purchasesDetailsTableView.getColumns().addAll(treatName, treatType,
                 expireDate,
-                productionDate,
                 quantity,
                 pricePharmacy,
                 pricePeople,
                 totalPharmacy,
                 totalPeople,
-                discount,
-                dateAt);
+                discount
+                );
     }
 
 
@@ -253,7 +242,6 @@ public class PurchaseDetailsController extends MyController {
         this.editPurchaseDetailsButton.disableProperty().bind(Bindings.isEmpty(this.purchasesDetailsTableView.getSelectionModel().getSelectedItems()));
 
         MyUtils.setDatePickerFormat(this.expireDate);
-        MyUtils.setDatePickerFormat(this.productionDate);
 
         try {
             StringConverter<? extends Number> converter= new DoubleStringConverter();
@@ -281,7 +269,7 @@ public class PurchaseDetailsController extends MyController {
         String pricePeople;
         String totalPeople;
         String expireDate;
-        String productionDate;
+
         String treatName;
         String discount;
         DetailedTreatment treatment;
@@ -295,11 +283,7 @@ public class PurchaseDetailsController extends MyController {
             return;
         }
 
-        if (this.productionDate.getValue() == null) {
-            errors.add("يجب اختيار تاريخ الإنتاج");
-            MyUtils.showValidationErrors(errors);
-            return;
-        }
+
 
 
         if (this.treatName.getValue() == null) {
@@ -320,11 +304,7 @@ public class PurchaseDetailsController extends MyController {
                         .expireDate
                         .getValue()
 			 .atStartOfDay()).toString().split(" ")[0].toString();
-        productionDate = Timestamp
-                .valueOf(this
-                        .productionDate
-                        .getValue()
-                        .atStartOfDay()).toString().split(" ")[0].toString();
+
         treatName = this.treatName.
                 getSelectionModel().getSelectedItem().toString();
 
@@ -338,10 +318,9 @@ public class PurchaseDetailsController extends MyController {
         purchaseDetails.setPurchase_id(this.currentPurchaseId);
         purchaseDetails.setTreat_id(treatment.getId());
         purchaseDetails.setExpireDate(expireDate);
-        purchaseDetails.setProductionDate(productionDate);
         try {
             purchaseDetails.setQuantity
-                    (!quantity.isEmpty() ? Double.valueOf(quantity) : 0);
+                    (!quantity.isEmpty() ? Integer.valueOf(quantity) : 0);
             purchaseDetails.setPricePeople
                     (!pricePeople.isEmpty() ? Double.valueOf(pricePeople) : 0);
             purchaseDetails.setTotalPeople

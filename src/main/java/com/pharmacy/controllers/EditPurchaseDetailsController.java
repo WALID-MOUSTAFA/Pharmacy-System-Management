@@ -47,8 +47,7 @@ public class EditPurchaseDetailsController extends MyController{
 	@FXML
 	private DatePicker expireDate;
 
-	@FXML
-	private DatePicker productionDate;
+
 	@FXML TextField discount;
 
 	@FXML
@@ -92,9 +91,7 @@ public class EditPurchaseDetailsController extends MyController{
 		this.pricePeople.setText(String.valueOf(pd.getPricePeople()));
 		this.expireDate.setValue(LocalDate.parse
 					 (pd.getExpireDate().split(" ")[0] ));
-		this.productionDate
-			.setValue(LocalDate
-				  .parse(pd.getProductionDate().split(" ")[0]));
+
 		this.discount.setText(pd.getDiscount());
 		//this.initializeTreatmentCombo();
 		this.treatName.setValue(pd.getTreat().getName()+"-"+pd.getTreat().getTypeTreatName());
@@ -122,7 +119,6 @@ public class EditPurchaseDetailsController extends MyController{
 		this.initializeForm();
 
 			MyUtils.setDatePickerFormat(this.expireDate);
-		MyUtils.setDatePickerFormat(this.productionDate);
 	}
 
 	
@@ -153,11 +149,7 @@ public class EditPurchaseDetailsController extends MyController{
 			return;
 		}
 
-		if(this.productionDate.getValue() == null) {
-			errors.add("يجب اختيار تاريخ الإنتاج");
-			MyUtils.showValidationErrors(errors);
-			return;
-		}
+
 
 		
 		if(this.treatName.getValue() == null) {
@@ -173,7 +165,6 @@ public class EditPurchaseDetailsController extends MyController{
 		pricePharmacy=this.pricePharmacy.getText();
 		pricePeople= this.pricePeople.getText();
 		expireDate= this.expireDate.getValue().toString();
-		productionDate= this.productionDate.getValue().toString();
 		discount= this.discount.getText();
 		String name= this.treatName.getValue().toString();
 		treat= treatmentService
@@ -181,7 +172,7 @@ public class EditPurchaseDetailsController extends MyController{
 
 		try {
 		purchaseDetails.setQuantity
-			(!quantity.isEmpty()? Double.valueOf(quantity):0);
+			(!quantity.isEmpty()? Integer.valueOf(quantity):0);
 		purchaseDetails.setTotalPharmacy
 			(!totalPharmacy.isEmpty()?Double.valueOf(totalPharmacy):0);
 		purchaseDetails.setPricePharmacy
@@ -196,8 +187,6 @@ public class EditPurchaseDetailsController extends MyController{
 		}
 		purchaseDetails.setExpireDate
 			(expireDate);
-		purchaseDetails.setProductionDate
-			(productionDate);
 
 		purchaseDetails.setTreat_id(treat.getId());
 		purchaseDetails.setDiscount(discount);

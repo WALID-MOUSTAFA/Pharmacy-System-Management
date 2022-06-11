@@ -73,7 +73,10 @@ public class PurchasesController extends MyController{
     private void initializeTableView() throws SQLException{
 
 	TableColumn<Purchase, String> datePur = new TableColumn<>("تاريخ الفاتورة");
-	datePur.setCellValueFactory(new PropertyValueFactory<>("datePur"));
+	datePur.setCellValueFactory(val-> {
+		//removing the 00.00.000 part of the timestamp
+		return new SimpleStringProperty(val.getValue().getDatePur().split(" ")[0]);
+	});
 
 	TableColumn<Purchase, String> pillNum = new TableColumn<>("رقم الفاتورة");
 	pillNum.setCellValueFactory(new PropertyValueFactory<>("pillNum"));
@@ -93,8 +96,7 @@ public class PurchasesController extends MyController{
 	TableColumn<Purchase, String> description = new TableColumn<>("الوصف");
 	description.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-	TableColumn<Purchase, String> dateAt = new TableColumn<>("تاريخ الإضافة");
-	dateAt.setCellValueFactory(new PropertyValueFactory<>("dateAt"));
+
 
 	TableColumn<Purchase, String> supplierName = new TableColumn<>("اسم المورد");
 	// supplierName.setCellValueFactory(new PropertyValueFactory<>("supplier"));
@@ -108,7 +110,6 @@ public class PurchasesController extends MyController{
 						     countUnit,
 						   //  profit,
 						     description,
-						     dateAt,
 						     supplierName);
 
 	this.renderPurchases();

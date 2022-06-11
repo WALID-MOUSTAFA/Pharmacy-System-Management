@@ -17,10 +17,14 @@ public class DatabaseConnection {
 	private boolean production= false;
 
 	private DatabaseConnection() throws SQLException {
-		if(!production){
-			url= "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
-		}else {
-			url="jdbc:sqlite:.\\database.db";
+		if(System.getProperty("os.name").startsWith(("Windows"))) {
+			if (!production) {
+				url = "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
+			} else {
+				url = "jdbc:sqlite:.\\database.db";
+			}
+		} else {
+			url = "jdbc:sqlite://home/walid/pharmacy.db";
 		}
 		SQLiteConfig config = new SQLiteConfig();
 		config.enforceForeignKeys(true);

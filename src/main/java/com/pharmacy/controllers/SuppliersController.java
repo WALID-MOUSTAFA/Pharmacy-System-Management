@@ -5,6 +5,7 @@ import com.pharmacy.POGO.PurchaseDetails;
 import com.pharmacy.POGO.Supplier;
 import com.pharmacy.services.SuppliersService;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -97,7 +98,9 @@ public class SuppliersController extends MyController{
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
         TableColumn<Supplier, String> cashColumn= new TableColumn<>("الكاش");
-        cashColumn.setCellValueFactory(new PropertyValueFactory<>("cash"));
+        cashColumn.setCellValueFactory(val-> {
+					return new SimpleStringProperty(String.valueOf((int) val.getValue().getCash()));
+				});
 
         TableColumn<Supplier, String> dateAtColumn= new TableColumn<>("تاريخ الإضافة");
         dateAtColumn.setCellValueFactory(new PropertyValueFactory<>("dateAt"));

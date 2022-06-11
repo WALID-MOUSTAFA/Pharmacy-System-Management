@@ -67,6 +67,10 @@ public class CreateSupplierController extends  MyController{
 
 		if (result) {
 			this.suppliersController.initializeTableView();
+			this.supplierAddress.clear();
+			this.supplierCash.clear();
+			this.supplierName.clear();
+			this.supplierPhone.clear();
 		}
 
     }

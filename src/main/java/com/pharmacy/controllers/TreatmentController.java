@@ -5,6 +5,7 @@ import com.pharmacy.POGO.DetailedTreatment;
 import com.pharmacy.POGO.Treatment;
 import com.pharmacy.services.TreatmentService;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -88,10 +89,16 @@ public class TreatmentController extends MyController{
 			new TableColumn<>("الاسم");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+		TableColumn<DetailedTreatment, String> typeColumn =
+				new TableColumn<>();
+		typeColumn.setCellValueFactory(new PropertyValueFactory<>("typeTreatName"));
+
 		TableColumn<DetailedTreatment, String> dateAtColumn=
 			new TableColumn<>("تاريخ الإضافة");
 		dateAtColumn.setCellValueFactory
-			(new PropertyValueFactory<>("dateAt"));
+			(val-> {
+				return new SimpleStringProperty(val.getValue().getDateAt().split(" ")[0]);
+			});
 
 		TableColumn<DetailedTreatment, String> statusColumn=
 			new TableColumn<>("الحالة");
@@ -120,6 +127,7 @@ public class TreatmentController extends MyController{
 
 	
 		this.treatmentsTableView.getColumns().addAll(nameColumn,
+								 typeColumn,
 							     dateAtColumn,
 							     placeColumn,
 							     companyColumn,

@@ -98,7 +98,7 @@ public class EditPurchaseController extends MyController{
 		Purchase purchase;
 		Supplier supplier;
 		String pillNum;
-		double countUnit=0;
+		int countUnit=0;
 		
 		if(this.supplierCombo.getSelectionModel().isEmpty()) {
 			errors.add("يجب أن تختار المورد");
@@ -113,7 +113,7 @@ public class EditPurchaseController extends MyController{
 		}
 
 		try {
-			countUnit= Double.valueOf(this.countUnit.getText());
+			countUnit= Integer.valueOf(this.countUnit.getText());
 		}catch(NumberFormatException e) {
 			errors.add("يرجي كتابة عدد الوحدات بشكل سليم");
 			MyUtils.showValidationErrors(errors);
@@ -131,10 +131,10 @@ public class EditPurchaseController extends MyController{
 		purchase.setPillNum(pillNum);
 		purchase.setTotalPeople
 			(!totalPeople.getText().isEmpty()?
-					Double.valueOf(this.totalPeople.getText()) : 0);
+					Integer.valueOf(this.totalPeople.getText()) : 0);
 		purchase.setTotalPharmacy
 			(!totalPharmacy.getText().isEmpty()?
-					Double.valueOf(this.totalPharmacy.getText()):0);
+					Integer.valueOf(this.totalPharmacy.getText()):0);
 		purchase.setDescription(this.description.getText());
 		purchase.setDatePur(this.purchaseDate.getValue().toString());
 		purchase.setSupplier(supplier);

@@ -32,6 +32,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+//إضافة رصيد بلا فاتورة من الجرد
 public class AddBalanceTreatController extends MyController{
 
 	private BalanceService balanceService;
@@ -54,8 +55,6 @@ public class AddBalanceTreatController extends MyController{
 	@FXML
 	private DatePicker expireDate;
 
-	@FXML
-	private DatePicker productionDate;
 
 //	@FXML
 //	TextField discount;
@@ -80,8 +79,7 @@ public class AddBalanceTreatController extends MyController{
 	private void initialize() throws SQLException {
 		this.initializeTreatmentCombo();
 		MyUtils.setDatePickerFormat(this.expireDate);
-		MyUtils.setDatePickerFormat(this.productionDate);
-		    
+
 		try {
 			StringConverter<? extends Number> converter= new DoubleStringConverter();
 			SimpleDoubleProperty quantityProperty= new SimpleDoubleProperty();
@@ -144,11 +142,7 @@ public class AddBalanceTreatController extends MyController{
 			return;
 		}
 
-		if (this.productionDate.getValue() == null) {
-			errors.add("يجب اختيار تاريخ الإنتاج");
-			MyUtils.showValidationErrors(errors);
-			return;
-		}
+
 
 
 		if (this.treatName.getValue() == null) {

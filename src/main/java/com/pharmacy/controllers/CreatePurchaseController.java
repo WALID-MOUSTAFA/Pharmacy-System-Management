@@ -98,11 +98,11 @@ public class CreatePurchaseController extends MyController
 		purchase.setPillNum(pillNum);
 		purchase.setDatePur(datePur.toString());
 		purchase.setTotalPeople
-			(!totalPeople.isEmpty()? Double.valueOf(totalPeople) : 0);
+			(!totalPeople.isEmpty()? Integer.valueOf(totalPeople) : 0);
 		purchase.setTotalPharmacy
-			(!totalPharmacy.isEmpty()? Double.valueOf(totalPharmacy):0);
+			(!totalPharmacy.isEmpty()? Integer.valueOf(totalPharmacy):0);
 		purchase.setCountUnit
-			(!countUnit.isEmpty()? Double.valueOf(countUnit):0);
+			(!countUnit.isEmpty()? Integer.valueOf(countUnit):0);
 		purchase.setDescription(description);
 		purchase.setSupplier(supplier);
 
