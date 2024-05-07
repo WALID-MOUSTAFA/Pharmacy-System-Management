@@ -15,6 +15,23 @@
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="600.0">
+               <children>
+                  <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_RIGHT" text="المورد">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="supplierCombo" prefWidth="150.0" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="40.0" right="40.0" />
+               </padding>
+            </HBox>
             <HBox alignment="CENTER" prefHeight="69.0" prefWidth="600.0">
                <children>
                   <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
@@ -110,23 +127,6 @@
                            </VBox.margin>
                         </Label>
                         <TextField fx:id="description" />
-                     </children>
-                  </VBox>
-               </children>
-               <padding>
-                  <Insets left="40.0" right="40.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="600.0">
-               <children>
-                  <VBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label alignment="TOP_RIGHT" text="المورد">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="supplierCombo" prefWidth="150.0" />
                      </children>
                   </VBox>
                </children>

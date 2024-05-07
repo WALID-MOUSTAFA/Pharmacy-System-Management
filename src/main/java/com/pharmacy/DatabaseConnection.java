@@ -19,7 +19,7 @@ public class DatabaseConnection {
 	private DatabaseConnection() throws SQLException {
 		if(System.getProperty("os.name").startsWith(("Windows"))) {
 			if (!production) {
-				url = "jdbc:sqlite:C:\\Users\\walid\\workspace\\pharmacygui\\target\\classes\\pharmacy.db";
+				url = "jdbc:sqlite:C:\\Users\\walid\\Documents\\pharmacygui\\target\\classes\\pharmacy.db";
 			} else {
 				url = "jdbc:sqlite:.\\database.db";
 			}
@@ -31,7 +31,7 @@ public class DatabaseConnection {
 		config.resetOpenMode(SQLiteOpenMode.CREATE); // this disable creation
 		config.setEncoding(SQLiteConfig.Encoding.UTF8);
 		try {
-			Class.forName("org.sqlite.JDBC");
+		    Class.forName("org.sqlite.JDBC");
 			this.connection = DriverManager.getConnection(url, config.toProperties());
 		} catch (ClassNotFoundException ex) {
 			System.out.println

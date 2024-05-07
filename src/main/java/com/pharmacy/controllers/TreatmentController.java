@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
@@ -88,6 +89,7 @@ public class TreatmentController extends MyController{
 		TableColumn<DetailedTreatment, String> nameColumn=
 			new TableColumn<>("الاسم");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
 
 		TableColumn<DetailedTreatment, String> typeColumn =
 				new TableColumn<>();
@@ -305,12 +307,12 @@ public class TreatmentController extends MyController{
 			@Override
 			public boolean test(DetailedTreatment dt) {
 
-				return dt.getName().contains(q)
-						|| dt.getTypeTreatName().contains(q)
-						|| dt.getDateAt().contains(q)
-						|| dt.getCompany().contains(q)
-						|| dt.getParcode().contains(q)
-						|| dt.getPlace().contains(q);
+				return dt.getName().toLowerCase().contains(q.toLowerCase())
+					|| dt.getTypeTreatName().toLowerCase().contains(q.toLowerCase())
+						|| dt.getDateAt().toLowerCase().contains(q.toLowerCase())
+						|| dt.getCompany().toLowerCase().contains(q.toLowerCase())
+						|| dt.getParcode().toLowerCase().contains(q.toLowerCase())
+						|| dt.getPlace().toLowerCase().contains(q.toLowerCase());
 			}
 		});
 	}

@@ -31,9 +31,4 @@ class ComputerIdentifier
                 processors;
     }
 
-    public static void main(String[] arguments)
-    {
-        String identifier = generateLicenseKey();
-        System.out.println(identifier);
-    }
 }

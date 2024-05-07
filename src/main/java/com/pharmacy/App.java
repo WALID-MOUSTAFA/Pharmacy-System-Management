@@ -22,10 +22,7 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-			if(!MyUtils.checkPC()) {
-				MyUtils.ALERT_ERROR("Device is not compatible with the application!");
-				return;
-			}
+	    
 
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/Main.fxml"));
@@ -34,7 +31,8 @@ public class App extends Application {
 			loader.setController(mainController);
 			Parent root = loader.<VBox>load();
 			primaryStage.setTitle("الصيدلية");
-			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/pharmacy.ico")));
+			primaryStage.getIcons()
+			    .add(new Image(getClass().getResourceAsStream("/assets/pharmacy.ico")));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setMaximized(true);
 			primaryStage.show();
